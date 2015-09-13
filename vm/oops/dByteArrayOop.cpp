@@ -132,7 +132,8 @@ bool doubleByteArrayOopDesc::copy_null_terminated(char* buffer, int max_length) 
 char* doubleByteArrayOopDesc::as_string() {
   int len = length();
   char* str = NEW_RESOURCE_ARRAY(char, len+1);
-  for (int index = 0; index <len; index++) {
+  int index;
+  for (index = 0; index <len; index++) {
     str[index] = (char) doubleByte_at(index+1);
   }
   str[index] = '\0';

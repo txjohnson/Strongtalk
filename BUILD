@@ -6,7 +6,7 @@ TEST_SRC_DIR 	= "test"
 TEST_INCL_PATH = ["-I"+TEST_SRC_DIR+"/runtime", "-I"+TEST_SRC_DIR+"/utilities", "-I"+TEST_SRC_DIR+"/memory"]
 
 DEFINES = ["-DDELTA_COMPILER", "-DASSERT", "-DDEBUG", "-D__LINUX__"]
-COPTS = ["-m32", "-fno-rtti", "-Wno-write-strings", "-fno-operator-names", "-fms-extensions", "-fno-for-scope"]
+COPTS = ["-m32", "-fno-rtti", "-Wno-write-strings", "-fno-operator-names", "-fms-extensions"]
 
 #https://groups.google.com/forum/#!topic/bazel-discuss/8Snn9hLuSqo
 
@@ -34,18 +34,10 @@ cc_binary(
     deps = [":libstrongtalk"],
 )
 
-# hack to set -ffor-scope for single file
-cc_library(
-    name = "missingMethodBuilderTest",
-    srcs = ["test/interpreter/missingMethodBuilderTest.cpp"],
-    copts = INCL_PATH + TEST_INCL_PATH + COPTS + DEFINES + ["-ffor-scope"],
-    linkopts = ["-m32"],
-    deps = [":easyunit"],
-)
 cc_test(
     name = "strongtalk-test",
-    srcs = glob(["test/**/*.cpp"], exclude=["test/interpreter/missingMethodBuilderTest.cpp"]),
+    srcs = glob(["test/**/*.cpp"]),
     copts = INCL_PATH + TEST_INCL_PATH + COPTS + DEFINES,
     #linkstatic=0,
-    deps = [":missingMethodBuilderTest", ":libstrongtalk", ":easyunit"],
+    deps = [":libstrongtalk", ":easyunit"],
 )

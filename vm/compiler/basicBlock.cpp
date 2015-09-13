@@ -202,7 +202,7 @@ void BB::localCopyPropagate() {
     }
   }
   
-  for (i = 0; i < len; i++) {
+  for (int i = 0; i < len; i++) {
     const int BIG = 9999999;
     DUInfo* dui = duInfo.info->at(i);
     PReg* r = dui->reg;
@@ -227,7 +227,8 @@ void BB::localCopyPropagate() {
 	if (!src->isSinglyAssigned()) {
 	  // careful: r is only equivalent to src as long as src isn't reassigned
 	  // within this basic block
-	  for (int j = 0; j < len; j++) {
+	  int j;
+	  for (j = 0; j < len; j++) {
 	    PReg* r = duInfo.info->at(j)->reg;
 	    if (r == src) break;
 	  }
@@ -458,7 +459,7 @@ void BB::localAlloc(GrowableArray<BitVector*>* hardwired,
 
   // allocate other local regs (using the untouched temp regs of this BB)
   int temp = 0;
-  for (i = 0; i < duInfo.info->length(); i++) {
+  for (int i = 0; i < duInfo.info->length(); i++) {
     // collect local regs 
     PReg* r = duInfo.info->at(i)->reg;
     if (r->loc.equals(unAllocated) && !r->isUnused() && r->isLocalTo(this)) {
@@ -505,7 +506,7 @@ void BB::slowLocalAlloc(GrowableArray<BitVector*>* hardwired,
   // localRegs: collects all PRegs that could be allocated locally
   // lives: for each reg in localRegs, holds live range (bit vector with one bit per node)
 
-  for (i = 0; i < duInfo.info->length(); i++) {
+  for (int i = 0; i < duInfo.info->length(); i++) {
     // collect local regs
     PReg* r = duInfo.info->at(i)->reg;
     if (r->isLocalTo(this)) {
@@ -555,7 +556,7 @@ void BB::slowLocalAlloc(GrowableArray<BitVector*>* hardwired,
   int lastTemp = 0;
 #   define nextTemp(n) (n == nofLocalRegisters - 1) ? 0 : n + 1
 
-  for (i = 0; i < localRegs->length(); i++) {
+  for (int i = 0; i < localRegs->length(); i++) {
     // try to allocate localRegs[i] to a local (temp) register
     PReg* r = localRegs->at(i);
     if (!r->loc.equals(unAllocated)) {
@@ -647,7 +648,7 @@ void BB::print_short() {
   for (int i = 0; i < nPredecessors(); i++) printPrevBBs(prev(i),  (i == nPredecessors() - 1) ? " : " : ", ");
   lprintf("; ");
   if (next ()) lprintf("next BB%ld", next ()->id());
-  for (i = 1; i < nSuccessors(); i++) printPrevBBs(next(i), (i == nSuccessors() - 1) ? " : " : ", ");
+  for (int i = 1; i < nSuccessors(); i++) printPrevBBs(next(i), (i == nSuccessors() - 1) ? " : " : ", ");
 }
 
 
@@ -758,7 +759,7 @@ _loopDepth = loopDepth;
     Node* next = last->next(i);
     BB* nextBB = next->newBB();
   }	
-  for (i = nSuccessors() - 1; i >= 0; i--) {
+  for (int i = nSuccessors() - 1; i >= 0; i--) {
     BB* nextBB = next(i);
     // only follow the link if next->bb hasn't been visited yet
     if (nextBB->id() == 0) nextBB->dfs(list, loopDepth);
@@ -787,7 +788,7 @@ void BBIterator::makeUses() {
   int n = PReg::currentNo + ExtraPRegs;
   pregTable = new GrowableArray<PReg*>(n);
   for (int i = 0; i < n; i++) pregTable->append(NULL);
-  for (i = 0; i < bbCount; i++) { bbTable->at(i)->makeUses(); }
+  for (int i = 0; i < bbCount; i++) { bbTable->at(i)->makeUses(); }
   usesBuilt = true;
 }
 
@@ -803,7 +804,7 @@ void BBIterator::localAlloc() {
       hardwired.at_put(i, new BitVector(roundTo(BasicNode::currentID, BitsPerWord)));
     }
   
-    for (i = 0; i < bbCount; i++) {
+    for (int i = 0; i < bbCount; i++) {
       bbTable->at(i)->localAlloc(&hardwired, &localRegs, &lives);
     }
   }
@@ -1029,7 +1030,7 @@ void BBIterator::globalCopyPropagate() {
 	continue;
 
     // ok, everything is fine - propagate the def to the uses
-    for (e = 0; e < dulength; e++) {
+    for (int e = 0; e < dulength; e++) {
       PRegBBIndex* index = r->dus.at(e);
       BB* bb = index->bb;
       DUInfo* info = bb->duInfo.info->at(index->index);
@@ -1069,7 +1070,7 @@ void BBIterator::verify() {
   if (bbTable) {
     for (int i = 0; i < bbCount; i++) { bbTable->at(i)->verify(); }
     if (pregTable) {
-      for (i = 0; i < pregTable->length(); i++) {
+      for (int i = 0; i < pregTable->length(); i++) {
         if (pregTable->at(i)) pregTable->at(i)->verify();
       }
     }

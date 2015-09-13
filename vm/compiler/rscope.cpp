@@ -375,7 +375,8 @@ RNonDummyScope* RNonDummyScope::constructRScopes(const nmethod* nm, bool trusted
   FOR_EACH_SCOPE(nm->scopes(), s) {
     // search s' sender RScope
     ScopeDesc* sender = s->sender();
-    for (RNonDummyScope* rsender = current; rsender; rsender = rsender->sender()) {
+    RNonDummyScope* rsender;
+    for (rsender = current; rsender; rsender = rsender->sender()) {
       if (rsender->isInlinedScope() &&
         ((RInlinedScope*)rsender)->desc->is_equal(sender))
         break;
@@ -518,7 +519,8 @@ void RScope::print() {
 }
 
 void RNonDummyScope::printSubScopes() const {
-  for (int i = 0; i < ncodes && _subScopes[i] == NULL; i++) ;
+  int i;
+  for (i = 0; i < ncodes && _subScopes[i] == NULL; i++) ;
   if (i < ncodes) {
     std->print("{ ");
     for (i = 0; i < ncodes; i++) {
@@ -589,7 +591,8 @@ void RNonDummyScope::printTree(int senderBCI, int level) const {
         _subScopes[bci]->at(j)->printTree(bci, level + 1);
       }
     }
-    for (int j = u; j < uncommon.length() && uncommon.at(j)->bci() < bci; u++, j++) ;
+    int j;
+    for (j = u; j < uncommon.length() && uncommon.at(j)->bci() < bci; u++, j++) ;
     if (j < uncommon.length() && uncommon.at(j)->bci() == bci) {
       std->print("  %*s%3ld: uncommon\n", level * 2, "", bci);
     }
@@ -665,7 +668,8 @@ void RInlinedScope::print_inlining_database_on(outputStream* st, GrowableArray<P
 
   // find scope in uncommon list
   int scope = desc->offset();
-  for (int u = 0; uncommon && u < uncommon->length() - 1 && uncommon->at(u)->scope < scope; u++) ;
+  int u;
+  for (u = 0; uncommon && u < uncommon->length() - 1 && uncommon->at(u)->scope < scope; u++) ;
   PcDesc* current_uncommon = next_uncommon(scope, u, uncommon);
 
   // File out subscopes

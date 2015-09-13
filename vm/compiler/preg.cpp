@@ -392,13 +392,15 @@ bool SAPReg::extendLiveRange(InlinedScope* s, int bci) {
     if (bciGT(bci, _endBCI)) _endBCI = bci;
   } else if (s->isSenderOf(_scope)) {
     // propagating upwards - promote receiver to higher scope
-    for (InlinedScope* ss = _scope; ss->sender() != s; ss = ss->sender());
+    InlinedScope* ss;
+    for (ss = _scope; ss->sender() != s; ss = ss->sender());
     _scope = s;
     _begBCI = ss->senderBCI();
     _endBCI = bci;
   } else if (_scope->isSenderOf(s)) {
     // scope is callee; check if already covered
-    for (InlinedScope* ss = s; ss->sender() != _scope; ss = ss->sender()) ;
+    InlinedScope* ss;
+    for (ss = s; ss->sender() != _scope; ss = ss->sender()) ;
     int bci = ss->senderBCI();
     if (bciLT(bci, _begBCI)) {
       // seems like we're propagating backwards!  happens because of the non-source
@@ -768,7 +770,7 @@ bool PReg::isCPEquivalent(PReg* r) const {
     if (i->r == r) return true;
   }
   // now try the other way
-  for (i = r->cpInfo; i && i->r; i = i->r->cpInfo) {
+  for (CPInfo* i = r->cpInfo; i && i->r; i = i->r->cpInfo) {
     if (i->r == this) return true;
   }
   return false;
@@ -949,7 +951,7 @@ void BlockPReg::computeUplevelAccesses() {
   _uplevelRead    = c.read;
   _uplevelWritten = c.written;
   for (int i = _uplevelRead->length() - 1; i >= 0; i--) _uplevelRead   ->at(i)->addUplevelAccessor(this, true, false);
-  for (i = _uplevelWritten->length() - 1;  i >= 0; i--) _uplevelWritten->at(i)->addUplevelAccessor(this, false, true);
+  for (int i = _uplevelWritten->length() - 1;  i >= 0; i--) _uplevelWritten->at(i)->addUplevelAccessor(this, false, true);
 }
 
 
@@ -1100,7 +1102,7 @@ bool BlockPReg::verify() const {
 	}
       }
     }
-    for (i = 0; i < _uplevelWritten->length(); i++) {
+    for (int i = 0; i < _uplevelWritten->length(); i++) {
       if (_uplevelWritten->at(i)->isBlockPReg()) {
 	BlockPReg* blk = (BlockPReg*)_uplevelRead->at(i);
 	error("BlockPReg %#lx is uplevel-written by escaping BlockPReg %#lx, but BlockPRegs should never be assigned",

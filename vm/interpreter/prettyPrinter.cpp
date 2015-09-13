@@ -1448,7 +1448,7 @@ void MethodPrettyPrinter::normal_send(symbolOop selector, bool is_prim) {
   for (int index = 0; index < nargs; index++)
     arguments->push(_pop());
     
-  for (index = 0; index < nargs; index++)
+  for (int index = 0; index < nargs; index++)
     msg->add_param(arguments->at(index));
 
   msg->set_receiver(_pop());
@@ -1465,7 +1465,7 @@ void MethodPrettyPrinter::special_send(astNode* receiver, symbolOop selector, bo
   for (int index = 0; index < nargs; index++)
     arguments->push(_pop());
     
-  for (index = 0; index < nargs; index++)
+  for (int index = 0; index < nargs; index++)
     msg->add_param(arguments->at(index));
 
   msg->set_receiver(receiver);
@@ -1609,7 +1609,7 @@ void MethodPrettyPrinter::dll_call_node(DLLCallNode* node) {
   for (int index = 0; index < nargs; index++)
     arguments->push(_pop());
     
-  for (index = 0; index < nargs; index++)
+  for (int index = 0; index < nargs; index++)
     msg->add_param(arguments->at(index));
 
   msg->set_proxy(_pop());

@@ -522,7 +522,7 @@ Expr* Inliner::inlineMerge(SendInfo* info) {
     typeCase = NodeFactory::new_TypeTestNode(r->preg(), klasses, info->needRealSend || containsUnknown);
     gen->append(typeCase);
     fallThrough = typeCase->append(NodeFactory::new_NopNode());	// non-predicted case
-    for (i = 0; i < scopes->length(); i++) {
+    for (int i = 0; i < scopes->length(); i++) {
       // inline one case
       Inliner* inliner = new Inliner(sender);
       inliner->initialize(new SendInfo(*info), kind);
@@ -729,7 +729,7 @@ Expr* Inliner::picPredict() {
     _info->sel->as_string(), npic);
 
   // iterate through PIC _info and add it to the receiver type (_info->rcvr)
-  for (i = 0; i < klasses.length(); i++) {
+  for (int i = 0; i < klasses.length(); i++) {
     Expr* expr = klasses.at(i);
     // use the PIC information for this case
     if (CompilerDebug) {

@@ -86,7 +86,7 @@ void StackChunkBuilder::append(deltaVFrame* f) {
     array->push(f->temp_at(index));
  
   // push expression stack
-  for (index = stack->length() - 1; index >= 0; index--) {
+  for (int index = stack->length() - 1; index >= 0; index--) {
     array->push(stack->at(index));
   }
 }

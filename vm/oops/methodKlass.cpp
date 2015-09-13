@@ -254,7 +254,7 @@ methodOop methodKlass::constructMethod(oop selector_or_method, int flags, int no
   }
 
   // then merge in the oops
-  for (index = 1; index <= oops->length(); index++) {
+  for (int index = 1; index <= oops->length(); index++) {
     bool copyOop = true;
     int bc_index = index*oopSize-(oopSize-1);
     for (int i = 0; i < oopSize; i++) {

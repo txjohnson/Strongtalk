@@ -189,7 +189,8 @@ int byteArrayOopDesc::hash_value() {
 char* byteArrayOopDesc::as_string() {
   int len = length();
   char* str = NEW_RESOURCE_ARRAY(char, len+1);
-  for (int index = 0; index <len; index++) {
+  int index;
+  for (index = 0; index <len; index++) {
     str[index] = byte_at(index+1);
   }
   str[index] = '\0';

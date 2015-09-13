@@ -528,7 +528,8 @@ void Node::removeNext(Node* n) {
 
 Node* Node::endOfList() const {
   if (_next == NULL) return (Node*)this;
-  for (Node* n = _next; n->_next; n = n->_next) {
+  Node* n;
+  for (n = _next; n->_next; n = n->_next) {
     assert(n->hasSingleSuccessor(), ">1 successors");
   }
   return n;
@@ -572,7 +573,8 @@ void AbstractBranchNode::removeNext(Node* n) {
     n->removePrev(this);
     _next = NULL;
   } else {
-    for (int i = 0; i < _nxt->length() && _nxt->at(i) != n; i++) ;
+    int i;
+    for (i = 0; i < _nxt->length() && _nxt->at(i) != n; i++) ;
     assert(i < _nxt->length(), "not found");
     n->removePrev(this);
     for ( ; i < _nxt->length() - 1; i++) _nxt->at_put(i, _nxt->at(i+1));
@@ -593,7 +595,8 @@ void AbstractBranchNode::moveNext(Node* from, Node* to) {
   if (_next == from) {
     _next = to;
   } else {
-    for (int i = 0; i < _nxt->length() && _nxt->at(i) != from; i++) ;
+    int i;
+    for (i = 0; i < _nxt->length() && _nxt->at(i) != from; i++) ;
     assert(i < _nxt->length(), "not found");
     _nxt->at_put(i, to);
   }
@@ -603,7 +606,8 @@ bool AbstractBranchNode::isSuccessor(const Node* n) const {
   if (_next == n) {
     return true;
   } else {
-    for (int i = 0; i < _nxt->length() && _nxt->at(i) != n; i++) ;
+    int i;
+    for (i = 0; i < _nxt->length() && _nxt->at(i) != n; i++) ;
     return i < _nxt->length();
   }
 }
@@ -611,8 +615,9 @@ bool AbstractBranchNode::isSuccessor(const Node* n) const {
 BB* BasicNode::newBB() {
   if (_bb == NULL) {
     int len = 0;
-    _bb = new BB((Node*)this, (Node*)this, 1);     
-    for (Node* n = (Node*)this; !n->endsBB() && n->next() != NULL; n = n->next()) {
+    _bb = new BB((Node*)this, (Node*)this, 1);
+    Node* n;
+    for (n = (Node*)this; !n->endsBB() && n->next() != NULL; n = n->next()) {
       n->_num = len++; n->_bb = _bb;
     }
     n->_num = len++; n->_bb = _bb;
@@ -1197,7 +1202,7 @@ void PrologueNode::makeUses(BB* bb) {
     if (a) bb->addDef(this, a->preg());
   }
   // build initial defs for locals (initalization to nil)
-  for (i = 0; i < _nofTemps; i++) {
+  for (int i = 0; i < _nofTemps; i++) {
     Expr* t = s->temporary(i);
     if (t) bb->addDef(this, t->preg());
   }
@@ -1307,7 +1312,7 @@ void CallNode::makeUses(BB* bb) {
             uplevelUsed->append(r);
           }
           GrowableArray<PReg*>* uplevelWritten = blk->uplevelWritten();
-          for (j = uplevelWritten->length() - 1; j >= 0; j--) {
+          for (int j = uplevelWritten->length() - 1; j >= 0; j--) {
             PReg* r = uplevelWritten->at(j);
             uplevelDefs->append(bb->addDef(this, r));
             uplevelDefd->append(r);
@@ -1481,7 +1486,7 @@ void CallNode::removeUses(BB* bb) {
   }
   if (uplevelUses) {
     for (int i = uplevelUses->length() - 1; i >= 0; i--) uplevelUsed->at(i)->removeUse(bb, uplevelUses->at(i));
-    for (i = uplevelDefs->length() - 1; i >= 0; i--) uplevelDefd->at(i)->removeDef(bb, uplevelDefs->at(i));
+    for (int i = uplevelDefs->length() - 1; i >= 0; i--) uplevelDefd->at(i)->removeDef(bb, uplevelDefs->at(i));
   }
   NonTrivialNode::removeUses(bb);
 }
@@ -1632,7 +1637,8 @@ inline void BlockMaterializeNode::eliminate(BB* bb, PReg* r, bool rem, bool cp) 
 
 void BasicNode::removeUpToMerge() {
   BB* thisBB = _bb;
-  for (Node* n = (Node*)this; n && n->hasSinglePredecessor(); ) {
+  Node* n;
+  for (n = (Node*)this; n && n->hasSinglePredecessor(); ) {
     while (n->nSuccessors() > 1) {
       int i = n->nSuccessors() - 1;
       Node* succ = n->next(i);
@@ -3078,7 +3084,8 @@ void Node::verify() const {
     !isCommentNode())   // for the "rest of method omitted (dead)" comment
     error("Node %#lx has no successor", this);
   if (next() != NULL && isExitNode()) {
-    for (Node* n = next();
+    Node* n;
+    for (n = next();
       n && (n->isCommentNode() || n->isDeadEndNode());
       n = n->next()) ;
     if (n) error("exit node %#lx has a successor (%#lx)", this, next());

@@ -73,7 +73,8 @@ void GenericSList::removeAfterL(GenericSListElem* e) {
 
 void GenericSList::removeL(void* p) {
   GenericSListElem* prev = NULL;
-  for (GenericSListElem* e = headL(); e && e->dataL() != p;
+  GenericSListElem* e;
+  for (e = headL(); e && e->dataL() != p;
        prev = e, e = e->nextL()) ;
   if (e == NULL) fatal("not in list");
   removeAfterL(prev);

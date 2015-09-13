@@ -50,7 +50,7 @@ objArrayOop objArrayOopDesc::copy_remove(int index, int number) {
     new_array->obj_at_put(i, obj_at(i));
 
   // copy  [index+number..length]
-  for (i = index; i <= length() - number; i++)
+  for (int i = index; i <= length() - number; i++)
     new_array->obj_at_put(i, obj_at(i+number));
 
   return new_array;
@@ -65,7 +65,8 @@ objArrayOop objArrayOopDesc::copy() {
 
 objArrayOop objArrayOopDesc::copy_add(oop a) {
   objArrayOop new_array = oopFactory::new_objArray(length() + 1);
-  for (int i = 1; i <= length(); i++)
+  int i;
+  for (i = 1; i <= length(); i++)
     new_array->obj_at_put(i, obj_at(i));
   new_array->obj_at_put(i, a);
   return new_array;
@@ -73,7 +74,8 @@ objArrayOop objArrayOopDesc::copy_add(oop a) {
 
 objArrayOop objArrayOopDesc::copy_add_two(oop a, oop b) {
   objArrayOop new_array = oopFactory::new_objArray(length() + 2);
-  for (int i = 1; i < length(); i++)
+  int i;
+  for (i = 1; i < length(); i++)
     new_array->obj_at_put(i, obj_at(i));
   new_array->obj_at_put(i++, a);
   new_array->obj_at_put(i,   b);
@@ -122,12 +124,12 @@ void objArrayOopDesc::replace_and_fill(int from, int start, objArrayOop source) 
   // Fill the middle part
   int to = min(source->length() - start + 1, length());
 
-  for (index = from; index <= to; index++) {
+  for (int index = from; index <= to; index++) {
     obj_at_put(index, source->obj_at(start + index - from));
   }
 
   // Fill the last part
-  for (index = to + 1; index <= length(); index++) {
+  for (int index = to + 1; index <= length(); index++) {
     obj_at_put(index, nilObj);
   }
 }

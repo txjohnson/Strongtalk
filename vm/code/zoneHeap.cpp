@@ -168,7 +168,8 @@ void ChunkKlass::markSize(int nChunks, chunkState s) {
       for (int i = minHeaderSize; i < nChunks - minHeaderSize; i++) p[i] = i;
     } else {
       int max = min(nChunks - 4, MaxDistance);
-      for (int i = maxHeaderSize; i < max; i++) p[i] = i;
+      int i;
+      for (i = maxHeaderSize; i < max; i++) p[i] = i;
       // fill rest with large distance values (don't use MaxDistance - 1 because
       // the elems MaxDistance..MaxDistance+maxHeaderSize-1 would point *into*
       // the header)
@@ -353,7 +354,8 @@ void* Heap::allocFromLists(int wantedBytes) {
   }
   if (! p) {
     HeapChunk* f = bigList->anchor();
-    for (HeapChunk* c = f->next();
+    HeapChunk* c;
+    for (c = f->next();
 	 c != f && c->size < wantedBlocks;
 	 c = c->next());
     if (c == f) {
@@ -526,7 +528,8 @@ void* Heap::nextUsed(void* p) const {
   ChunkKlass* m = mapAddr(p);
   if (m->isValid() && !lastCombine->contains(m->asByte())) {
     if (VerifyZoneOften) {
-      for (ChunkKlass* m1 = heapKlass; m1 < m; m1 = m1->next()) ;
+      ChunkKlass* m1;
+      for (m1 = heapKlass; m1 < m; m1 = m1->next()) ;
       assert(m1 == m, "m isn't a valid chunk");
     }
     assert(m->verify(), "valid chunk doesn't verify");
@@ -535,11 +538,13 @@ void* Heap::nextUsed(void* p) const {
     // m is pointing into the middle of a block (because of block
     // combination)
 #   ifdef ASSERT
-      for (ChunkKlass* m1 = heapKlass; m1 < lastCombine; m1 = m1->next()) ;
+      ChunkKlass* m1;
+      for (m1 = heapKlass; m1 < lastCombine; m1 = m1->next()) ;
       assert(m1 == lastCombine, "lastCombine not found");
       assert(lastCombine->verify(), "invalid lastCombine");
 #   endif
-    for (ChunkKlass* n = lastCombine; n <= m; n = n->next()) ;
+    ChunkKlass* n;
+    for (n = lastCombine; n <= m; n = n->next()) ;
     m = n;
     assert(m->isValid(), "something's wrong");
   }
@@ -591,7 +596,8 @@ void Heap::verify() const {
     m = m->next();
   }
   // verify free lists
-  for (int i = 0; i < nfree; i++) {
+  int i;
+  for (i = 0; i < nfree; i++) {
     int j = 0;
     int lastSize = 0;
     HeapChunk* f = freeList[i].anchor();

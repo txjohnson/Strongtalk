@@ -72,7 +72,8 @@ void PerformanceDebugger::finish_reporting() {
     Reporter r(this);
     str->print("  did not inline the following sends because the nmethod was getting too big:");
     int len = notInlinedBecauseNmethodTooBig->length();
-    for (int i = 0; i < min(9, len); i++) {
+    int i;
+    for (i = 0; i < min(9, len); i++) {
       if (i % 3 == 0) str->print("\n    ");
       InlinedScope* s = notInlinedBecauseNmethodTooBig->at(i);
       str->print("%s  ", s->key()->print_string());

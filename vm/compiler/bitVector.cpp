@@ -118,7 +118,8 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
     print_short();
     lprintf(": {");
     int last = -1;
-    for (int i = 0; i < length; i ++) {
+    int i;
+    for (i = 0; i < length; i ++) {
       if (includes(i)) {
 	if (last < 0) {
 	  lprintf(" %ld", i);	// first bit after string of 0s

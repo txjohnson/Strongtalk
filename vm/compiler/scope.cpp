@@ -536,7 +536,8 @@ InlinedScope* InlinedScope::find_scope(int c, int& nofIndirections, OutlinedScop
   Scope* 	s = this;
   out = NULL;
   // first, go up as far as possible
-  for (int d = distance; d > 0 && s->parent()->isInlinedScope(); d--, s = s->parent()) ; 
+  int d;
+  for (d = distance; d > 0 && s->parent()->isInlinedScope(); d--, s = s->parent()) ; 
   if (d == 0) {
     // found scope in our nmethod
     return (InlinedScope*)s;
@@ -622,7 +623,7 @@ void InlinedScope::optimizeLoops() {
     }
     if (OptimizeLoops) loop->optimize();
   }
-  for (i = _subScopes->length() - 1; i >= 0; i--) {
+  for (int i = _subScopes->length() - 1; i >= 0; i--) {
     _subScopes->at(i)->optimizeLoops();
   }
 }

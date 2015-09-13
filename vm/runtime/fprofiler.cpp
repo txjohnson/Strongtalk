@@ -456,7 +456,7 @@ void FlatProfiler::print(int cutoff) {
 
   // compute total
   int total = total_ticks();
-  for (index = 0; index < array->length(); index++) {
+  for (int index = 0; index < array->length(); index++) {
     total += array->at(index)->ticks.total();
   }
 
@@ -468,6 +468,7 @@ void FlatProfiler::print(int cutoff) {
   tick_counter interpreted_ticks;
   bool has_interpreted_ticks = false;
   int print_count = 0;
+  int index;
   for (index = 0; index < array->length(); index++) {
     pnode* n = array->at(index);
     if (n->is_interpreted()) {

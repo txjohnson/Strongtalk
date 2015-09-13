@@ -61,7 +61,7 @@ void EventLog::printPartial(int n) {
   for (int i = 0; i < n; i++, e = prevEvent(e, buf, bufEnd)) ;
   
   // skip empty entries
-  i = 0;
+  int i = 0;
   for (; e != next && e->name == noEvent; i++, e = nextEvent(e, buf, bufEnd)) ;
 
   int indent = 0;

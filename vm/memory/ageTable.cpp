@@ -36,7 +36,8 @@ int ageTable::tenure_size(int age) {
 
 int ageTable::tenuring_threshold(int size) {
   int total = 0;
-  for (int age = 1; age < table_size; age ++) {
+  int age;
+  for (age = 1; age < table_size; age ++) {
     total += sizes[age];
     if (total > size)
       // zero will promote too much garbage

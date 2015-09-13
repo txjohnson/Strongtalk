@@ -983,7 +983,7 @@ nextExpr: ;
 
   // check that no exprNode is along the path from any other exprNode to the test node
   // this should be #ifdef ASSERT but for now always check to make sure there are no lurking bugs  -Urs 4/27/96
-  for (i = okExprs->length() - 1; i >= 0; i--) {
+  for (int i = okExprs->length() - 1; i >= 0; i--) {
     Node* start = okExprs->at(i)->node()->next();
     for (Node* n = start; n != (Node*)test; n = n->next()) {
       if (exprNodes->contains(n)) {

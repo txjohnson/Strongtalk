@@ -243,7 +243,8 @@ ResourceMark::~ResourceMark() {
     lprintf("deallocating to mark %#lx\n", top);
   }
   ResourceAreaChunk* prevc;
-  for (ResourceAreaChunk* c = area->chunk; c != chunk; c = prevc) {
+  ResourceAreaChunk* c;
+  for (c = area->chunk; c != chunk; c = prevc) {
     // deallocate all chunks behind marked chunk
     prevc = c->prev;
     resources.addToFreeList(c);

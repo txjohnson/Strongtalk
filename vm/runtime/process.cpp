@@ -1220,7 +1220,7 @@ void Processes::deoptimize_wrt(nmethod* nm) {
   deoptimized_wrt_marked_nmethods();
 
   // unmark for deoptimization
-  for (index = 0; index < nms->length(); index++)
+  for (int index = 0; index < nms->length(); index++)
     nms->at(index)->unmark_for_deoptimization();
 }
 
@@ -1237,7 +1237,7 @@ void Processes::deoptimize_wrt(GrowableArray<nmethod*>* list) {
   deoptimized_wrt_marked_nmethods();
 
   // unmark for deoptimization
-  for (i = 0; i < list->length(); i++) {
+  for (int i = 0; i < list->length(); i++) {
     nmethod* nm = list->at(i);
     GrowableArray<nmethod*>* nms = nm->invalidation_family();
     for (int index = 0; index < nms->length(); index++)

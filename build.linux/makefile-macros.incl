@@ -10,7 +10,7 @@ MAKE_DIR	= $(ROOT_DIR)/build.linux
 BUILD_DIR	= $(ROOT_DIR)/build
 BIN_DIR		= $(ROOT_DIR)/bin
 OPT=
-C++OPTIONS= -m32 -fno-rtti -Wno-write-strings -fno-for-scope -fno-operator-names -fms-extensions -ffriend-injection
+C++OPTIONS= -m32 -fno-rtti -Wno-write-strings -fno-operator-names -fms-extensions -ffriend-injection
 LDOPTIONS= -m32 
 #-m elf_i386 -A i386 --oformat=elf32-i386
 

@@ -452,7 +452,7 @@ void ClassChange::update_class_vars() {
     }
   }
   // Add the new ones
-  for (index = new_mixin()->number_of_classVars(); index > 0; index--) {
+  for (int index = new_mixin()->number_of_classVars(); index > 0; index--) {
     symbolOop name = new_mixin()->classVar_at(index);
     if (!k->includes_classVar(name)) {
       k->add_classVar(oopFactory::new_association(name, nilObj, false));
@@ -567,7 +567,7 @@ bool ClassChange::compute_needed_schema_change() {
     return true;
   }
 
-  for (index = new_class_mixin->number_of_instVars(); index > 0; index--) {
+  for (int index = new_class_mixin->number_of_instVars(); index > 0; index--) {
     if (new_class_mixin->instVar_at(index) != old_class_mixin->instVar_at(index)) {
       set_reason_for_schema_change("class instance variables have changed");
       return true;
@@ -679,7 +679,7 @@ void Reflection::setup_schema_change() {
   for (int index = 0; index < class_changes->length(); index++) {
     class_changes->at(index)->setup_schema_change();
   }
-  for (index = 0; index < class_changes->length(); index++) {
+  for (int index = 0; index < class_changes->length(); index++) {
     // Mark old class for schema change
     class_changes->at(index)->old_klass()->klass_part()->mark_for_schema_change();
     // Mark old metaclass for schema change

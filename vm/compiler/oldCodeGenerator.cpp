@@ -1487,6 +1487,7 @@ static void generalTypeTest(Register obj, Register klassReg, bool hasUnknown,
 
   bool klassHasBeenLoaded = false;
   const int nof_cmps = hasUnknown ? klasses.length() : klasses.length() - 1;
+  int i;
   for (i = 0; i < nof_cmps; i++) {
     const klassOop klass = klasses.at(i);
     if (klass == Universe::trueObj()->klass()) {
@@ -1912,7 +1913,8 @@ void LoopHeaderNode::generateArrayLoopTests(Label& prev, Label& failure) {
     // without an index range check, we need to check it here.
     PReg* loopArray = _upperLoad->src();
     AbstractArrayAtNode* atNode;
-    for (int i = _arrayAccesses->length() - 1; i >= 0; i--) {
+    int i;
+    for (i = _arrayAccesses->length() - 1; i >= 0; i--) {
       atNode = _arrayAccesses->at(i);
       if (atNode->src() == loopArray && !atNode->needsBoundsCheck()) break;
     }

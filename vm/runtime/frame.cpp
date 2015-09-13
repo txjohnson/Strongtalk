@@ -499,7 +499,8 @@ frame frame::sender() const {
 }
 
 frame frame::delta_sender() const {
-  for (frame s = sender(); !s.is_delta_frame(); s = s.sender()) ;
+  frame s;
+  for (s = sender(); !s.is_delta_frame(); s = s.sender()) ;
   return s;
 }
 

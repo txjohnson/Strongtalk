@@ -567,7 +567,7 @@ void CompiledLoop::hoistTypeTests() {
   }
 
   // now delete all hoisted type tests from loop body
-  for (i = _hoistableTests->length() - 1; i >= 0; i--) {
+  for (int i = _hoistableTests->length() - 1; i >= 0; i--) {
     HoistedTypeTest* t = _hoistableTests->at(i);
     if (!t->invalid) {
       t->node->assert_preg_type(t->testedPR, t->klasses, _loopHeader);

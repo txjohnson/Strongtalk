@@ -311,16 +311,17 @@ void symbolTable::print_histogram() {
 	  ((float) total / (float) symbol_table_size));
   lprintf("%s\n", "Histogram:");
   lprintf(" %s %29s\n", "Length", "Number chains that length");
-  for (i = 0; i < results_length; i++) {
+  for (int i = 0; i < results_length; i++) {
     if (results[i] > 0) {
       lprintf("%6d %10d\n", i, results[i]);
     }
   }
   int line_length = 70;    
   lprintf("%s %30s\n", " Length", "Number chains that length");
-  for (i = 0; i < results_length; i++) {
+  for (int i = 0; i < results_length; i++) {
     if (results[i] > 0) {
       lprintf("%4d", i);
+      int j;
       for (j = 0; (j < results[i]) && (j < line_length);  j++) {
         lprintf("%1s", "*");
       }

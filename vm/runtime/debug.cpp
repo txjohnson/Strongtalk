@@ -181,7 +181,8 @@ void debugFlags::printFlags() {
 
 void debugFlags::print_on(outputStream* st) {
   // Boolean flags
-  for (boolFlag* b = &boolTable[0]; b->name; b++)
+  boolFlag* b;
+  for (b = &boolTable[0]; b->name; b++)
     st->print_cr("%s%s",  *b->value_ptr ? "+" : "-");
 
   // Integer flags
@@ -192,7 +193,8 @@ void debugFlags::print_on(outputStream* st) {
 
 void print_diff_on(outputStream* st) {
   // Boolean flags
-  for (boolFlag* b = &boolTable[0]; b->name; b++) {
+  boolFlag* b;
+  for (b = &boolTable[0]; b->name; b++) {
     if (*b->value_ptr != b->default_value)
       st->print_cr("%s%s",  *b->value_ptr ? "+" : "-");
   }
