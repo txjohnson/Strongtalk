@@ -70,6 +70,6 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 #ifndef DEBUG
   #ifndef PRODUCT
-    for now DEBUG should always be set in non-production versions  -Urs
+    #error "for now DEBUG should always be set in non-production versions  -Urs"
   #endif
 #endif

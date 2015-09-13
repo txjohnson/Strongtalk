@@ -28,7 +28,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 const int indent_col =  3;
 const int value_col  = 16;
 
-PrintObjectClosure::PrintObjectClosure(outputStream* st = NULL) {
+PrintObjectClosure::PrintObjectClosure(outputStream* st) {
   this->st = st ? st : std;
 }
 

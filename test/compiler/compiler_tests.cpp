@@ -30,7 +30,7 @@ DECLARE(CompilerTests)
     nm = (nmethod*) heap->allocate(size);
     if (!nm) return NULL;
     *((void**)nm) = *((void**)seed); // ugly hack to copy the vftable
-    nm->initForTesting(size - sizeof nmethod, key);
+    nm->initForTesting(size - sizeof(nmethod), key);
     nm->makeZombie(false);
     return nm;
   }

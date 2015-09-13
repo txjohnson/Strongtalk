@@ -26,7 +26,7 @@ class PrintObjectClosure : public ObjectLayoutClosure {
    memOop obj;
    outputStream* st;
  public:
-  PrintObjectClosure(outputStream* st);
+  PrintObjectClosure(outputStream* st = NULL);
 
   void do_object(memOop obj);
   void do_mark(markOop *m);

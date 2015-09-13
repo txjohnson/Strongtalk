@@ -1,6 +1,4 @@
 # include "incls/_precompiled.incl"
-# include "incls/_BlockKlass.cpp.incl"
-#include "handle.hpp"
 #include "test.h"
 
 using namespace easyunit;

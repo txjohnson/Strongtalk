@@ -30,9 +30,9 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 #  ifdef ASSERT
    // NOTE: don't turn the lines below into a comment -- if you're getting
    // a compile error here, change the settings to define DEBUG
-   DEBUG should be defined when ASSERT is defined.  It's intended to be used for debugging
-   functions that don't slow down the system too much and thus can be left in optimized code.
-   On the other hand, the code shouldn't be included in a production version.
+   #error "DEBUG should be defined when ASSERT is defined.  It's intended to be used for debugging \
+   functions that don't slow down the system too much and thus can be left in optimized code. \
+   On the other hand, the code shouldn't be included in a production version."
 #  endif
 #endif
 
