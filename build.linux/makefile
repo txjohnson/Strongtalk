@@ -43,16 +43,19 @@ test:
 	export LD_LIBRARY_PATH=$(WRK)
 	$(TEST-EXECUTABLE) -b ../strongtalk.bst
 
+# https://stackoverflow.com/questions/207069/how-to-link-using-gcc-without-l-and-without-hardcoding-path/281253
+# https://stackoverflow.com/questions/1305266/how-to-link-to-a-shared-library-without-lib-prefix-in-a-different-directory
+
 link:
-	g++ -v $(OPT) $(LDOPTIONS)-shared -o $(SHARED_LIB) -L/usr/lib32 `find $(VM_SRC_DIR) -name "*.o"|grep -v main.o` -lpthread -ldl -lrt 
-	g++ -v $(OPT) $(LDOPTIONS) -o $(EXECUTABLE) -L/usr/lib32 $(VM_SRC_DIR)/*/main.o $(SHARED_LIB)
-	g++ -v $(OPT) $(LDOPTIONS) -shared -o $(TEST_SHARED_LIB) -L/usr/lib32 `find $(TEST_SRC_DIR) -name "*.o"|grep -v main.o` $(EASYUNIT_DIR)/src/*.o
-	g++ -v $(OPT) $(LDOPTIONS) -o $(TEST-EXECUTABLE) $(SHARED_LIB) $(TEST_SHARED_LIB) $(TEST_SRC_DIR)/main/main.o
+	g++ $(OPT) $(LDOPTIONS)-shared -Wl,-soname,`basename $(SHARED_LIB)` -o $(SHARED_LIB) -L/usr/lib32 `find $(VM_SRC_DIR) -name "*.o"|grep -v main.o` -lpthread -ldl -lrt
+	g++ $(OPT) $(LDOPTIONS) -Wl,-rpath,'$$ORIGIN' -o $(EXECUTABLE) -L/usr/lib32 $(VM_SRC_DIR)/*/main.o $(SHARED_LIB)
+	g++ $(OPT) $(LDOPTIONS) -shared -Wl,-soname,`basename $(TEST_SHARED_LIB)` -o $(TEST_SHARED_LIB) -L/usr/lib32 `find $(TEST_SRC_DIR) -name "*.o"|grep -v main.o` $(EASYUNIT_DIR)/src/*.o
+	g++ $(OPT) $(LDOPTIONS) -Wl,-rpath,'$$ORIGIN' -o $(TEST-EXECUTABLE) $(SHARED_LIB) $(TEST_SHARED_LIB) $(TEST_SRC_DIR)/main/main.o
 
 objects: incls/_precompiled.incl.gch
 	for i in $(DIRECTORIES);\
 	do \
-		make -C $$i -f $(MAKE_DIR)/makefile.incl $@;\
+		make -C $$i -f $(MAKE_DIR)/makefile.incl $@ || exit 1;\
 	done
 
 incls/_precompiled.incl.gch: includeDB.all
