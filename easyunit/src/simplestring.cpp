@@ -81,14 +81,16 @@ SimpleString::~SimpleString ()
 	free(buffer);
 }
 
-bool easyunit::operator== (const SimpleString& left, const SimpleString& right)
-{
-	return !strcmp (left.asCharString (), right.asCharString ());
-}
+namespace easyunit {
+	bool operator== (const SimpleString& left, const SimpleString& right)
+	{
+		return !strcmp (left.asCharString (), right.asCharString ());
+	}
 
-bool easyunit::operator!= (const SimpleString& left, const SimpleString& right)
-{
-	return !(left == right);
+	bool operator!= (const SimpleString& left, const SimpleString& right)
+	{
+		return !(left == right);
+	}
 }
 
 SimpleString easyunit::StringFrom (bool value)
