@@ -158,7 +158,8 @@ void methodOopDesc::print_codes() {
   ResourceMark rm;
   selector()->print_symbol_on(std);
   std->cr();
-  MethodIterator mi(this, &MethodPrinterClosure(std));
+  MethodPrinterClosure methodPrinterClosure(std);
+  MethodIterator mi(this, &methodPrinterClosure);
   std->cr();
 }
 

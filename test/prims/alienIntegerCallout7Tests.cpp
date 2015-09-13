@@ -199,7 +199,7 @@ SETUP(AlienIntegerCallout7Tests) {
   smim1 = as_smiOop(-1);
   handles = new(true) GrowableArray<PersistentHandle**>(7);
 
-  allocateAlien(functionAlien,        8,  0, &returnFirst7);
+  allocateAlien(functionAlien,        8,  0, reinterpret_cast<void*>(&returnFirst7));
   allocateAlien(resultAlien,         12,  8);
   allocateAlien(directAlien,         12,  4);
   allocateAlien(addressAlien,         8, -4, &address);
@@ -208,21 +208,21 @@ SETUP(AlienIntegerCallout7Tests) {
 
   memset(address, 0, 8);
 
-  intCalloutFunctions[0] = returnFirst7;
-  intCalloutFunctions[1] = returnSecond7;
-  intCalloutFunctions[2] = returnThird7;
-  intCalloutFunctions[3] = returnFourth7;
-  intCalloutFunctions[4] = returnFifth7;
-  intCalloutFunctions[5] = returnSixth7;
-  intCalloutFunctions[6] = returnSeventh7;
+  intCalloutFunctions[0] = reinterpret_cast<void*>(returnFirst7);
+  intCalloutFunctions[1] = reinterpret_cast<void*>(returnSecond7);
+  intCalloutFunctions[2] = reinterpret_cast<void*>(returnThird7);
+  intCalloutFunctions[3] = reinterpret_cast<void*>(returnFourth7);
+  intCalloutFunctions[4] = reinterpret_cast<void*>(returnFifth7);
+  intCalloutFunctions[5] = reinterpret_cast<void*>(returnSixth7);
+  intCalloutFunctions[6] = reinterpret_cast<void*>(returnSeventh7);
 
-  intPointerCalloutFunctions[0] = returnFirstPointer7;
-  intPointerCalloutFunctions[1] = returnSecondPointer7;
-  intPointerCalloutFunctions[2] = returnThirdPointer7;
-  intPointerCalloutFunctions[3] = returnFourthPointer7;
-  intPointerCalloutFunctions[4] = returnFifthPointer7;
-  intPointerCalloutFunctions[5] = returnSixthPointer7;
-  intPointerCalloutFunctions[6] = returnSeventhPointer7;
+  intPointerCalloutFunctions[0] = reinterpret_cast<void*>(returnFirstPointer7);
+  intPointerCalloutFunctions[1] = reinterpret_cast<void*>(returnSecondPointer7);
+  intPointerCalloutFunctions[2] = reinterpret_cast<void*>(returnThirdPointer7);
+  intPointerCalloutFunctions[3] = reinterpret_cast<void*>(returnFourthPointer7);
+  intPointerCalloutFunctions[4] = reinterpret_cast<void*>(returnFifthPointer7);
+  intPointerCalloutFunctions[5] = reinterpret_cast<void*>(returnSixthPointer7);
+  intPointerCalloutFunctions[6] = reinterpret_cast<void*>(returnSeventhPointer7);
 
   for (int index = 0; index < argCount; index++)
     zeroes[index] = smi0;
@@ -262,7 +262,7 @@ TESTF(AlienIntegerCallout7Tests, alienCallResult7ShouldCallFunctionAndIgnoreResu
 }
 
 TESTF(AlienIntegerCallout7Tests, alienCallResult7WithScavengeShouldReturnCorrectResult) {
-  setAddress(functionAlien, &forceScavenge7);
+  setAddress(functionAlien, reinterpret_cast<void*>(&forceScavenge7));
   checkIntResult("incorrect initialization", 0, resultAlien);
   oop result = callout(zeroes, resultAlien->as_oop(), functionAlien->as_oop());
   checkIntResult("result alien not updated", -1, resultAlien);

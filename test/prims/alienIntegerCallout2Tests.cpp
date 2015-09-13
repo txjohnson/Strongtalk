@@ -124,7 +124,7 @@ SETUP(AlienIntegerCallout2Tests) {
   smim1 = as_smiOop(-1);
   handles = new(true) GrowableArray<PersistentHandle**>(5);
 
-  allocateAlien(functionAlien,        8,  0, &returnFirst);
+  allocateAlien(functionAlien,        8,  0, reinterpret_cast<void*>(&returnFirst));
   allocateAlien(resultAlien,         12,  8);
   allocateAlien(directAlien,         12,  4);
   allocateAlien(addressAlien,         8, -4, &address);
@@ -133,10 +133,10 @@ SETUP(AlienIntegerCallout2Tests) {
 
   memset(address, 0, 8);
 
-  intCalloutFunctions[0] = returnFirst;
-  intCalloutFunctions[1] = returnSecond;
-  intPointerCalloutFunctions[0] = returnFirstPointer;
-  intPointerCalloutFunctions[1] = returnSecondPointer;
+  intCalloutFunctions[0] = reinterpret_cast<void*>(returnFirst);
+  intCalloutFunctions[1] = reinterpret_cast<void*>(returnSecond);
+  intPointerCalloutFunctions[0] = reinterpret_cast<void*>(returnFirstPointer);
+  intPointerCalloutFunctions[1] = reinterpret_cast<void*>(returnSecondPointer);
 }
 
 TEARDOWN(AlienIntegerCallout2Tests){
@@ -163,7 +163,7 @@ TESTF(AlienIntegerCallout2Tests, alienCallResult2ShouldCallFunctionAndIgnoreResu
 }
 
 TESTF(AlienIntegerCallout2Tests, alienCallResult2WithScavengeShouldReturnCorrectResult) {
-  setAddress(functionAlien, &forceScavenge2);
+  setAddress(functionAlien, reinterpret_cast<void*>(&forceScavenge2));
   checkIntResult("incorrect initialization", 0, resultAlien);
   byteArrayPrimitives::alienCallResult2(smi0, smi0, resultAlien->as_oop(), functionAlien->as_oop());
   checkIntResult("result alien not updated", -1, resultAlien);

@@ -180,7 +180,7 @@ SETUP(AlienIntegerCallout6Tests) {
   smim1 = as_smiOop(-1);
   handles = new(true) GrowableArray<PersistentHandle**>(6);
 
-  allocateAlien(functionAlien,        8,  0, &returnFirst6);
+  allocateAlien(functionAlien,        8,  0, reinterpret_cast<void*>(&returnFirst6));
   allocateAlien(resultAlien,         12,  8);
   allocateAlien(directAlien,         12,  4);
   allocateAlien(addressAlien,         8, -4, &address);
@@ -189,18 +189,18 @@ SETUP(AlienIntegerCallout6Tests) {
 
   memset(address, 0, 8);
 
-  intCalloutFunctions[0] = returnFirst6;
-  intCalloutFunctions[1] = returnSecond6;
-  intCalloutFunctions[2] = returnThird6;
-  intCalloutFunctions[3] = returnFourth6;
-  intCalloutFunctions[4] = returnFifth6;
-  intCalloutFunctions[5] = returnSixth6;
-  intPointerCalloutFunctions[0] = returnFirstPointer6;
-  intPointerCalloutFunctions[1] = returnSecondPointer6;
-  intPointerCalloutFunctions[2] = returnThirdPointer6;
-  intPointerCalloutFunctions[3] = returnFourthPointer6;
-  intPointerCalloutFunctions[4] = returnFifthPointer6;
-  intPointerCalloutFunctions[5] = returnSixthPointer6;
+  intCalloutFunctions[0] = reinterpret_cast<void*>(returnFirst6);
+  intCalloutFunctions[1] = reinterpret_cast<void*>(returnSecond6);
+  intCalloutFunctions[2] = reinterpret_cast<void*>(returnThird6);
+  intCalloutFunctions[3] = reinterpret_cast<void*>(returnFourth6);
+  intCalloutFunctions[4] = reinterpret_cast<void*>(returnFifth6);
+  intCalloutFunctions[5] = reinterpret_cast<void*>(returnSixth6);
+  intPointerCalloutFunctions[0] = reinterpret_cast<void*>(returnFirstPointer6);
+  intPointerCalloutFunctions[1] = reinterpret_cast<void*>(returnSecondPointer6);
+  intPointerCalloutFunctions[2] = reinterpret_cast<void*>(returnThirdPointer6);
+  intPointerCalloutFunctions[3] = reinterpret_cast<void*>(returnFourthPointer6);
+  intPointerCalloutFunctions[4] = reinterpret_cast<void*>(returnFifthPointer6);
+  intPointerCalloutFunctions[5] = reinterpret_cast<void*>(returnSixthPointer6);
 }
 
 TEARDOWN(AlienIntegerCallout6Tests){
@@ -228,7 +228,7 @@ TESTF(AlienIntegerCallout6Tests, alienCallResult6ShouldCallFunctionAndIgnoreResu
 }
 
 TESTF(AlienIntegerCallout6Tests, alienCallResult6WithScavengeShouldReturnCorrectResult) {
-  setAddress(functionAlien, &forceScavenge6);
+  setAddress(functionAlien, reinterpret_cast<void*>(&forceScavenge6));
   checkIntResult("incorrect initialization", 0, resultAlien);
   byteArrayPrimitives::alienCallResult6(smi0, smi0, smi0, smi0, smi0, smi0, resultAlien->as_oop(), functionAlien->as_oop());
   checkIntResult("result alien not updated", -1, resultAlien);

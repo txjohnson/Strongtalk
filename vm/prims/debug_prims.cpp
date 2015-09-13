@@ -142,7 +142,8 @@ PRIM_DECL_2(debugPrimitives::generateIR, oop receiver, oop sel) {
   if (!m) return markSymbol(vmSymbols::not_found());
   LookupKey key(receiver->klass(), s);
 # ifdef DELTA_COMPILER
-  VMProcess::execute(&VM_OptimizeMethod(&key, m));
+  VM_OptimizeMethod vm_optimizeMethod(&key, m);
+  VMProcess::execute(&vm_optimizeMethod);
 # endif
   return receiver;
 }

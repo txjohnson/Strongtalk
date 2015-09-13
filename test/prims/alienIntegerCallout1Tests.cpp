@@ -104,7 +104,7 @@ SETUP(AlienIntegerCallout1Tests) {
   smi1 = as_smiOop(1);
   handles = new(true) GrowableArray<PersistentHandle**>(5);
 
-  allocateAlien(functionAlien,        8,  0, &labs);
+  allocateAlien(functionAlien,        8,  0, reinterpret_cast<void*>(&labs));
   allocateAlien(resultAlien,         12,  8);
   allocateAlien(directAlien,         12,  4);
   allocateAlien(addressAlien,         8, -4, &address);
@@ -131,7 +131,7 @@ TESTF(AlienIntegerCallout1Tests, alienCallResult1ShouldCallFunction) {
 }
 
 TESTF(AlienIntegerCallout1Tests, alienCallResult1WithUnsafeAlienShouldCallFunction) {
-  setAddress(&argUnsafe1, functionAlien);
+  setAddress(reinterpret_cast<void*>(&argUnsafe1), functionAlien);
   byteArrayPrimitives::alienCallResult1(unsafeAlien->as_oop(), resultAlien->as_oop(), functionAlien->as_oop());
 
   checkIntResult("wrong result", (int)byteArrayOop(unsafeContents->as_oop())->bytes(), resultAlien);

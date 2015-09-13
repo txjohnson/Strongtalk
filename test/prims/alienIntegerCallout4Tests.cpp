@@ -160,7 +160,7 @@ SETUP(AlienIntegerCallout4Tests) {
   smim1 = as_smiOop(-1);
   handles = new(true) GrowableArray<PersistentHandle**>(5);
 
-  allocateAlien(functionAlien,        8,  0, &returnFirst4);
+  allocateAlien(functionAlien,        8,  0, reinterpret_cast<void*>(&returnFirst4));
   allocateAlien(resultAlien,         12,  8);
   allocateAlien(directAlien,         12,  4);
   allocateAlien(addressAlien,         8, -4, &address);
@@ -169,14 +169,14 @@ SETUP(AlienIntegerCallout4Tests) {
 
   memset(address, 0, 8);
 
-  intCalloutFunctions[0] = returnFirst4;
-  intCalloutFunctions[1] = returnSecond4;
-  intCalloutFunctions[2] = returnThird4;
-  intCalloutFunctions[3] = returnFourth4;
-  intPointerCalloutFunctions[0] = returnFirstPointer4;
-  intPointerCalloutFunctions[1] = returnSecondPointer4;
-  intPointerCalloutFunctions[2] = returnThirdPointer4;
-  intPointerCalloutFunctions[3] = returnFourthPointer4;
+  intCalloutFunctions[0] = reinterpret_cast<void*>(returnFirst4);
+  intCalloutFunctions[1] = reinterpret_cast<void*>(returnSecond4);
+  intCalloutFunctions[2] = reinterpret_cast<void*>(returnThird4);
+  intCalloutFunctions[3] = reinterpret_cast<void*>(returnFourth4);
+  intPointerCalloutFunctions[0] = reinterpret_cast<void*>(returnFirstPointer4);
+  intPointerCalloutFunctions[1] = reinterpret_cast<void*>(returnSecondPointer4);
+  intPointerCalloutFunctions[2] = reinterpret_cast<void*>(returnThirdPointer4);
+  intPointerCalloutFunctions[3] = reinterpret_cast<void*>(returnFourthPointer4);
 }
 
 TEARDOWN(AlienIntegerCallout4Tests){
@@ -204,7 +204,7 @@ TESTF(AlienIntegerCallout4Tests, alienCallResult4ShouldCallFunctionAndIgnoreResu
 }
 
 TESTF(AlienIntegerCallout4Tests, alienCallResult4WithScavengeShouldReturnCorrectResult) {
-  setAddress(functionAlien, &forceScavenge4);
+  setAddress(functionAlien, reinterpret_cast<void*>(&forceScavenge4));
   checkIntResult("incorrect initialization", 0, resultAlien);
   byteArrayPrimitives::alienCallResult4(smi0, smi0, smi0, smi0, resultAlien->as_oop(), functionAlien->as_oop());
   checkIntResult("result alien not updated", -1, resultAlien);

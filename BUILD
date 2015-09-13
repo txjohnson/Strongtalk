@@ -6,7 +6,7 @@ TEST_SRC_DIR 	= "test"
 TEST_INCL_PATH = ["-I"+TEST_SRC_DIR+"/runtime", "-I"+TEST_SRC_DIR+"/utilities", "-I"+TEST_SRC_DIR+"/memory"]
 
 DEFINES = ["-DDELTA_COMPILER", "-DASSERT", "-DDEBUG", "-D__LINUX__"]
-COPTS = ["-m32", "-fno-rtti", "-Wno-write-strings", "-fno-operator-names", "-fms-extensions", "-fno-for-scope", "-fpermissive"]
+COPTS = ["-m32", "-fno-rtti", "-Wno-write-strings", "-fno-operator-names", "-fms-extensions", "-fno-for-scope"]
 
 #https://groups.google.com/forum/#!topic/bazel-discuss/8Snn9hLuSqo
 

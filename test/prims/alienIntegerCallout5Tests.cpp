@@ -168,7 +168,7 @@ SETUP(AlienIntegerCallout5Tests) {
   smim1 = as_smiOop(-1);
   handles = new(true) GrowableArray<PersistentHandle**>(5);
 
-  allocateAlien(functionAlien,        8,  0, &returnFirst5);
+  allocateAlien(functionAlien,        8,  0, reinterpret_cast<void*>(&returnFirst5));
   allocateAlien(resultAlien,         12,  8);
   allocateAlien(directAlien,         12,  4);
   allocateAlien(addressAlien,         8, -4, &address);
@@ -177,16 +177,16 @@ SETUP(AlienIntegerCallout5Tests) {
 
   memset(address, 0, 8);
 
-  intCalloutFunctions[0] = returnFirst5;
-  intCalloutFunctions[1] = returnSecond5;
-  intCalloutFunctions[2] = returnThird5;
-  intCalloutFunctions[3] = returnFourth5;
-  intCalloutFunctions[4] = returnFifth5;
-  intPointerCalloutFunctions[0] = returnFirstPointer5;
-  intPointerCalloutFunctions[1] = returnSecondPointer5;
-  intPointerCalloutFunctions[2] = returnThirdPointer5;
-  intPointerCalloutFunctions[3] = returnFourthPointer5;
-  intPointerCalloutFunctions[4] = returnFifthPointer5;
+  intCalloutFunctions[0] = reinterpret_cast<void*>(returnFirst5);
+  intCalloutFunctions[1] = reinterpret_cast<void*>(returnSecond5);
+  intCalloutFunctions[2] = reinterpret_cast<void*>(returnThird5);
+  intCalloutFunctions[3] = reinterpret_cast<void*>(returnFourth5);
+  intCalloutFunctions[4] = reinterpret_cast<void*>(returnFifth5);
+  intPointerCalloutFunctions[0] = reinterpret_cast<void*>(returnFirstPointer5);
+  intPointerCalloutFunctions[1] = reinterpret_cast<void*>(returnSecondPointer5);
+  intPointerCalloutFunctions[2] = reinterpret_cast<void*>(returnThirdPointer5);
+  intPointerCalloutFunctions[3] = reinterpret_cast<void*>(returnFourthPointer5);
+  intPointerCalloutFunctions[4] = reinterpret_cast<void*>(returnFifthPointer5);
 }
 
 TEARDOWN(AlienIntegerCallout5Tests){
@@ -214,7 +214,7 @@ TESTF(AlienIntegerCallout5Tests, alienCallResult5ShouldCallFunctionAndIgnoreResu
 }
 
 TESTF(AlienIntegerCallout5Tests, alienCallResult5WithScavengeShouldReturnCorrectResult) {
-  setAddress(functionAlien, &forceScavenge5);
+  setAddress(functionAlien, reinterpret_cast<void*>(&forceScavenge5));
   checkIntResult("incorrect initialization", 0, resultAlien);
   byteArrayPrimitives::alienCallResult5(smi0, smi0, smi0, smi0, smi0, resultAlien->as_oop(), functionAlien->as_oop());
   checkIntResult("result alien not updated", -1, resultAlien);
