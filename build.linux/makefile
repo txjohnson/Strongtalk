@@ -50,7 +50,7 @@ link:
 	g++ $(OPT) $(LDOPTIONS)-shared -Wl,-soname,`basename $(SHARED_LIB)` -o $(SHARED_LIB) -L/usr/lib32 `find $(VM_SRC_DIR) -name "*.o"|grep -v main.o` -lpthread -ldl -lrt
 	g++ $(OPT) $(LDOPTIONS) -Wl,-rpath,'$$ORIGIN' -o $(EXECUTABLE) -L/usr/lib32 $(VM_SRC_DIR)/*/main.o $(SHARED_LIB)
 	g++ $(OPT) $(LDOPTIONS) -shared -Wl,-soname,`basename $(TEST_SHARED_LIB)` -o $(TEST_SHARED_LIB) -L/usr/lib32 `find $(TEST_SRC_DIR) -name "*.o"|grep -v main.o` $(EASYUNIT_DIR)/src/*.o
-	g++ $(OPT) $(LDOPTIONS) -Wl,-rpath,'$$ORIGIN' -o $(TEST-EXECUTABLE) $(SHARED_LIB) $(TEST_SHARED_LIB) $(TEST_SRC_DIR)/main/main.o
+	g++ $(OPT) $(LDOPTIONS) -Wl,-rpath,'$$ORIGIN' -o $(TEST-EXECUTABLE) $(TEST_SRC_DIR)/main/main.o $(TEST_SHARED_LIB) $(SHARED_LIB)
 
 objects: incls/_precompiled.incl.gch
 	for i in $(DIRECTORIES);\
