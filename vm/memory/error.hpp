@@ -21,6 +21,14 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 */
 
+// http://clang-analyzer.llvm.org/annotations.html#custom_assertions
+#if defined(__clang_analyzer__) && ! defined(CLANG_ANALYZER_NORETURN)
+  //#error "defining analyzer attribute"
+  #define CLANG_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
+#else
+  #define CLANG_ANALYZER_NORETURN
+#endif
+
 #ifndef DEBUG_EXCEPTION
 #define DEBUG_EXCEPTION error_breakpoint();
 #endif
@@ -70,10 +78,10 @@ extern "C" {
 #define Unimplemented()          { report_unimplemented          (FILE_INFO, LINE_INFO); DEBUG_EXCEPTION; }
 
 
-void report_assertion_failure(char* code_str, char* file_name, int line_no, char* message);
-void report_fatal(char* file_name, int line_no, char* format, ...);
-void report_should_not_call(char* file_name, int line_no);
-void report_should_not_reach_here(char* file_name, int line_no);
-void report_subclass_responsibility(char* file_name, int line_no);
-void report_unimplemented(char* file_name, int line_no);
+void report_assertion_failure(char* code_str, char* file_name, int line_no, char* message) CLANG_ANALYZER_NORETURN;
+void report_fatal(char* file_name, int line_no, char* format, ...) CLANG_ANALYZER_NORETURN;
+void report_should_not_call(char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
+void report_should_not_reach_here(char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
+void report_subclass_responsibility(char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
+void report_unimplemented(char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
 void report_vm_state();
