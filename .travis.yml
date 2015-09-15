@@ -1,0 +1,38 @@
+sudo: false
+
+# http://docs.travis-ci.com/user/languages/cpp/
+# start from https://github.com/rubinius/rubinius/blob/master/.travis.yml
+
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+#
+# http://docs.travis-ci.com/user/apt/
+# https://github.com/mavam/vast/blob/master/.travis.prepare
+# or just get gcc-multilib and g++-multilib and be done with it
+addons:
+  apt:
+    packages:
+      - gcc-multilib
+      - g++-multilib
+      #- libc6-dev-i386 #  missing header file 'bits/predefs.h'
+      #- linux-libc-dev-i386 # this does NOT fix asm/errno.h: No such file or directory
+      # - some other bunch of -i386 crap
+# https://blog.lukaspradel.com/continuous-integration-for-cmake-projects-using-travis-ci/  
+before_script:
+  - mkdir cmakebuild
+  - cd cmakebuild
+  - cmake ..
+
+script:
+  - make && cd .. && cmakebuild/strongtalk-test
+ 
+os:
+  - linux
+
+matrix:
+  allow_failures:
+    - compiler: clang
