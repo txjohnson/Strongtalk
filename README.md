@@ -4,15 +4,15 @@ Smalltalk… with a need for speed
 
 ## Badges
 
-drone.io (makefile): [![Build Status](https://drone.io/github.com/jirkadanek/Strongtalk/status.png)](https://drone.io/github.com/jirkadanek/Strongtalk/latest)      travis-cl (cmake): TBD      Coverity (cmake): [![Coverity Scan Build Status](https://scan.coverity.com/projects/6340/badge.svg)](https://scan.coverity.com/projects/jirkadanek-strongtalk)
+drone.io (makefile): [![Build Status](https://drone.io/github.com/jirkadanek/Strongtalk/status.png)](https://drone.io/github.com/jirkadanek/Strongtalk/latest)      travis-cl (cmake): [![Build Status](https://travis-ci.org/jirkadanek/Strongtalk.svg?branch=master)](https://travis-ci.org/jirkadanek/Strongtalk)      Coverity (cmake): [![Coverity Scan Build Status](https://scan.coverity.com/projects/6340/badge.svg)](https://scan.coverity.com/projects/jirkadanek-strongtalk)
 
-## About this fork / Roadmap
+## About this fork
 
 *Mosty small fixes all around, nothing ground breaking or particularly useful to anybody. It compiles and that's pretty much it.*
 
-This fork fixes the Linux makefile () and some coding errors () so that the project now builds on Linux. In addition, it updates the code so that legacy compiler flags (like `-fpermissive` () and `-fno-for-scope` ()) can be dropped. As a side effect, this makes the project compile with clang, as well as GCC. Next, build configuration files for cmake () and Bazel () were added. Some errors found with the `scan.coverity.com` tool were fixed (, , , ) in hopes it would help debugging mysterious crashes in the `strongtalk-test` binary (and in the vm itself, if one runs it with valgrind or Address Sanitizer). These hopes proved futile so far. Furthermore, the code was refactored a bit where it makes obvious sense ().
+This fork fixes the Linux makefile (a70f97767f4caa60a5f18e169a01b4d0b51cf3fb) and some coding errors (c773198356a234075828bbd167bf9239ad48b9e0) so that the project now builds on Linux. In addition, it updates the code so that legacy compiler flags (like `-fpermissive` (eea6849e3a6168ff72770975418951a858f30d5b) and `-fno-for-scope` (1498b7a341a75243bfca4dc3e644e57a472eecf2)) can be dropped. As a side effect, this makes the project compile with clang, as well as GCC. Next, build configuration files for cmake (45f5a9635abd5506c2f702b8151786e2db07b967) and Bazel (96eef2e8ed8a1a231c699ce70591698581b441ab) were added. Some errors found with the `scan.coverity.com` tool were fixed (, , , ) in hopes it would help debugging mysterious crashes in the `strongtalk-test` binary (50730fd8992dbc56b5a39161c6c45dd721eef018) and in the vm itself, if one runs it with valgrind or -fsanitize=address or --covarage. These efforts were partially succesfull. Strongtalk can be now compiled with MinGW (bdd4827881c623cabe7971716006c65a5954e025) and run under wine on Linux. Furthermore, the code was refactored a bit where it made sense to me (61956120c8c81726360899ac9b63f0c768bbb70f, ). Microsoft Visual Studio 2010 or later would be required to build the project due to including `<stdint.h>`.
 
-The repository contains binaries. Keeping the Strongtalk image (strongtalk.bst) in git makes some sense, all other binaries must be removed, eventually.
+Long time ago, bf88fb27d2cd1703a39d8234cb6610e78c6ee842 split the VM into a shared library and a related binary. I see no need for that, so cmake and bazel now both produce a static binaries.
 
 ## Building on Linux
 
@@ -28,9 +28,27 @@ This performs in-source build. Binaries are placed in the `build` directory.
     
 ### cmake
 
-TBD
+*[Self language](https://github.com/russellallen/self) builds with cmake too. This should be primary option in the future.*
 
-The resurrected [Self language](https://github.com/russellallen/self) builds with cmake too. This should be primary option in the future.
+Create a build directory, say `cmakebuild`, and switch to it. Then run
+
+    cmake -DCMAKE_BUILD_TYPE=Debug ..
+    make VERBOSE=1
+    
+This is an out-of-source build. Binaries are placed in the `cmakebuild` directory. Run tests with `cmakebuild/strongtalk-test`.
+
+#### Cross compilation for Windows
+
+On ArchLinux, install `mingw-w64-toolchain` from the repository and `mingw-w64-cmake` from the AUR. Create a build directory, say `windowsbuild` and switch to it. Then run
+
+    cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/mingw/toolchain-i686-w64-mingw32.cmake ..
+    make
+    
+Test with `wine` You may need to bring in `libwinpthread-1.dll` with
+
+    cp /usr/i686-w64-mingw32/bin/libwinpthread-1.dll ./
+    
+Unlike on Linux, `strongtalk` binary works. Run it with `wine windowsbuild/strongtalk`. Running tests (`strongtalk-test`) is analogous.
 
 ### Bazel
 
@@ -40,7 +58,7 @@ Resulting binary is, for some reason, one third the size of the cmake one. Too b
 
 ## Running it
 
-*Linux support is minimal. It is only possible to run scripts from the command line (with `-script`). The GUI stuff (meaning Strongtalk IDE) work only on WIndows.*
+*Linux support is minimal. It is only possible to run vm tests and scripts from the command line (with `-script`). The GUI stuff (meaning Strongtalk IDE) work only on WIndows or under wine.*
 
 Check that the binary works by running ` tools/test3.dlt`, a simple test script. It should not crash and it should print `false`.
 
@@ -61,7 +79,7 @@ output of this should end with
     - Stack trace (1, 40)
     [...]
 
-and then it ?crashes? and opens a REPL of sorts. Try evaluating `^3+4`.
+and then it crashes and opens a REPL of sorts. Try evaluating `^3+4`.
 
 ## About Smalltalk
 
@@ -73,6 +91,16 @@ Good introduction to Smalltalk in Czech is a series of articles [Squeak: návrat
 
 Strongtalk is a legendary virtual machine and Smalltalk implementation created from 1995 to 1996 by Longview Technologies, a small startup company. Strongtalk's main features were optional sound type system and the groundbreaking use of JIT compilation. In 1997, Longview Technologies were acquired by Sun Microsystems and the team working on Strongtalk was put to work on the Java HotSpot VM. All work on Strongtalk ceased in favor of Java and Strongtalk has never become a product.
 
+There is a recent (Summer 2015) talk by Gilad Bracha ([youtube.com](www.youtube.com/watch?v=dZ0z0DGMSmU)), former Longview Technologies employe, that goes through the original 1996 slides and gives a retrospective overview of the project.
+
 In 2006, Sun released Strongtalk under the BSD licence. David Greenwald, CEO of the original startup, became leader of the developer community around it. See [http://strongtalk.org/](http://strongtalk.org/) for more on the history of Strongtalk.
 
 Strongtalk was again abandoned in 2011. See the mailing list [strongtalk-general](https://groups.google.com/forum/#!forum/strongtalk-general) to get the Zeitgeist.
+
+## Roadmap
+
+The repository contains binaries. Keeping the Strongtalk image (strongtalk.bst) in git is reasonable, all other binaries must be removed, eventually. Pruned from the git history, too.
+
+It would be interesting to redo some of the performance benchmarks that were done in the past and see how Strongtalk stands (and how the world has moved ; )
+
+As a far more ambitious goal, it would be "fun" to rewrite the interpreter in C and porting it to other architectures, like x86_64 or ARM. Smalltalks generally provide a poor offering when it comes to multithreading. Threads inside Strongtalk map 1:1 to operating system threads, but only one of them may be running at the same time. Strongtalk provides concurency, but no parallelism. Compared to many other Smalltalks, this is quite advanced stuff, but not enough for the 21th century. It might be possible to "sell" Strongtalk as an internet-of-things "solution", although say Lua does make much better deal at that. Well...
