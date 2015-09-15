@@ -1,11 +1,11 @@
 #include "incls/_precompiled.incl"
 #include "incls/_delta.cpp.incl"
 #include "incls/_shell.cpp.incl"
-#ifdef WIN32
-//#include "processOop.hpp"
+
+#ifdef _WIN32
 #include <windows.h>
 #endif
-//#include "handle.hpp"
+
 #include "testharness.h"
 #include "testProcess.hpp"
 void ostream_init();

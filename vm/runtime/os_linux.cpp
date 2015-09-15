@@ -22,7 +22,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 #ifndef __OS_LINUX__
 #define __OS_LINUX__
-#ifdef __LINUX__
+#ifdef __linux__
 # include <pthread.h>
 # include "incls/_os.cpp.incl"
 # include <unistd.h>

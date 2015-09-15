@@ -21,7 +21,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 */
 
-#ifdef WIN32
+#ifdef _WIN32
 #define STACK_SIZE ThreadStackSize * K
 # include "incls/_os.cpp.incl"
 
@@ -361,8 +361,6 @@ HINSTANCE hInstance     = NULL;
 HINSTANCE hPrevInstance = NULL;
 int       nCmdShow      = 0;
 
-extern int vm_main(int argc, char* argv[]);
-
 void os::set_args(int argc, char* argv[]) {
 }
 
@@ -376,21 +374,6 @@ int os::argc() {
 char** os::argv() {
   return __argv;
 }
-
-#ifdef _WINDOWS
-
-int CALLBACK WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR cmdLine, int cmdShow) {
-  // Save all parameters
-  hInstance     = hInst;
-  hPrevInstance = hPrevInst;
-  nCmdShow      = cmdShow;
-  return my_main(__argc, __argv);
-}
-#else
-//int main(int argc, char**argv) {
-//    return vm_main(argc, argv);
-//}
-#endif
 
 void* os::get_hInstance()    { return (void*) hInstance;     }
 void* os::get_prevInstance() { return (void*) hPrevInstance; }

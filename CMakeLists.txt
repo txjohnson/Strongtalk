@@ -515,11 +515,9 @@ target_link_libraries(strongtalk-test libstrongtalk libeasyunit)
 # OS dependent defines.
 # should work for Linux/GCC, Linux/clang and Linux/MinGw&wine
 
-# TODO: replace __LINUX__ with __linux__ and WIN32 with _WIN32 in #ifdefs
 if(UNIX)
-    add_definitions(-D__LINUX__)    # could be APPLE, I know
+    # TODO: following works for Linux. Should be tried on OSX.
     target_link_libraries(libstrongtalk -lpthread -ldl -lrt)
 elseif(WIN32)   # really WIN32 and not MINGW, this is crosscompilation
-    add_definitions(-DWIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 endif()
