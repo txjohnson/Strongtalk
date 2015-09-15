@@ -143,8 +143,9 @@ void start_vm_process(TestDeltaProcess* testProcess) {
   int threadId;
   vmProcess = new VMProcess();
   DeltaProcess::initialize_async_dll_event();
+  
+  ::testProcess = testProcess; // set it before the next line starts the system
   vmThread = os::create_thread((int(*)(void*))&vmLoopLauncher, testProcess, &threadId);
-  ::testProcess = testProcess;
 }
 void stop_vm_process() {
   os::terminate_thread(vmThread);

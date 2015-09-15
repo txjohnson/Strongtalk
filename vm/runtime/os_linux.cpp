@@ -232,7 +232,9 @@ Thread* os::create_thread(int threadStart(void* parameter), void* parameter, int
     ThreadCritical tc;
     pthread_attr_t attr;
     pthread_attr_init(&attr);
-    pthread_attr_setstacksize(&attr, STACK_SIZE);
+    if(pthread_attr_setstacksize(&attr, STACK_SIZE) != 0) {
+      fatal("pthread_attr_setstacksize failed");
+    }
     
     threadCreated->reset();
     threadArgs.main = threadStart;
@@ -253,8 +255,11 @@ void* os::stack_limit(Thread* thread) {
   return thread->stackLimit;
 }
 
-// 1 reference process.cpp
+// translation of the os_nt version
 void os::terminate_thread(Thread* thread) {
+  pthread_t handle = thread->_threadId;
+  delete thread;
+  pthread_cancel(handle);
 }
 
 // 1 reference process.cpp
@@ -418,8 +423,14 @@ void* os::calloc(int size, char filler) {
   return ::calloc(size, filler);
 }
 
+// copy of the os_nt version
 void os::free(void* p) {
-  ::free(p);
+  if (!ThreadCritical::initialized()) {
+    ::free(p);
+  } else {
+    ThreadCritical tc;
+    ::free(p);
+  }
 }
 
 // 1 reference - process.cpp

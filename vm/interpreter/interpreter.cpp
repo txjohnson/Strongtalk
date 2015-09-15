@@ -2168,7 +2168,7 @@ void InterpreterGenerator::generate_method_entry_code() {
   masm->bind(start_execution);						// continuation point after overflow
   masm->movl(eax, edi);						// initialize temp0
   masm->cmpl(esp, Address(int(active_stack_limit()), relocInfo::external_word_type));
-  masm->jcc(Assembler::lessEqual, handle_stack_overflow);
+  masm->jcc(Assembler::belowEqual, handle_stack_overflow); // not lessEqual, this must be unsigned comparison
   masm->bind(continue_from_stack_overflow);
   jump_ebx();								// start execution
 
