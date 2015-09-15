@@ -96,7 +96,11 @@ class Thread : public CHeapObj {
 
 int WINAPI startThread(void* params) {
   char* spptr;
+#ifndef __GNUC__
   __asm mov spptr, esp;
+#else
+  asm ("mov %%esp,%0": "=a"(spptr));
+#endif
   int stackHeadroom = 2 * os::vm_page_size();
   ((thread_start*) params)->stackLimit = spptr - STACK_SIZE + stackHeadroom;
 

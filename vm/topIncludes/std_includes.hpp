@@ -22,33 +22,19 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 
-#include <stddef.h> 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 
 
+#if defined(__GNUG__) // g++ and also clang++
 
-#if defined(_MSC_VER)
-
-  #define int64_t __int64
-
-#elif defined(__GNUC__)
-
-  #ifndef _WIN32 // mingw 
+  #ifndef _WIN32
     #define _isnan(n) isnan(n)
     #define _finite(n) finite(n)
+    #define _vsnprintf   vsnprintf
+    #define __stdcall __attribute__ ((stdcall))
   #endif
-
-  #define _vsnprintf   vsnprintf
-
-  #define __stdcall __attribute__ ((stdcall))
-  #define std _std
-
-  #define int64_t signed long long int
-
-#else
-
-  #error Unrecognized compiler
 
 #endif

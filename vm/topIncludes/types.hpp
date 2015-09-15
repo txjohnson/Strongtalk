@@ -41,13 +41,7 @@ typedef int _bool_type_;
 
 typedef int smi;
 
-#ifdef WIN32
-typedef          long  int32_t;
-typedef unsigned long  uint32_t;
-typedef unsigned char  uint8_t;
-#else
-#include <inttypes.h>
-#endif
+#include <inttypes.h> // this requires Visual Studio 2010 and up; should be OK
 
 typedef unsigned char  u_char;
 typedef unsigned short doubleByte;

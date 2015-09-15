@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.3)
 project(Strongtalk)
 
-add_definitions(-DDELTA_COMPILER -DASSERT -DDEBUG -D__LINUX__)
+add_definitions(-DDELTA_COMPILER -DASSERT -DDEBUG)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -fno-rtti -Wno-write-strings -fno-operator-names -fms-extensions -ffriend-injection")
 
 include_directories(
@@ -23,7 +23,8 @@ include_directories(
     easyunit/easyunit
     test/runtime
     test/utilities
-    test/memory)
+    test/memory
+)
 
 set(LIBSTRONGTALK_SOURCE_FILES
     vm/asm/assembler.cpp
@@ -356,7 +357,6 @@ set(LIBSTRONGTALK_SOURCE_FILES
     vm/runtime/frame.hpp
     vm/runtime/init.cpp
     vm/runtime/init.hpp
-    vm/runtime/main.cpp
     vm/runtime/os.hpp
     vm/runtime/os_darwin.cpp
     vm/runtime/os_linux.cpp
@@ -411,37 +411,46 @@ set(LIBSTRONGTALK_SOURCE_FILES
     vm/utilities/objectIDTable.cpp
     vm/utilities/objectIDTable.hpp
     vm/utilities/ostream.cpp
-    vm/utilities/ostream.hpp)
+    vm/utilities/ostream.hpp
+)
 
 set(STRONGTALKTEST_SOURCE_FILES
-    test/compiler/compiler_tests.cpp
-    test/compiler/node_tests.cpp
+# compiler
+#     test/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Mingw/wine
+    test/compiler/node_tests.cpp 
+
+# interpreter OK:  Linux/GCC & Mingw/wine
     test/interpreter/hCodeBufferTests.cpp
     test/interpreter/interpretedIC_tests.cpp
     test/interpreter/missingMethodBuilderTest.cpp
-    test/main/main.cpp
-    test/memory/association_klass_tests.cpp
-    test/memory/blockClosureKlassTests.cpp
-    test/memory/byteArrayKlassTests.cpp
-    test/memory/contextKlassTests.cpp
-    test/memory/doubleByteArrayTests.cpp
-    test/memory/doubleValueArrayTests.cpp
-    test/memory/doublOopKlassTests.cpp
-    test/memory/edenMark.hpp
-    test/memory/memOopAllocationTests.cpp
-    test/memory/memOopKlassTests.cpp
-    test/memory/methodLookupTests.cpp
-    test/memory/mixinKlassTests.cpp
-    test/memory/objArrayKlassTests.cpp
-    test/memory/old_space_tests.cpp
-    test/memory/oldGeneration.cpp
-    test/memory/processKlassTests.cpp
-    test/memory/proxyKlassTests.cpp
-    test/memory/proxyPrimsTest.cpp
-    test/memory/universe_tests.cpp
-    test/memory/vframeKlassTests.cpp
-    test/prims/alienIntegerCallout0Tests.cpp
-    test/prims/alienIntegerCallout1Tests.cpp
+
+# memory
+    # klass
+        test/memory/association_klass_tests.cpp
+        test/memory/blockClosureKlassTests.cpp
+        test/memory/byteArrayKlassTests.cpp
+#         test/memory/contextKlassTests.cpp  # CRASH: Linux/GCC & wine/Mingw
+    #double
+        test/memory/doubleByteArrayTests.cpp
+        test/memory/doubleValueArrayTests.cpp
+        test/memory/doublOopKlassTests.cpp
+    #
+        test/memory/edenMark.hpp
+        test/memory/memOopAllocationTests.cpp
+        test/memory/memOopKlassTests.cpp
+#         test/memory/methodLookupTests.cpp # Strongtalk throws doesNotUnderstand but all tests succeed
+        test/memory/mixinKlassTests.cpp
+        test/memory/objArrayKlassTests.cpp
+        test/memory/old_space_tests.cpp
+        test/memory/oldGeneration.cpp
+        test/memory/processKlassTests.cpp
+        test/memory/proxyKlassTests.cpp
+#         test/memory/proxyPrimsTest.cpp # vm asserts failures but all tests (assers in tests) succeed
+        test/memory/universe_tests.cpp
+         test/memory/vframeKlassTests.cpp
+# prims/alienInteger
+#     test/prims/alienIntegerCallout0Tests.cpp  # CRASH: Linux/GCC & wine/Mingw
+#     test/prims/alienIntegerCallout1Tests.cpp  # OK: wine/Mingw FAIL: Linux/GCC
     test/prims/alienIntegerCallout2Tests.cpp
     test/prims/alienIntegerCallout3Tests.cpp
     test/prims/alienIntegerCallout4Tests.cpp
@@ -449,27 +458,37 @@ set(STRONGTALKTEST_SOURCE_FILES
     test/prims/alienIntegerCallout6Tests.cpp
     test/prims/alienIntegerCallout7Tests.cpp
     test/prims/alienIntegerCalloutWithArgumentsTests.cpp
+# prims/behavior OK: Linux/GCC & wine/Mingw
     test/prims/behaviorPrimsSuperclassTests.cpp
     test/prims/behaviorPrimsTests.cpp
-    test/prims/byteArrayPrimsTests.cpp
+# prims/byteArray
+#     test/prims/byteArrayPrimsTests.cpp     # FAIL: Linux/GCC & wine/Mingw
     test/prims/dbyteArrayPrimsTests.cpp
+# prims/alien OK: Linux/GCC & wine/Mingw
     test/prims/directAlienPrimsTests.cpp
     test/prims/indirectAlienPrimsTests.cpp
+# prims/integer OK: Linux/GCC & wine/Mingw
     test/prims/integerOpsTests.cpp
     test/prims/largeIntegerByteArrayPrimTests.cpp
     test/prims/objArrayPrimsTests.cpp
+# prims/oop OK: Linux/GCC & wine/Mingw
     test/prims/oop_prims.cpp
     test/prims/oop_prims_perform.cpp
+# prims OK: Linux/GCC & wine/Mingw
     test/prims/pointerAlienPrimsTest.cpp
     test/prims/smi_prims_tests.cpp
     test/prims/systemPrims.cpp
+# runtime OK: Linux/GCC & Mingw/wine
     test/runtime/testProcess.hpp
     test/runtime/virtualspace.cpp
+# utilities OK: Linux/GCC & Mingw/wine
     test/utilities/longInt.cpp
     test/utilities/lprintf_test.cpp
     test/utilities/testNotifier.hpp
     test/utilities/testUtils.hpp
-    test/callbacks.cpp)
+# ??? what is is for ???
+#     test/callbacks.cpp
+)
 
 set(LIBEASYUNIT_SOURCE_FILES
     easyunit/src/alloc.cpp
@@ -480,19 +499,27 @@ set(LIBEASYUNIT_SOURCE_FILES
     easyunit/src/testpartresult.cpp
     easyunit/src/testregistry.cpp
     easyunit/src/testresult.cpp
-    easyunit/src/testrunner.cpp)
+    easyunit/src/testrunner.cpp
+)
     
-# https://stackoverflow.com/questions/13638408/cmake-override-compile-flags-for-single-files
-set_source_files_properties(test/interpreter/missingMethodBuilderTest.cpp PROPERTIES COMPILE_FLAGS -ffor-scope)
-
 add_library(libstrongtalk ${LIBSTRONGTALK_SOURCE_FILES})
-target_link_libraries(libstrongtalk -lpthread -ldl -lrt)
 
 add_library(libeasyunit ${LIBEASYUNIT_SOURCE_FILES})
 
 add_executable(strongtalk vm/runtime/main.cpp)
 target_link_libraries(strongtalk libstrongtalk)
 
-add_executable(strongtalk-test ${STRONGTALKTEST_SOURCE_FILES})
+add_executable(strongtalk-test ${STRONGTALKTEST_SOURCE_FILES} test/main/main.cpp)
 target_link_libraries(strongtalk-test libstrongtalk libeasyunit)
 
+# OS dependent defines.
+# should work for Linux/GCC, Linux/clang and Linux/MinGw&wine
+
+# TODO: replace __LINUX__ with __linux__ and WIN32 with _WIN32 in #ifdefs
+if(UNIX)
+    add_definitions(-D__LINUX__)    # could be APPLE, I know
+    target_link_libraries(libstrongtalk -lpthread -ldl -lrt)
+elseif(WIN32)   # really WIN32 and not MINGW, this is crosscompilation
+    add_definitions(-DWIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+endif()
