@@ -43,7 +43,7 @@ void outputStream::print(const char* format, ...) {
   va_start(ap, format);
   if (_vsnprintf(buffer, BUFLEN, format, ap) < 0) {
     warning("increase BUFLEN in ostream.cpp -- output truncated");
-    buffer[BUFLEN] = 0;
+    buffer[BUFLEN-1] = 0;
   }
   va_end(ap);
   basic_print(buffer);
@@ -55,7 +55,7 @@ void outputStream::print_cr(const char* format, ...) {
   va_start(ap, format);
   if (_vsnprintf(buffer, BUFLEN, format, ap) < 0) {
     warning("increase BUFLEN in ostream.cpp -- output truncated");
-    buffer[BUFLEN] = 0;
+    buffer[BUFLEN-1] = 0;
   }
   va_end(ap);
   basic_print(buffer);
@@ -66,7 +66,7 @@ void outputStream::vprint(const char *format, va_list argptr) {
   char buffer[BUFLEN];
   if (_vsnprintf(buffer, BUFLEN, format, argptr) < 0) {
     warning("increase BUFLEN in ostream.cpp -- output truncated");
-    buffer[BUFLEN] = 0;
+    buffer[BUFLEN-1] = 0;
   }
   basic_print(buffer);
 }

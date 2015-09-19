@@ -27,7 +27,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 # include "incls/_compileTimeClosure.cpp.incl"
 
 bool CompileTimeClosure::verify() const {
-  bool ok;
+  bool ok = true;
   if (!_method->is_method()) {
     ok = false;
     error("CompileTimeClosure %#lx: oop %#lx is not a method", this, _method);
