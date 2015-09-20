@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.7)
 project(Strongtalk)
 
 add_definitions(-DDELTA_COMPILER -DASSERT -DDEBUG)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -fno-rtti -Wno-write-strings -fno-operator-names -fms-extensions -ffriend-injection")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -m32 -fno-rtti -Wno-write-strings -fno-operator-names -fms-extensions -ffriend-injection")
 
 include_directories(
     build

@@ -219,10 +219,13 @@ void* mainWrapper(void* args) {
 	
   int (*threadMain)(void*) = targs->main;
   void* parameter = targs->parameter;
-  int* result = (int*) malloc(sizeof(int));
+// AFAIK nobody ever accessed what threadMain returns, let's ignore it
+//   int* result = (int*) malloc(sizeof(int)); // Valgrind says result is not being freed
   threadCreated->signal();
-  *result = threadMain(parameter);
-  return (void *) result; 
+//   *result = threadMain(parameter);
+//   return (void *) result; 
+  threadMain(parameter);
+  return nullptr;
 }
 
 Thread* os::create_thread(int threadStart(void* parameter), void* parameter, int* id_addr) {
@@ -235,6 +238,10 @@ Thread* os::create_thread(int threadStart(void* parameter), void* parameter, int
     if(pthread_attr_setstacksize(&attr, STACK_SIZE) != 0) {
       fatal("pthread_attr_setstacksize failed");
     }
+	// thread will not wait around to be join()ed
+	if(pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED) != 0) {
+		fatal("pthread_attr_setdetachstate failed");
+	}
     
     threadCreated->reset();
     threadArgs.main = threadStart;

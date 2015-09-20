@@ -269,7 +269,8 @@ symbolTableLink* symbolTable::new_link(symbolOop s, symbolTableLink* n) {
 }
 
 void symbolTable::delete_link(symbolTableLink* l) {
-  // Add the link to the freelist
+  // Add the link to the freelist. It is never freed, but that is not a problem.
+  // (symbolTable is a singleton that lives and dies with the VM)
   symbolTableLink* end = l;
   while(end->next) end = end->next;
   end->next = free_list;
