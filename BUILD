@@ -14,7 +14,7 @@ cc_library(
     name = "easyunit",
     srcs = glob(["easyunit/src/*.cpp"]),
     hdrs = glob(["easyunit/easyunit/*.h"]),
-    copts = ["-m32", "-ffriend-injection"],
+    copts = ["-m32"],
     linkopts = ["-m32"],
     includes = ["easyunit/easyunit"],
 )
@@ -32,12 +32,31 @@ cc_binary(
     copts = INCL_PATH + COPTS + DEFINES,
     #linkstatic=0,
     deps = [":libstrongtalk"],
+    
+    data = ["strongtalk.bst"],
 )
 
 cc_test(
     name = "strongtalk-test",
-    srcs = glob(["test/**/*.cpp"]),
+    srcs = glob(["test/**/*.cpp"], exclude=[
+        "test/compiler/compiler_tests.cpp",
+        "test/interpreter/missingMethodBuilderTest.cpp",
+        "test/memory/contextKlassTests.cpp",
+        "test/memory/methodLookupTests.cpp",
+        "test/memory/proxyPrimsTest.cpp",
+        "test/prims/alienIntegerCallout0Tests.cpp",
+        "test/prims/alienIntegerCallout1Tests.cpp",
+        "test/prims/alienIntegerCallout2Tests.cpp",
+        "test/prims/alienIntegerCallout*Tests.cpp",    # up to 7
+        "test/prims/byteArrayPrimsTests.cpp",
+        "test/prims/indirectAlienPrimsTests.cpp",
+        "test/prims/pointerAlienPrimsTest.cpp",
+    ]),
     copts = INCL_PATH + TEST_INCL_PATH + COPTS + DEFINES,
     #linkstatic=0,
     deps = [":libstrongtalk", ":easyunit"],
+    
+    data = ["strongtalk.bst"],
+    args = ["-b strongtalk.bst"],
+    size = "small",
 )
