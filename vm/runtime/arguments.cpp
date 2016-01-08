@@ -115,7 +115,7 @@ void print_credits() {
   int mask = 0xa729b65d;
   for (int i = 0; i < sizeof(credits) - 1; i++) {
     fputc((credits[i] ^ mask) & 0x7f, stdout);
-    mask = (mask << 1) | (mask >> 31) & 1; // rotate mask
+    mask = (mask << 1) | ((mask >> 31) & 1); // rotate mask
   }
 }
 

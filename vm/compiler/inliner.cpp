@@ -554,8 +554,8 @@ Expr* Inliner::inlineMerge(SendInfo* info) {
 
   if (res && res->isMergeExpr()) res->setNode(merge, info->resReg);
 
-  assert( info->needRealSend &&  others->length() ||
-    !info->needRealSend && !others->length(), "inconsistent");
+  assert( (info->needRealSend &&  others->length()) ||
+          (!info->needRealSend && !others->length()), "inconsistent");
 
   if (useUncommonBranchForUnknown) {
     // generate an uncommon branch for the unknown case, not a send
@@ -810,9 +810,9 @@ Expr* Inliner::typePredict() {
   // NB: all non-predicted cases exit this function early
   Expr* r = _info->rcvr;
   if (!(r->isUnknownExpr() ||
-    r->isMergeExpr() &&
+            (r->isMergeExpr() &&
     ((MergeExpr*)r)->exprs->length() == 1 &&
-    ((MergeExpr*)r)->exprs->at(0)->isUnknownExpr())) {
+    ((MergeExpr*)r)->exprs->at(0)->isUnknownExpr()))) {
       // r already has a type (e.g. something predicted via PICs)
       // trust that information more than the static type prediction
       // NB: UnknownExprs are sometimes merged into a MergeExpr, that's why the above

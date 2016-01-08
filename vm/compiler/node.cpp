@@ -3187,8 +3187,8 @@ void ContextInitNode::verify() const {
   int n = nofTemps();
   if ((n != contents()->length()) ||
     (n != _initializers->length()) ||
-    (_contentDefs != NULL) && (n != _contentDefs->length()) ||
-    (_initializerUses != NULL) && (n != _initializerUses->length())) {
+            ((_contentDefs != NULL) && (n != _contentDefs->length())) ||
+            ((_initializerUses != NULL) && (n != _initializerUses->length()))) {
       error("ContextInitNode %#lx: bad nofTemps %d", this, n);
   }
   int i = nofTemps();

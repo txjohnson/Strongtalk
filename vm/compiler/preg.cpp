@@ -752,7 +752,7 @@ bool SAPReg::basic_isLiveAt(InlinedScope* s, int bci) const {
   if (ss == _scope) {
     // live range = [startBCI, endBCI]			// originally: ]startBCI, endBCI]
     assert(_begBCI == bc ||
-	   ss == creationScope() && creationStartBCI == bc, "oops");
+           (ss == creationScope() && creationStartBCI == bc), "oops");
     return bciLE(_begBCI, bs) && bciLE(bs, _endBCI);	// originally: bciLT(_begBCI, bs) && bciLE(bs, _endBCI);
   } else {
     // live range = [bc, end of scope]			// originally: ]bc, end of scope]
@@ -1076,7 +1076,7 @@ bool SAPReg::verify() const {
 	ok = false;
 	error("SAPReg %#lx %s: invalid startBCI %ld", this, name(), _begBCI);
       }
-      if (_endBCI < PrologueBCI || _endBCI > ncodes && _endBCI != EpilogueBCI) {
+      if (_endBCI < PrologueBCI || (_endBCI > ncodes && _endBCI != EpilogueBCI)) {
 	ok = false;
 	error("SAPReg %#lx %s: invalid endBCI %ld", this, name(), _endBCI);
       }
@@ -1124,7 +1124,7 @@ bool NoPReg::verify() const {
 
 
 bool ConstPReg::verify() const {
-  bool ok = PReg::verify() && constant->is_klass() || constant->verify();
+  bool ok = (PReg::verify() && constant->is_klass()) || constant->verify();
   /*
   if (int(constant) < maxImmediate && int(constant) > -maxImmediate
     && loc != UnAllocated) {

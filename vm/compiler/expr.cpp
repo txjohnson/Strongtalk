@@ -105,8 +105,8 @@ bool BlockExpr::equals(Expr* other) const {
 }
 
 bool ConstantExpr::equals(Expr* other) const {
-  return other->isConstantExpr() && other->constant() == constant() ||
-    other->isKlassExpr() && other->klass() == klass();
+  return (other->isConstantExpr() && other->constant() == constant()) ||
+          (other->isKlassExpr() && other->klass() == klass());
 }
 
 bool MergeExpr::equals(Expr* /*other*/) const {
@@ -245,7 +245,7 @@ void MergeExpr::add(Expr* e) {
   if (!e->node()) setSplittable(false);
   for (int i = 0; i < exprs->length(); i++) {
     Expr* e1 = exprs->at(i);
-    if (e->hasKlass() && e1->hasKlass() && e->klass() == e1->klass() ||
+    if ((e->hasKlass() && e1->hasKlass() && e->klass() == e1->klass()) ||
       e->equals(e1)) {
         // an equivalent expression is already in our list
         // if unsplittable we don't need to do anything except
