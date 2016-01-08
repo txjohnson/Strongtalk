@@ -43,7 +43,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 // 1. Optimization suggested by Urs 9/30/95
 //    Speed up card scanning by comparing words for frequent case
 //    (A profile of Mark Sweep is necessary to make the call).
-// 2. Handle objArrays in a more effficient way. Scavenge only
+// 2. Handle objArrays in a more efficient way. Scavenge only
 //    parts of the objArray with dirty cards.
 //    The current implementation is REALLY slow for huge tenured objArrays
 //    with few new pointers.
