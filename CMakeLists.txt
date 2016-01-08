@@ -4,6 +4,11 @@ project(Strongtalk)
 add_definitions(-DDELTA_COMPILER -DASSERT -DDEBUG)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -m32 -fno-rtti -Wno-write-strings -fno-operator-names -fms-extensions")
 
+# http://www.artificialworlds.net/blog/2014/07/18/best-gcc-warning-flags-for-compiling-c/
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wredundant-decls -Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Wextra -Wall -Werror -Winvalid-pch -Wredundant-decls -Wformat=2 -Wmissing-format-attribute -Wformat-nonliteral")
+# TODO: gragually enable
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-unused-parameter -Wno-reorder -Wno-redundant-decls -Wno-missing-declarations -Wno-unused-variable -Wno-type-limits -Wno-unused-function -Wno-unused-but-set-variable -Wno-switch-default -Wno-switch -Wno-format-security -Wno-format-nonliteral -Wno-switch-enum -Wno-sequence-point -Wno-parentheses -Wno-conversion-null -Wno-format -Wno-return-type -Wno-sign-compare -Wno-empty-body -Wno-char-subscripts -Wno-suggest-attribute=format")
+
 include_directories(
     build
     vm/asm
