@@ -131,7 +131,7 @@ char* rSet::scavenge_contents(oldSpace* sp, char* begin, char* limit) {
   while (s < e) {
     memOop m = as_memOop(s);
     int size = m->scavenge_tenured_contents();
-    assert(size = m->size(), "just checking");
+    assert(size == m->size(), "just checking");
     s += size;
   }
   return end;

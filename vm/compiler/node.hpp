@@ -1407,7 +1407,7 @@ class BranchNode : public AbstractBranchNode {
   void		gen();
   void		apply(NodeVisitor* v)		{ v->aBranchNode(this); }
   char*		print_string(char* buf, bool printAddr = true) const;
-  void		verify()			{ AbstractBranchNode::verify(false); }
+  void		verify() const		{ AbstractBranchNode::verify(false); }
 
   friend class NodeFactory;
 };
