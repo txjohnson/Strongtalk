@@ -100,7 +100,7 @@ class Event: public CHeapObj {
             _signalled = false;
             pthread_cond_signal(&notifier);
         }
-        bool inline waitFor() {
+        void inline waitFor() {
             Lock mark(&mutex);
             while (!_signalled)
               pthread_cond_wait(&notifier, &mutex);
