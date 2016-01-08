@@ -109,9 +109,8 @@ bool ConstantExpr::equals(Expr* other) const {
     other->isKlassExpr() && other->klass() == klass();
 }
 
-bool MergeExpr::equals(Expr* other) const {
-  Unused(other);
-  return false; // for now -- fix this later
+bool MergeExpr::equals(Expr* /*other*/) const {
+  return false; // TODO for now -- fix this later
 }  
 
 // mergeWith: return receiver merged with arg; functional (does not modify receiver or arg expr)
@@ -133,8 +132,7 @@ Expr* UnknownExpr::mergeWith(Expr* other, Node* n) {
   }
 }
 
-Expr* NoResultExpr::mergeWith(Expr* other, Node* n)  {
-  Unused(n);
+Expr* NoResultExpr::mergeWith(Expr* other, Node* /*n*/)  {
   return other; 
 }
 
@@ -435,8 +433,7 @@ Expr* MergeExpr::findKlass(klassOop klass) const {
   return NULL;
 }
 
-Expr* UnknownExpr::makeUnknownUnlikely(InlinedScope* s)    {
-  Unused(s);
+Expr* UnknownExpr::makeUnknownUnlikely(InlinedScope* /*s*/)    {
   assert(DeferUncommonBranches, "shouldn't make unlikely");
   // called on an UnknownExpr itself, this is a no-op; works only
   // with merge exprs
@@ -484,8 +481,7 @@ Expr* UnknownExpr::shallowCopy(PReg* p, Node* n) const {
   return new UnknownExpr(p, n, isUnlikely());
 }
 
-Expr* NoResultExpr::shallowCopy(PReg* p, Node* n) const {
-  Unused(p); Unused(n);
+Expr* NoResultExpr::shallowCopy(PReg* /*p*/, Node* /*n*/) const {
   return new NoResultExpr();
 }
 
@@ -523,8 +519,7 @@ InlinedScope* Expr::scope() const {
 NameNode* Expr::nameNode(bool mustBeLegal) const {
   return preg()->nameNode(mustBeLegal); }
 
-NameNode* ConstantExpr::nameNode(bool mustBeLegal) const {
-  Unused(mustBeLegal);
+NameNode* ConstantExpr::nameNode(bool /*mustBeLegal*/) const {
   //c    return newValueName(constant()); }
   return 0;
 }

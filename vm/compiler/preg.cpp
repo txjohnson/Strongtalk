@@ -437,7 +437,6 @@ void ConstPReg::extendLiveRange(InlinedScope* s) {
 
 
 bool ConstPReg::covers(Node* n) const {
-  // does receiver cover node n (is it live at n)?
   InlinedScope* s = n->scope();
   if (_scope->isSenderOrSame(s)) {
     // ok, scope is caller of s
@@ -797,8 +796,7 @@ InlinedScope* BlockPReg::parent() const {
 }
 
   
-NameNode* BlockPReg::locNameNode(bool mustBeLegal) const {
-  Unused(mustBeLegal);
+NameNode* BlockPReg::locNameNode(bool /*mustBeLegal*/) const {
   assert(!loc.isTemporaryRegister(), "shouldn't be in temp reg");    
   // for now, always use MemoizedName to describe block (even if always created)
   // makes debugging info easier to read (can see which locs must be blocks)
