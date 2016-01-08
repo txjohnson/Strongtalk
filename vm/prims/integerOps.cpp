@@ -323,7 +323,7 @@ Digit IntegerOps::max_power(Digit x) {
   Digit n = 1;
   Digit p = x;
   Digit c = 0;
-  while (c == 0) {
+  while (c == 0) { //TODO(jirka): this looks wrong
     // x^n = c*B + p
     p = axpy(x, p, 0, c);
     n++;

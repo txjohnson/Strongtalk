@@ -441,7 +441,7 @@ void BB::localAlloc(GrowableArray<BitVector*>* hardwired,
       } else if (localSrc && localDest) {
 	// both regs are local and unallocated - put them in same
 	// equivalence class
-	// fix this - must check for overlapping live ranges first
+	// FIXME: fix this - must check for overlapping live ranges first
       } else {
 	// non-local registers - skip
       }
