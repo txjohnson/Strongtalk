@@ -1379,10 +1379,14 @@ void MacroAssembler::set_last_Delta_frame_before_call() {
 }
 
 
+/// sets esp to value before call (i.e., before pushing the return address)
 void MacroAssembler::set_last_Delta_frame_after_call() {
-  addl(esp, oopSize);	// sets esp to value before call (i.e., before pushing the return address)
-  set_last_Delta_frame_before_call();
-  subl(esp, oopSize);	// resets esp to original value
+  // https://stackoverflow.com/questions/34695275/memcheck-reports-unitialised-values-when-accessing-local-variables-down-the-stac
+  auto fp = Address((int)&last_Delta_fp, relocInfo::external_word_type);
+  auto sp = Address((int)&last_Delta_sp, relocInfo::external_word_type);
+  movl(fp, ebp);
+  movl(sp, esp);
+  addl(sp, oopSize); // TODO(jirka): find a free register and do the addition in a register
 }
 
 
