@@ -53,8 +53,23 @@ cc_test(
     copts = INCL_PATH + TEST_INCL_PATH + COPTS + DEFINES,
     #linkstatic=0,
     deps = [":libstrongtalk", ":easyunit"],
-    
+
     data = ["strongtalk.bst"],
     args = ["-b strongtalk.bst"],
+    size = "small",
+)
+
+cc_test(
+    name = "my_test",
+    srcs = ["test/my_test.cc"],
+    copts = ["-O", "-Iexternal/gtest/include"],
+    deps = ["@gtest//:main"],
+)
+
+cc_test(
+    name = "strongtalk-unit",
+    srcs = ["test/unit/longInt.cpp"],
+    copts = ["-Iexternal/gtest/include"] + INCL_PATH + TEST_INCL_PATH + COPTS + DEFINES,
+    deps = [":libstrongtalk", "@gtest//:main"],
     size = "small",
 )

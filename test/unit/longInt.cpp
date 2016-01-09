@@ -1,27 +1,26 @@
-# include "incls/_precompiled.incl"
-# include "incls/_longInt.cpp.incl"
-#include "test.h"
+#include "gtest/gtest.h"
 
-using namespace easyunit;
- 
+#include "incls/_precompiled.incl"
+#include "incls/_longInt.cpp.incl"
+
+
 TEST(longint, as_double)
 {
 	long_int value(1.0);
-	double result = value.as_double();
-	ASSERT_EQUALS_DELTA_V(1.0, result, 0.0001);
+	ASSERT_DOUBLE_EQ(1.0, value.as_double());
 }
 
 TEST(longint, asDoubleFromInt)
 {
 	long_int value(1000, 0);
-	ASSERT_EQUALS_DELTA_V(1000.0, value.as_double(), 0.0001);
+	ASSERT_DOUBLE_EQ(1000.0, value.as_double());
 }
 
 TEST(longint, asDoubleFromLongInt)
 {
 	long_int value(3, 1);
 	double expected = (((int64_t)1)<<32) + 3;
-	ASSERT_EQUALS_DELTA_V(expected, value.as_double(), 0.0001);
+	ASSERT_DOUBLE_EQ(expected, value.as_double());
 }
 
 TEST(longint, equality)

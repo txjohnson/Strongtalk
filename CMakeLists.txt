@@ -507,7 +507,6 @@ set(STRONGTALKTEST_SOURCE_FILES
     test/runtime/testProcess.hpp
     test/runtime/virtualspace.cpp
 # utilities OK: Linux/GCC & Mingw/wine
-    test/utilities/longInt.cpp
     test/utilities/lprintf_test.cpp
     test/utilities/testNotifier.hpp
     test/utilities/testUtils.hpp
@@ -536,6 +535,12 @@ target_link_libraries(strongtalk libstrongtalk)
 
 add_executable(strongtalk-test ${STRONGTALKTEST_SOURCE_FILES} test/main/main.cpp)
 target_link_libraries(strongtalk-test libstrongtalk libeasyunit)
+
+
+add_subdirectory(test/gtest-1.7.0)
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+add_executable(strongtalk-unit test/unit/longInt.cpp)
+target_link_libraries(strongtalk-unit libstrongtalk gtest gtest_main)
 
 # OS dependent defines.
 # should work for Linux/GCC, Linux/clang and Linux/MinGw&wine
