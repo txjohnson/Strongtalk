@@ -1,13 +1,13 @@
-sudo: false
-
 # http://docs.travis-ci.com/user/languages/cpp/
 # start from https://github.com/rubinius/rubinius/blob/master/.travis.yml
-
 language: cpp
+sudo: false
 
-compiler:
-  - clang
-  - gcc
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "apQCsHrgsvLfKq+d79YgQ9yQPwV66hSsYrjuA4pp74XTcGgbL52Yn1UJ/PNQZfslkH8u+tJWZJDa8B/B4i+pk4dot4kpafSdC5LA3fwPUHKF5HZ+6sSUKIgpWneTnFzSR7GgQJB2ytNNrA9h0Y/4DsT+GPPe2z2MMS+bVXXIWzY0qvUnlgLFSIAhd9RUlJP/car+8lc4HFcfTOKdlToVQtKrLljCpEYEqv4XVvWAnmsrDrMYZMllo7+mPEVIcqflCBHax+/3LgVYHvn8mJu90Yaa+kKEHItEr5AL3nejZSk1K+qk2F3uZ+pfq4hJOxK0Ampm93duiFjZmLQCmaoU4YPj/jHJnVDq7VMJreM/ZePAl3XJFlchoVOJq74ywbWs0FMrxpri0ADYfNdVptiigQ7pa8lCteXiSMD5qST/e5ZHo2X9jSPtHWW/kfyfay+4EHF1avyBsYz0lnS995m/4zgE8sbxT+Frai43DgnJ87dRjxadAEgFf1S8YXF0fw0lWeDwHYPR9hwfzQfwrUDSQZ1ar7ORoHsMK2jK0pnXDuf6JpP4Hw84V+PrBPyFTIpHt9sw1toFQmHlLR8u379HRAbREcJVgx3i83KEKrxRT4WABvmsROVdt6+UNlVAqs4xaclUq4cmjnDXnPKDeFMr7sallKFbRK1097x5aQYpJYY="
 
 # http://stackoverflow.com/a/30925448/1047788
 install:
@@ -31,17 +31,30 @@ addons:
       #- libc6-dev-i386 #  missing header file 'bits/predefs.h'
       #- linux-libc-dev-i386 # this does NOT fix asm/errno.h: No such file or directory
       # - some other bunch of -i386 crap
+
+  # https://scan.coverity.com/travis_ci
+  coverity_scan:
+    project:
+      name: "jirkadanek/Strongtalk"
+      description: "Smalltalk… with a need for speed"
+    notification_email: dnk@mail.muni.cz
+    build_command_prepend: "cmake .."
+    build_command:   "make -j2"
+    branch_pattern: coverity_scan
+
+compiler:
+  - clang
+  - gcc
+os:
+  - linux
+
 # https://blog.lukaspradel.com/continuous-integration-for-cmake-projects-using-travis-ci/  
 before_script:
   - mkdir cmakebuild
   - cd cmakebuild
   - cmake ..
-
 script:
-  - make && cd .. && cmakebuild/strongtalk-test
- 
-os:
-  - linux
+  - make -j2 && cd .. && cmakebuild/strongtalk-test
 
 matrix:
   allow_failures:

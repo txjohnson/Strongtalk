@@ -65,7 +65,7 @@ oop* Universe::scavenge_and_allocate(int size, oop* p) {
   VMProcess::execute(&op);
 //  The following assertions break the tests
 //  assert(DeltaProcess::active()->last_Delta_fp() != NULL, "last Delta fp should be present");
-//  assert(DeltaProcess::active()->last_Delta_sp() != NULL, "last Delta fp should be present");
+//  assert(DeltaProcess::active()->last_Delta_sp() != NULL, "last Delta sp should be present");
   _scavenge_blocked = false;
   return allocate_without_scavenge(size);
 }
