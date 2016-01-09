@@ -9,6 +9,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wredundant-decls -Wcast-align -Wmissing
 # TODO: gragually enable
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-unused-parameter -Wno-reorder -Wno-redundant-decls -Wno-missing-declarations -Wno-unused-variable -Wno-type-limits -Wno-unused-function -Wno-unused-but-set-variable -Wno-switch-default -Wno-switch -Wno-format-security -Wno-format-nonliteral -Wno-switch-enum -Wno-conversion-null -Wno-format -Wno-sign-compare -Wno-empty-body -Wno-char-subscripts -Wno-suggest-attribute=format")
 
+# https://gcc.gnu.org/onlinedocs/gcc/Gcov-and-Optimization.html
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+
+# https://developerblog.redhat.com/2014/10/16/gcc-undefined-behavior-sanitizer-ubsan/
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined")
+
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread")
+
 include_directories(
     build
     vm/asm
@@ -422,7 +431,7 @@ set(LIBSTRONGTALK_SOURCE_FILES
 set(STRONGTALKTEST_SOURCE_FILES
 # compiler
 #     test/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Mingw/wine
-    test/compiler/node_tests.cpp 
+    test/compiler/node_tests.cpp
 
 # interpreter OK:  Linux/GCC & Mingw/wine
     test/interpreter/hCodeBufferTests.cpp
@@ -439,7 +448,6 @@ set(STRONGTALKTEST_SOURCE_FILES
         test/memory/doubleByteArrayTests.cpp
         test/memory/doubleValueArrayTests.cpp
         test/memory/doublOopKlassTests.cpp
-    #
         test/memory/edenMark.hpp
         test/memory/memOopAllocationTests.cpp
         test/memory/memOopKlassTests.cpp
@@ -452,7 +460,7 @@ set(STRONGTALKTEST_SOURCE_FILES
         test/memory/proxyKlassTests.cpp
 #         test/memory/proxyPrimsTest.cpp # vm asserts failures but all tests (assers in tests) succeed
         test/memory/universe_tests.cpp
-         test/memory/vframeKlassTests.cpp
+        test/memory/vframeKlassTests.cpp
 # prims/alienInteger
 #     test/prims/alienIntegerCallout0Tests.cpp  # CRASH: Linux/GCC & wine/Mingw
 #     test/prims/alienIntegerCallout1Tests.cpp  # OK: wine/Mingw FAIL: Linux/GCC
