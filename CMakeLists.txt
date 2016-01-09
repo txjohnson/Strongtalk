@@ -538,11 +538,19 @@ target_link_libraries(strongtalk-test libstrongtalk libeasyunit)
 
 add_subdirectory(test/gtest-1.7.0)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
 add_executable(strongtalk-unit
         test/unit/virtualspace.cpp
         test/unit/longInt.cpp
 )
 target_link_libraries(strongtalk-unit libstrongtalk gtest gtest_main)
+
+add_executable(strongtalk-integration
+        test/integration/main.cc
+
+)
+target_link_libraries(strongtalk-integration libstrongtalk gtest)
+
 
 # OS dependent defines.
 # should work for Linux/GCC, Linux/clang and Linux/MinGw&wine

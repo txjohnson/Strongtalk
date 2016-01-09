@@ -73,3 +73,13 @@ cc_test(
     deps = [":libstrongtalk", "@gtest//:main"],
     size = "small",
 )
+
+cc_test(
+    name = "strongtalk-integration",
+    srcs = glob(["test/integration/**/*.cc", "test/integration/**/*.cpp", "test/runtime/testProcess.hpp"]),
+    copts = ["-Iexternal/gtest/include"] + INCL_PATH + TEST_INCL_PATH + COPTS + DEFINES,
+    deps = [":libstrongtalk", "@gtest//:main"],
+    data = ["strongtalk.bst"],
+    args = ["-b strongtalk.bst"],
+    size = "small",
+)
