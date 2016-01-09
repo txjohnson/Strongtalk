@@ -68,7 +68,7 @@ cc_test(
 
 cc_test(
     name = "strongtalk-unit",
-    srcs = ["test/unit/longInt.cpp"],
+    srcs = glob(["test/unit/**/*.cpp"]),
     copts = ["-Iexternal/gtest/include"] + INCL_PATH + TEST_INCL_PATH + COPTS + DEFINES,
     deps = [":libstrongtalk", "@gtest//:main"],
     size = "small",
