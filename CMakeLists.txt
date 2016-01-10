@@ -443,7 +443,6 @@ set(LIBSTRONGTALK_SOURCE_FILES
 set(STRONGTALKTEST_SOURCE_FILES
 # compiler
 #     test/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Linux/clang & Mingw/wine
-    test/compiler/node_tests.cpp
 
 # interpreter OK:  Linux/GCC & Mingw/wine
     test/interpreter/hCodeBufferTests.cpp
@@ -547,7 +546,7 @@ target_link_libraries(strongtalk-unit libstrongtalk gtest gtest_main)
 
 add_executable(strongtalk-integration
         test/integration/main.cc
-
+        test/integration/compiler/node_tests.cpp
 )
 target_link_libraries(strongtalk-integration libstrongtalk gtest)
 
