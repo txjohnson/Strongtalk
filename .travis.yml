@@ -54,7 +54,7 @@ before_script:
   - cd cmakebuild
   - cmake ..
 script:
-  - make -j2 && cd .. && cmakebuild/strongtalk-test
+  - make -j2 && cd .. && cmakebuild/strongtalk-test && cmakebuild/strongtalk-unit && cmakebuild/strongtalk-integration
 
 matrix:
   allow_failures:
