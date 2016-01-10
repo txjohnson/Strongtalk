@@ -441,34 +441,6 @@ set(LIBSTRONGTALK_SOURCE_FILES
 )
 
 set(STRONGTALKTEST_SOURCE_FILES
-# compiler
-#     test/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Linux/clang & Mingw/wine
-
-# interpreter OK:  Linux/GCC & Mingw/wine
-
-# memory
-    # klass
-        test/memory/association_klass_tests.cpp
-        test/memory/blockClosureKlassTests.cpp
-        test/memory/byteArrayKlassTests.cpp
-#         test/memory/contextKlassTests.cpp  # CRASH: Linux/GCC & Linux/clang & wine/Mingw
-    #double
-        test/memory/doubleByteArrayTests.cpp
-        test/memory/doubleValueArrayTests.cpp
-        test/memory/doublOopKlassTests.cpp
-        test/memory/edenMark.hpp
-        test/memory/memOopAllocationTests.cpp
-        test/memory/memOopKlassTests.cpp
-#         test/memory/methodLookupTests.cpp # Strongtalk throws doesNotUnderstand but all tests succeed
-        test/memory/mixinKlassTests.cpp
-        test/memory/objArrayKlassTests.cpp
-        test/memory/old_space_tests.cpp
-        test/memory/oldGeneration.cpp
-        test/memory/processKlassTests.cpp
-        test/memory/proxyKlassTests.cpp
-#         test/memory/proxyPrimsTest.cpp # vm asserts failures but all tests (assers in tests) succeed
-        test/memory/universe_tests.cpp
-        test/memory/vframeKlassTests.cpp
 # prims/alienInteger
 #     test/prims/alienIntegerCallout0Tests.cpp  # CRASH: Linux/GCC & Linux/clang & wine/Mingw
 #     test/prims/alienIntegerCallout1Tests.cpp  # OK: wine/Mingw FAIL: Linux/GCC & Linux/clang
@@ -543,10 +515,38 @@ target_link_libraries(strongtalk-unit libstrongtalk gtest gtest_main)
 
 add_executable(strongtalk-integration
         test/integration/main.cc
+#compiler
+        #test/integration/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Linux/clang & Mingw/wine
         test/integration/compiler/node_tests.cpp
+#interpreter
         test/integration/interpreter/hCodeBufferTests.cpp
         test/integration/interpreter/interpretedIC_tests.cpp
         test/integration/interpreter/missingMethodBuilderTest.cpp
+# memory
+    # klass
+        test/integration/memory/association_klass_tests.cpp
+        test/integration/memory/blockClosureKlassTests.cpp
+        test/integration/memory/byteArrayKlassTests.cpp
+        #test/integration/memory/contextKlassTests.cpp # CRASH: Linux/GCC & Linux/clang & wine/Mingw
+    # double
+        test/integration/memory/doubleByteArrayTests.cpp
+        test/integration/memory/doubleValueArrayTests.cpp
+        test/integration/memory/doublOopKlassTests.cpp
+        #test/integration/memory/edenMark.hpp
+    # memOop
+        test/integration/memory/memOopAllocationTests.cpp
+        test/integration/memory/memOopKlassTests.cpp
+    #
+        #test/integration/memory/methodLookupTests.cpp # VM throws (asserts?) doesNotUnderstand but all tests succeed
+        test/integration/memory/mixinKlassTests.cpp
+        test/integration/memory/objArrayKlassTests.cpp
+        test/integration/memory/old_space_tests.cpp
+        test/integration/memory/oldGeneration.cpp
+        test/integration/memory/processKlassTests.cpp
+        test/integration/memory/proxyKlassTests.cpp
+        #test/integration/memory/proxyPrimsTest.cpp # VM asserts failures but all tests (assers in tests) succeed
+        test/integration/memory/universe_tests.cpp
+        test/integration/memory/vframeKlassTests.cpp
 )
 target_link_libraries(strongtalk-integration libstrongtalk gtest)
 
