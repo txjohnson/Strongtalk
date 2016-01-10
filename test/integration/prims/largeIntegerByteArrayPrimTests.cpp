@@ -1,25 +1,25 @@
+#include "gtest/gtest.h"
+
 # include "incls/_precompiled.incl"
 # include "incls/_byteArray_prims.cpp.incl"
-#include "test.h"
-//#include "delta.hpp"
 #include "testUtils.hpp"
 
-using namespace easyunit;
 
 extern "C" int expansion_count;
 typedef oop(PRIM_API divfn)(oop, oop);
 
-DECLARE(LargeIntegerByteArrayPrimsTests)
+class LargeIntegerByteArrayPrimsTests : public ::testing::Test {
+protected:
 HeapResourceMark *rm;
 PersistentHandle *x, *y, *z;
 char resultString[100];
 
 #define ASSERT_EQUALS_M2(expected, actual, prefix)\
-  ASSERT_EQUALS_M(expected, actual, report(prefix, expected, actual))
+  ASSERT_EQ(expected, actual) << report(prefix, expected, actual)
 #define ASSERT_EQUALS_MH(expected, actual, prefix)\
-  ASSERT_EQUALS_M(expected, actual, reportHex(prefix, expected, actual))
+  ASSERT_EQ(expected, actual) << reportHex(prefix, expected, actual)
 #define ASSERT_EQUALS_MS(expected, actual, prefix)\
-  ASSERT_TRUE_M(!strcmp(expected, actual), report(prefix, expected, actual))
+  ASSERT_TRUE(!strcmp(expected, actual)) << report(prefix, expected, actual)
 #define CHECK_DIV_WITH_SMI(fn, xstring, ystring, expected)\
   IntegerOps::string_to_Integer(xstring, 16, as_Integer(x));\
   IntegerOps::string_to_Integer(ystring, 16, as_Integer(y));\
@@ -27,7 +27,7 @@ char resultString[100];
   smiOop result = smiOop(byteArrayPrimitives::fn(y->as_oop(),\
                                                  x->as_oop()));\
 \
-  ASSERT_TRUE_M(result->is_smi(), "Should be small integer");\
+  ASSERT_TRUE(result->is_smi()) << "Should be small integer";\
   ASSERT_EQUALS_MH(expected, result->value(), "Wrong result")
 #define CHECK_DIV_WITH_LRG(fn, xstring, ystring, expected)\
   IntegerOps::string_to_Integer(xstring, 16, as_Integer(x));\
@@ -36,14 +36,14 @@ char resultString[100];
   byteArrayOop result = byteArrayOop(byteArrayPrimitives::fn(y->as_oop(),\
                                                              x->as_oop()));\
 \
-  ASSERT_TRUE_M(result->is_byteArray(), "Should be byteArray");\
+  ASSERT_TRUE(result->is_byteArray()) << "Should be byteArray";\
   ASSERT_EQUALS_MS(expected, as_Hex(result->number()), "Wrong result")
 #define CHECK_ARG_TYPE(fn)\
   IntegerOps::string_to_Integer("123456781234567812345678", 16, as_Integer(x));\
 \
   symbolOop result = unmarkSymbol(byteArrayPrimitives::fn(as_smiOop(10), x->as_oop()));\
 \
-  ASSERT_TRUE_M(result->is_symbol(), "Should be symbol");\
+  ASSERT_TRUE(result->is_symbol()) << "Should be symbol";\
   ASSERT_EQUALS_MS(vmSymbols::first_argument_has_wrong_type()->chars(),\
                    result->chars(),\
                    "Wrong result")
@@ -52,7 +52,7 @@ char resultString[100];
 \
   symbolOop result = unmarkSymbol(byteArrayPrimitives::fn(x->as_oop(), x->as_oop()));\
 \
-  ASSERT_TRUE_M(result->is_symbol(), "Should be symbol");\
+  ASSERT_TRUE(result->is_symbol()) << "Should be symbol";\
   ASSERT_EQUALS_MS(vmSymbols::first_argument_has_wrong_type()->chars(),\
                    result->chars(),\
                    "Wrong result")
@@ -60,7 +60,7 @@ char resultString[100];
   symbolOop result = unmarkSymbol(byteArrayPrimitives::fn(y->as_oop(),\
                                                           x->as_oop()));\
 \
-  ASSERT_TRUE_M(result->is_symbol(), "Should be symbol");\
+  ASSERT_TRUE(result->is_symbol()) << "Should be symbol";\
   ASSERT_EQUALS_MS(vmSymbols::errorSymbol()->chars(),\
                    result->chars(),\
                    "Wrong result")
@@ -96,290 +96,290 @@ char* as_Hex(Integer& number) {
 Integer& as_Integer(PersistentHandle *handle) {
   return byteArrayOop(handle->as_oop())->number();
 }
-END_DECLARE
 
-SETUP(LargeIntegerByteArrayPrimsTests) {
+virtual void SetUp() {
   rm = new HeapResourceMark();
   x = new PersistentHandle(oopFactory::new_byteArray(24));
   y = new PersistentHandle(oopFactory::new_byteArray(24));
 }
-TEARDOWN(LargeIntegerByteArrayPrimsTests){
+virtual void TearDown(){
   delete x;
   delete y;
   delete z;
   delete rm;
   rm = NULL;
 }
+};
 
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReturnCorrectResultForTwoPositive) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReturnCorrectResultForTwoPositive) {
   CHECK_DIV_WITH_LRG(largeIntegerQuo,
                      "123456781234567812345678",
                      "1234567812345678",
                      "100000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReturnCorrectResultForTwoNegative) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReturnCorrectResultForTwoNegative) {
   CHECK_DIV_WITH_LRG(largeIntegerQuo,
                      "-123456781234567812345678",
                      "-1234567812345678",
                      "100000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReturnCorrectResultForNegativeDivisor) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReturnCorrectResultForNegativeDivisor) {
   CHECK_DIV_WITH_LRG(largeIntegerQuo,
                      "123456781234567812345678",
                      "-1234567812345678",
                      "-100000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReturnCorrectResultForNegativeDividend) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReturnCorrectResultForNegativeDividend) {
   CHECK_DIV_WITH_LRG(largeIntegerQuo,
                      "-123456781234567812345678",
                      "1234567812345678",
                      "-100000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReturnCorrectResultForTwoPositive) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReturnCorrectResultForTwoPositive) {
   CHECK_DIV_WITH_LRG(largeIntegerDiv,
                      "123456781234567812345678",
                      "1234567812345678",
                      "100000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReturnCorrectResultForTwoNegative) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReturnCorrectResultForTwoNegative) {
   CHECK_DIV_WITH_LRG(largeIntegerDiv,
                      "-123456781234567812345678",
                      "-1234567812345678",
                      "100000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReturnCorrectResultForOneNegative) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReturnCorrectResultForOneNegative) {
   CHECK_DIV_WITH_LRG(largeIntegerDiv,
                      "123456781234567812345678",
                      "-1234567812345678",
                      "-100000001");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReturnCorrectResultForTwoPositive) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReturnCorrectResultForTwoPositive) {
   CHECK_DIV_WITH_SMI(largeIntegerMod,
                      "123456781234567812345678",
                      "1234567812345678",
                      0x12345678);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReturnCorrectResultForTwoNegative) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReturnCorrectResultForTwoNegative) {
   CHECK_DIV_WITH_SMI(largeIntegerMod,
                      "-123456781234567812345678",
                      "-1234567812345678",
                      -0x12345678);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReturnCorrectResultForNegativeDivisor) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReturnCorrectResultForNegativeDivisor) {
   CHECK_DIV_WITH_LRG(largeIntegerMod,
                      "123456781234567812345678",
                      "-1234567812345678",
                      "-1234567800000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReturnCorrectResult) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReturnCorrectResult) {
   CHECK_DIV_WITH_LRG(largeIntegerAnd,
                      "100000000000000000000000",
                      "-1",
                      "100000000000000000000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReturnSmallInteger) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReturnSmallInteger) {
   CHECK_DIV_WITH_SMI(largeIntegerAnd,
                      "-100000000000000000000001",
                      "1",
                      1);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReturnCorrectResult) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReturnCorrectResult) {
   CHECK_DIV_WITH_LRG(largeIntegerOr,
                      "100000000000000000000000",
                      "1",
                      "100000000000000000000001");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReturnSmallInteger) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReturnSmallInteger) {
   CHECK_DIV_WITH_SMI(largeIntegerOr,
                      "2",
                      "1",
                      3);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReturnCorrectResult) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReturnCorrectResult) {
   CHECK_DIV_WITH_LRG(largeIntegerXor,
                      "100000000000000000000001",
                      "1",
                      "100000000000000000000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerShiftShouldReturnSmallInteger) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerShiftShouldReturnSmallInteger) {
   IntegerOps::string_to_Integer("2", 16, as_Integer(x));
 
   smiOop result = smiOop(byteArrayPrimitives::largeIntegerShift(as_smiOop(-1),
                                                                 x->as_oop()));
 
-  ASSERT_TRUE_M(result->is_smi(), "Should be small integer");
+  ASSERT_TRUE(result->is_smi()) << "Should be small integer";
   ASSERT_EQUALS_MH(1, result->value(), "Wrong result");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerShiftShouldReturnLargeInteger) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerShiftShouldReturnLargeInteger) {
   IntegerOps::string_to_Integer("1", 16, as_Integer(x));
 
   byteArrayOop result = byteArrayOop(byteArrayPrimitives::largeIntegerShift(as_smiOop(32),
                                                                             x->as_oop()));
 
-  ASSERT_TRUE_M(result->is_byteArray(), "Should be byteArray");
+  ASSERT_TRUE(result->is_byteArray()) << "Should be byteArray";
   ASSERT_EQUALS_MS("100000000", as_Hex(result->number()), "Wrong result");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerShiftWithUnderflowShouldReturnSmallInteger) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerShiftWithUnderflowShouldReturnSmallInteger) {
   IntegerOps::string_to_Integer("100000000", 16, as_Integer(x));
 
   smiOop result = smiOop(byteArrayPrimitives::largeIntegerShift(as_smiOop(-4),
                                                                 x->as_oop()));
 
-  ASSERT_TRUE_M(result->is_smi(), "Should be small integer");
+  ASSERT_TRUE(result->is_smi()) << "Should be small integer";
   ASSERT_EQUALS_MH(0x10000000, result->value(), "Wrong result");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReturnSmallInteger) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReturnSmallInteger) {
   CHECK_DIV_WITH_SMI(largeIntegerXor,
                      "3",
                      "1",
                      2);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReturnCorrectResultForNegativeDividend) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReturnCorrectResultForNegativeDividend) {
   CHECK_DIV_WITH_LRG(largeIntegerMod,
                      "-123456781234567812345678",
                      "1234567812345678",
                      "1234567800000000");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReturnCorrectResultForTwoPositive) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReturnCorrectResultForTwoPositive) {
   CHECK_DIV_WITH_SMI(largeIntegerRem,
                      "123456781234567812345678",
                      "1234567812345678",
                      0x12345678);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReturnCorrectResultForTwoNegative) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReturnCorrectResultForTwoNegative) {
   CHECK_DIV_WITH_SMI(largeIntegerRem,
                      "-123456781234567812345678",
                      "-1234567812345678",
                      -0x12345678);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReturnCorrectResultForNegativeDivisor) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReturnCorrectResultForNegativeDivisor) {
   CHECK_DIV_WITH_SMI(largeIntegerRem,
                      "123456781234567812345678",
                      "-1234567812345678",
                      0x12345678);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReturnCorrectResultForNegativeDividend) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReturnCorrectResultForNegativeDividend) {
   CHECK_DIV_WITH_SMI(largeIntegerRem,
                      "-123456781234567812345678",
                      "1234567812345678",
                      -0x12345678);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerShiftShouldReportErrorWhenArgWrongType) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerShiftShouldReportErrorWhenArgWrongType) {
   CHECK_ARG_TYPE2(largeIntegerShift);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReportErrorWhenArgWrongType) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReportErrorWhenArgWrongType) {
   CHECK_ARG_TYPE(largeIntegerXor);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReportErrorWhenArgWrongType) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReportErrorWhenArgWrongType) {
   CHECK_ARG_TYPE(largeIntegerOr);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReportErrorWhenArgWrongType) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReportErrorWhenArgWrongType) {
   CHECK_ARG_TYPE(largeIntegerAnd);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReportErrorWhenArgWrongType) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReportErrorWhenArgWrongType) {
   CHECK_ARG_TYPE(largeIntegerRem);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReportErrorWhenArgWrongType) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReportErrorWhenArgWrongType) {
   CHECK_ARG_TYPE(largeIntegerMod);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReportErrorWhenArgWrongType) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReportErrorWhenArgWrongType) {
   CHECK_ARG_TYPE(largeIntegerDiv);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReportErrorWhenArgWrongType) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReportErrorWhenArgWrongType) {
   CHECK_ARG_TYPE(largeIntegerQuo);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerShiftShouldReportErrorWhenXInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerShiftShouldReportErrorWhenXInvalid) {
   ((Digit*)byteArrayOop(x->as_oop())->bytes())[0] = 1;
   symbolOop result = unmarkSymbol(byteArrayPrimitives::largeIntegerShift(0, x->as_oop()));
 
-  ASSERT_TRUE_M(result->is_symbol(), "Should be symbol");
+  ASSERT_TRUE(result->is_symbol()) << "Should be symbol";
   ASSERT_EQUALS_MS(vmSymbols::argument_is_invalid()->chars(),
                    result->chars(),
                    "Wrong result");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReportErrorWhenXInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReportErrorWhenXInvalid) {
   CHECK_X_INVALID(largeIntegerAnd);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReportErrorWhenXInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReportErrorWhenXInvalid) {
   CHECK_X_INVALID(largeIntegerXor);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReportErrorWhenXInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReportErrorWhenXInvalid) {
   CHECK_X_INVALID(largeIntegerOr);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReportErrorWhenXInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReportErrorWhenXInvalid) {
   CHECK_X_INVALID(largeIntegerQuo);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReportErrorWhenXInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReportErrorWhenXInvalid) {
   CHECK_X_INVALID(largeIntegerDiv);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReportErrorWhenXInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReportErrorWhenXInvalid) {
   CHECK_X_INVALID(largeIntegerRem);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReportErrorWhenXInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReportErrorWhenXInvalid) {
   CHECK_X_INVALID(largeIntegerMod);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReportErrorWhenYInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerAndShouldReportErrorWhenYInvalid) {
   CHECK_Y_INVALID(largeIntegerAnd);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReportErrorWhenYInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerXorShouldReportErrorWhenYInvalid) {
   CHECK_Y_INVALID(largeIntegerXor);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReportErrorWhenYInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerOrShouldReportErrorWhenYInvalid) {
   CHECK_Y_INVALID(largeIntegerOr);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReportErrorWhenYInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReportErrorWhenYInvalid) {
   CHECK_Y_INVALID(largeIntegerMod);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReportErrorWhenYInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReportErrorWhenYInvalid) {
   CHECK_Y_INVALID(largeIntegerRem);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReportErrorWhenYInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReportErrorWhenYInvalid) {
   CHECK_Y_INVALID(largeIntegerDiv);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReportErrorWhenYInvalid) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReportErrorWhenYInvalid) {
   CHECK_Y_INVALID(largeIntegerQuo);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReportErrorWhenYZero) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerDivShouldReportErrorWhenYZero) {
   CHECK_Y_ZERO(largeIntegerDiv);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReportErrorWhenYZero) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerQuoShouldReportErrorWhenYZero) {
   CHECK_Y_ZERO(largeIntegerQuo);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReportErrorWhenYZero) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerRemShouldReportErrorWhenYZero) {
   CHECK_Y_ZERO(largeIntegerRem);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReportErrorWhenYZero) {
+TEST_F(LargeIntegerByteArrayPrimsTests, largeIntegerModShouldReportErrorWhenYZero) {
   CHECK_Y_ZERO(largeIntegerMod);
 }
-TESTF(LargeIntegerByteArrayPrimsTests, hash) {
+TEST_F(LargeIntegerByteArrayPrimsTests, hash) {
   IntegerOps::string_to_Integer("-12345678ffffffff", 16, as_Integer(x));
 
   smiOop result = smiOop(byteArrayPrimitives::largeIntegerHash(x->as_oop()));
 
-  ASSERT_TRUE_M(result->is_smi(), "Should be SMI");
+  ASSERT_TRUE(result->is_smi()) << "Should be SMI";
   ASSERT_EQUALS_M2((0x12345678 ^ 0xffffffff ^ -2) >> 2, result->value(), "Wrong hash");
 }
-TESTF(LargeIntegerByteArrayPrimsTests, unsignedCmpShouldBeLessThanZeroWhenFirstSmaller) {
+TEST_F(LargeIntegerByteArrayPrimsTests, unsignedCmpShouldBeLessThanZeroWhenFirstSmaller) {
   IntegerOps::string_to_Integer("00000001", 16, as_Integer(x));
   IntegerOps::string_to_Integer("ffffffff", 16, as_Integer(y));
 
   int result = IntegerOps::unsigned_cmp(as_Integer(x), as_Integer(y));
 
-  ASSERT_TRUE_M(result < 0, "Wrong cmp");
+  ASSERT_TRUE(result < 0) << "Wrong cmp";
 }
-TESTF(LargeIntegerByteArrayPrimsTests, unsignedCmpShouldBeGreaterThanZeroWhenFirstSmaller) {
+TEST_F(LargeIntegerByteArrayPrimsTests, unsignedCmpShouldBeGreaterThanZeroWhenFirstSmaller) {
   IntegerOps::string_to_Integer("ffffffff", 16, as_Integer(x));
   IntegerOps::string_to_Integer("00000001", 16, as_Integer(y));
 
   int result = IntegerOps::unsigned_cmp(as_Integer(x), as_Integer(y));
 
-  ASSERT_TRUE_M(result > 0, "Wrong cmp");
+  ASSERT_TRUE(result > 0) << "Wrong cmp";
 }
-TESTF(LargeIntegerByteArrayPrimsTests, unsignedCmpShouldBeZeroWhenEqual) {
+TEST_F(LargeIntegerByteArrayPrimsTests, unsignedCmpShouldBeZeroWhenEqual) {
   IntegerOps::string_to_Integer("ffffffff", 16, as_Integer(x));
   IntegerOps::string_to_Integer("ffffffff", 16, as_Integer(y));
 
   int result = IntegerOps::unsigned_cmp(as_Integer(x), as_Integer(y));
 
-  ASSERT_TRUE_M(result == 0, "Wrong cmp");
+  ASSERT_TRUE(result == 0) << "Wrong cmp";
 }

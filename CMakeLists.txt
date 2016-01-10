@@ -441,44 +441,16 @@ set(LIBSTRONGTALK_SOURCE_FILES
 )
 
 set(STRONGTALKTEST_SOURCE_FILES
-# prims/alienInteger
-#     test/prims/alienIntegerCallout0Tests.cpp  # CRASH: Linux/GCC & Linux/clang & wine/Mingw
-#     test/prims/alienIntegerCallout1Tests.cpp  # OK: wine/Mingw FAIL: Linux/GCC & Linux/clang
-    test/prims/alienIntegerCallout2Tests.cpp
-    test/prims/alienIntegerCallout3Tests.cpp
-    test/prims/alienIntegerCallout4Tests.cpp
-    test/prims/alienIntegerCallout5Tests.cpp
-    test/prims/alienIntegerCallout6Tests.cpp
-    test/prims/alienIntegerCallout7Tests.cpp
-    test/prims/alienIntegerCalloutWithArgumentsTests.cpp # FAIL: Linux/clang
-# prims/behavior OK: Linux/GCC & wine/Mingw
-    test/prims/behaviorPrimsSuperclassTests.cpp
-    test/prims/behaviorPrimsTests.cpp
-# prims/byteArray
-    #test/prims/byteArrayPrimsTests.cpp     # FAIL: Linux/GCC & Linux/clang & wine/Mingw
-    test/prims/dbyteArrayPrimsTests.cpp
-# prims/alien OK: Linux/GCC & wine/Mingw
-    test/prims/directAlienPrimsTests.cpp
-    test/prims/indirectAlienPrimsTests.cpp
-# prims/integer OK: Linux/GCC & wine/Mingw
-    test/prims/integerOpsTests.cpp
-    test/prims/largeIntegerByteArrayPrimTests.cpp
-    test/prims/objArrayPrimsTests.cpp
-# prims/oop OK: Linux/GCC & wine/Mingw
-    test/prims/oop_prims.cpp
-    test/prims/oop_prims_perform.cpp # FAIL: Linux/clang
-# prims OK: Linux/GCC & wine/Mingw
-    test/prims/pointerAlienPrimsTest.cpp
-    test/prims/smi_prims_tests.cpp
-    test/prims/systemPrims.cpp
-# runtime OK: Linux/GCC & Mingw/wine
-    test/runtime/testProcess.hpp
-# utilities OK: Linux/GCC & Mingw/wine
-    test/utilities/lprintf_test.cpp
-    test/utilities/testNotifier.hpp
-    test/utilities/testUtils.hpp
-# ??? what is it for ???
-#     test/callbacks.cpp
+     # byteArray
+        test/prims/dbyteArrayPrimsTests.cpp
+     # alien
+        test/prims/directAlienPrimsTests.cpp
+     # integer
+        test/prims/largeIntegerByteArrayPrimTests.cpp
+        test/prims/objArrayPrimsTests.cpp
+     # oop
+        test/prims/oop_prims.cpp
+        test/prims/oop_prims_perform.cpp # FAIL: Linux/clang
 )
 
 set(LIBEASYUNIT_SOURCE_FILES
@@ -510,11 +482,16 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 add_executable(strongtalk-unit
         test/unit/virtualspace.cpp
         test/unit/longInt.cpp
+        test/unit/lprintf_test.cpp
 )
 target_link_libraries(strongtalk-unit libstrongtalk gtest gtest_main)
 
 add_executable(strongtalk-integration
         test/integration/main.cc
+
+        test/runtime/testProcess.hpp
+        test/utilities/testNotifier.hpp
+        test/utilities/testUtils.hpp
 #compiler
         #test/integration/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Linux/clang & Mingw/wine
         test/integration/compiler/node_tests.cpp
@@ -532,7 +509,7 @@ add_executable(strongtalk-integration
         test/integration/memory/doubleByteArrayTests.cpp
         test/integration/memory/doubleValueArrayTests.cpp
         test/integration/memory/doublOopKlassTests.cpp
-        #test/integration/memory/edenMark.hpp
+        test/memory/edenMark.hpp
     # memOop
         test/integration/memory/memOopAllocationTests.cpp
         test/integration/memory/memOopKlassTests.cpp
@@ -547,6 +524,38 @@ add_executable(strongtalk-integration
         #test/integration/memory/proxyPrimsTest.cpp # VM asserts failures but all tests (assers in tests) succeed
         test/integration/memory/universe_tests.cpp
         test/integration/memory/vframeKlassTests.cpp
+# prims
+    # alienInteger
+        #test/integration/prims/alienIntegerCallout0Tests.cpp # CRASH: Linux/GCC & Linux/clang & wine/Mingw
+        #test/integration/prims/alienIntegerCallout1Tests.cpp # OK: wine/Mingw FAIL: Linux/GCC & Linux/clang
+        test/integration/prims/alienIntegerCallout2Tests.cpp
+        test/integration/prims/alienIntegerCallout3Tests.cpp
+        test/integration/prims/alienIntegerCallout4Tests.cpp
+        test/integration/prims/alienIntegerCallout5Tests.cpp
+        test/integration/prims/alienIntegerCallout6Tests.cpp
+        test/integration/prims/alienIntegerCallout7Tests.cpp
+        test/integration/prims/alienIntegerCalloutWithArgumentsTests.cpp # FAIL: Linux/clang
+     # behavior
+        test/integration/prims/behaviorPrimsSuperclassTests.cpp
+        test/integration/prims/behaviorPrimsTests.cpp
+     # byteArray
+        #test/integration/prims/byteArrayPrimsTests.cpp # FAIL: Linux/GCC & Linux/clang & wine/Mingw
+        #test/integration/prims/dbyteArrayPrimsTests.cpp # CRASH with gtest
+     # alien
+        #test/integration/prims/directAlienPrimsTests.cpp # CRASH with gtest
+        test/integration/prims/indirectAlienPrimsTests.cpp
+     # integer
+        test/integration/prims/integerOpsTests.cpp
+        #test/integration/prims/largeIntegerByteArrayPrimTests.cpp # CRASH with gtest
+        #test/integration/prims/objArrayPrimsTests.cpp # CRASH with gtest
+     # oop
+        #test/integration/prims/oop_prims.cpp # CRASH with gtest
+        #test/integration/prims/oop_prims_perform.cpp # FAIL: Linux/clang CRASH: with gtest
+     #
+        test/integration/prims/pointerAlienPrimsTest.cpp
+        test/integration/prims/smi_prims_tests.cpp
+        test/integration/prims/systemPrims.cpp
+
 )
 target_link_libraries(strongtalk-integration libstrongtalk gtest)
 
