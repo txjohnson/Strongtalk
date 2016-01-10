@@ -14,6 +14,7 @@ using namespace easyunit;
 extern "C" void load_image();
 
 static Event* done;
+int easyunit_return_value = -1;
 
 typedef int (*osfn)(void*);
 typedef int (*fn)(DeltaProcess*);
@@ -120,7 +121,8 @@ int TestDeltaProcess::launch_tests(DeltaProcess *process) {
   process->suspend_at_creation();
   DeltaProcess::set_active(process);
   initializeSmalltalkEnvironment();
-  TestRegistry::runAndPrint();
+  auto result = TestRegistry::runAndPrint();
+  easyunit_return_value = result->getTestCaseCount() - result->getSuccesses();
   os::signal_event(done);
   return 0;
 }
@@ -162,4 +164,5 @@ int main(int argc, char* argv[]) {
   start_vm_process(&testProcess);
   os::wait_for_event(done);
   stop_vm_process();
+  return easyunit_return_value;
 }
