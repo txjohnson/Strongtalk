@@ -37,10 +37,11 @@ cc_binary(
     data = ["strongtalk.bst"],
 )
 
-# BEWARE: easyunit exists with 0 even with failures
 cc_test(
     name = "strongtalk-test",
     srcs = glob(["test/**/*.cpp", "test/**/*.hpp"], exclude=[
+        "test/gtest-1.7.0/**", "test/unit/**", "test/integration/**",
+
         "test/compiler/compiler_tests.cpp", # CRASH
         "test/interpreter/missingMethodBuilderTest.cpp", # CRASH -- differs from cmake version
         "test/memory/contextKlassTests.cpp", # CRASH
@@ -60,19 +61,12 @@ cc_test(
 )
 
 cc_test(
-    name = "my_test",
-    srcs = ["test/my_test.cc"],
-    copts = ["-O", "-Iexternal/gtest/include"],
-    deps = ["@gtest//:main"],
-)
-
-cc_test(
     name = "strongtalk-unit",
     srcs = glob([
         "test/unit/**/*.cpp",
 
         # try running integration tests here and if they pass, they are actually unit tests
-        #"test/integration/compiler/node_tests.cpp",
+        #"test/integration/interpreter/hCodeBufferTests.cpp",
         "test/runtime/testProcess.hpp",
         "test/utilities/testNotifier.hpp",
     ]),
