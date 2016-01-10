@@ -2,6 +2,7 @@
 
 # include "incls/_precompiled.incl"
 # include "incls/_oop_prims.cpp.incl"
+#include "rSet.inline.hpp"
 
 
 class OopPrimitivesBecomeTest : public ::testing::Test {

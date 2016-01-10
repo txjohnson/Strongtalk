@@ -80,10 +80,19 @@ cc_test(
     srcs = glob([
         "test/integration/**/*.cc",
         "test/integration/**/*.cpp",
+        "test/memory/edenMark.hpp",
         "test/runtime/testProcess.hpp",
         "test/utilities/testNotifier.hpp",
+        "test/utilities/testUtils.hpp",
     ], exclude = [
         "test/integration/interpreter/missingMethodBuilderTest.cpp", # CRASH -- differs from cmake version
+        "test/integration/prims/alienIntegerCalloutWithArgumentsTests.cpp", # CRASH -- differs from cmake version
+        "test/integration/prims/dbyteArrayPrimsTests.cpp",
+        "test/integration/prims/directAlienPrimsTests.cpp",
+        "test/integration/prims/largeIntegerByteArrayPrimTests.cpp",
+        "test/integration/prims/objArrayPrimsTests.cpp",
+        "test/integration/prims/oop_prims.cpp",
+        "test/integration/prims/oop_prims_perform.cpp", # CRASH with VM error messages
     ]),
     copts = ["-Iexternal/gtest/include"] + INCL_PATH + TEST_INCL_PATH + COPTS + DEFINES,
     deps = [":libstrongtalk", "@gtest//:main"],
