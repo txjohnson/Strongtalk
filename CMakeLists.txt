@@ -482,12 +482,12 @@ set(STRONGTALKTEST_SOURCE_FILES
     test/prims/alienIntegerCallout5Tests.cpp
     test/prims/alienIntegerCallout6Tests.cpp
     test/prims/alienIntegerCallout7Tests.cpp
-    #test/prims/alienIntegerCalloutWithArgumentsTests.cpp # FAIL: Linux/clang
+    test/prims/alienIntegerCalloutWithArgumentsTests.cpp # FAIL: Linux/clang
 # prims/behavior OK: Linux/GCC & wine/Mingw
     test/prims/behaviorPrimsSuperclassTests.cpp
     test/prims/behaviorPrimsTests.cpp
 # prims/byteArray
-    test/prims/byteArrayPrimsTests.cpp     # FAIL: Linux/GCC & Linux/clang & wine/Mingw
+    #test/prims/byteArrayPrimsTests.cpp     # FAIL: Linux/GCC & Linux/clang & wine/Mingw
     test/prims/dbyteArrayPrimsTests.cpp
 # prims/alien OK: Linux/GCC & wine/Mingw
     test/prims/directAlienPrimsTests.cpp
