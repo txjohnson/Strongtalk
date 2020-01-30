@@ -57,11 +57,11 @@ rSet::rSet() {
 }
 
 void* rSet::operator new(size_t size) {
-  assert((int(Universe::new_gen.low_boundary) & (card_size - 1)) == 0,
+  assert((intptr_t(Universe::new_gen.low_boundary) & (card_size - 1)) == 0,
 	 "new must start at card boundary");
-  assert((int(Universe::old_gen.low_boundary) & (card_size - 1)) == 0,
+  assert((intptr_t(Universe::old_gen.low_boundary) & (card_size - 1)) == 0,
 	 "old must start at card boundary");
-  assert((int(Universe::old_gen.high_boundary) & (card_size - 1)) == 0,
+  assert((intptr_t(Universe::old_gen.high_boundary) & (card_size - 1)) == 0,
 	 "old must end at card boundary");
   assert(card_size >= 512, "card_size must be at least 512");
   int bmsize =

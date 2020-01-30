@@ -75,7 +75,9 @@ template<class E> class GrowableArray : public GenericGrowableArray {
 
   E at(int i) const {
     assert(0 <= i && i < len, "illegal index");
-    return reinterpret_cast<E> (data[i]);
+//    E out = reinterpret_cast<E> (reinterpret_cast <intptr_t> (data[i]));
+//    return out;
+	return (E)(intptr_t (data[i]));
   }
 
   E first() const {

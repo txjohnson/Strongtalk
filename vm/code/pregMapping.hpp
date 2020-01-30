@@ -47,9 +47,9 @@ class PRegMapping: public PrintableResourceObj {
   bool                  _NLRinProgress;		// indicates that a NLR is in progress (see also Note above)
   Locations*		_locs;			// the locations freelist
   GrowableArray<PReg*>*	_pregs;			// the pregs, a NULL entry means the slot is not used
-  GrowableArray<int>*	_regLocs;		// the register to which a preg is mapped or -1
-  GrowableArray<int>*	_stkLocs;		// the stack location to which a preg is mapped or -1
-  GrowableArray<int>*	_tmpLocs;		// a list of temporary locations used by instances of Temporary
+  GrowableArray<intptr_t>*	_regLocs;		// the register to which a preg is mapped or -1
+  GrowableArray<intptr_t>*	_stkLocs;		// the stack location to which a preg is mapped or -1
+  GrowableArray<intptr_t>*	_tmpLocs;		// a list of temporary locations used by instances of Temporary
   						// (these locations will be freed when the mapping is copied)
 
   // Helper routines

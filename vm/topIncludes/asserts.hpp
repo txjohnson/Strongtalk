@@ -65,7 +65,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
   assert_type(obj,process,msg)
 
 #define assert_oop_aligned(p) \
-  assert((int)(p) % 4 == 0, "not word aligned")
+  assert(((intptr_t)(p)) % alignof(void*) == 0, "not word aligned")
 
 
 #ifndef DEBUG

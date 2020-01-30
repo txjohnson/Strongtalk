@@ -119,8 +119,8 @@ class AllStatic {
 const int min_resource_chunk_size = 256 * K;
 const int min_resource_free_size  =  32 * K;
 
-char* AllocatePageAligned(int size, char* name);
-char* AllocateHeap(int size, char* name);
+char* AllocatePageAligned(int size, const char* name);
+char* AllocateHeap(int size, const char* name);
 void  FreeHeap(void* p);
 
 extern "C" bool PrintResourceAllocation; // to break cycle in includeDB

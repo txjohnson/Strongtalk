@@ -524,15 +524,15 @@ int PIC::code_for_methodOops_only(char* entry, PIC_contents* c) {
   } else {
     // handle smi methodOop first
     put_disp(p, StubRoutines::PIC_stub_entry(1 + c->m));
-    put_word(p, int(smiKlassObj));
-    put_word(p, int(c->smi_methodOop));
+    put_word(p, intptr_t(smiKlassObj));
+    put_word(p, intptr_t(c->smi_methodOop));
     assert(entry + PIC_methodOop_only_offset + PIC_methodOop_entry_size == p, "constant value inconsistent with code pattern");
   }
   char* p1 = p;
   for (int i = 0; i < c->m; i++) {
     assert(c->methodOop_klasses[i] != smiKlassObj, "should not be smiKlassObj");
-    put_word(p, int(c->methodOop_klasses[i]));
-    put_word(p, int(c->methodOops[i]));
+    put_word(p, intptr_t(c->methodOop_klasses[i]));
+    put_word(p, intptr_t(c->methodOops[i]));
   }
   assert(p1 + c->m * PIC_methodOop_entry_size == p, "constant value inconsistent with code pattern");
   return p - entry;
@@ -571,7 +571,7 @@ int PIC::code_for_polymorphic_case(char* entry, PIC_contents* c) {
       assert(c->nmethod_klasses[i] != smiKlassObj, "should not be smiKlassObj");
       put_shrt(p, cmp_opcode);
       assert(entry + PIC_nmethod_entry_offset + i*PIC_nmethod_entry_size + PIC_nmethod_klass_offset == p, "constant value inconsistent with code pattern");
-      put_word(p, int(c->nmethod_klasses[i]));
+      put_word(p, intptr_t(c->nmethod_klasses[i]));
       // je nmethod(j)
       put_shrt(p, jz_opcode);
       assert(entry + PIC_nmethod_entry_offset + i*PIC_nmethod_entry_size + PIC_nmethod_offset == p, "constant value inconsistent with code pattern");
@@ -600,7 +600,7 @@ int PIC::code_for_megamorphic_case(char* entry) {
   put_byte(p, call_opcode);
   put_disp(p, StubRoutines::megamorphic_ic_entry());
   assert(entry + MIC_selector_offset == p, "layout constant inconsistent with code pattern");
-  put_word(p, int(selector()));	// used for fast lookup
+  put_word(p, intptr_t(selector()));	// used for fast lookup
   assert(entry + MIC_code_size == p, "layout constant inconsistent with code pattern");
   return p - entry;
 }
@@ -759,7 +759,7 @@ void PIC::print() {
     switch (it.state()) {
       case PIC_Iterator::at_smi_nmethod: // fall through
       case PIC_Iterator::at_nmethod    : printf("\t-    nmethod  : %#x (entry %#x)\n", 
-                                           (int)it.compiled_method(), (int)it.get_call_addr()); break;
+                                           (intptr_t)it.compiled_method(), (intptr_t)it.get_call_addr()); break;
       case PIC_Iterator::at_methodOop  : printf("\t-    methodOop: %s\n", it.interpreted_method()->print_value_string()); break;
       default: ShouldNotReachHere();
     }

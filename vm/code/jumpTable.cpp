@@ -181,12 +181,12 @@ void jumpTableEntry::initialize_as_link(char* link) {
 }
 
 void jumpTableEntry::initialize_nmethod_stub(char* dest) {
-  fill_entry(jump_instruction, dest - (int) state_addr(), nmethod_entry);
+  fill_entry(jump_instruction, dest - (intptr_t) state_addr(), nmethod_entry);
 }
 
 void jumpTableEntry::initialize_block_closure_stub() {
   fill_entry(jump_instruction,
-	     StubRoutines::compile_block_entry() - (int) state_addr(),
+	     StubRoutines::compile_block_entry() - (intptr_t) state_addr(),
              block_closure_entry);
 }
 
@@ -215,16 +215,16 @@ char** jumpTableEntry::destination_addr() const {
 }
 
 char* jumpTableEntry::destination() const {
-  return *destination_addr() + (int) state_addr();
+  return *destination_addr() + (intptr_t) state_addr();
 }
 
 void jumpTableEntry::set_destination(char* dest) {
-  *destination_addr() = dest - (int) state_addr();
+  *destination_addr() = dest - (intptr_t) state_addr();
 }
 
 int jumpTableEntry::next_free() const {
   assert(is_unused(), "must be a unused entry");
-  return (int) *destination_addr();
+  return (intptr_t) *destination_addr();
 }
 
 nmethod* jumpTableEntry::method() const {
@@ -280,7 +280,7 @@ nmethod* jumpTableEntry::parent_nmethod(int& index) const {
 
 void jumpTableEntry::print() {
   if (is_unused()) { 
-    std->print_cr("Unused {next = %d}", (int) destination());
+    std->print_cr("Unused {next = %d}", (intptr_t) destination());
     return;
   }
   if (is_nmethod_stub()) {
@@ -316,7 +316,7 @@ void jumpTableEntry::print() {
   fatal("unknown jump table entry");
 }
 
-void jumpTableEntry::report_verify_error(char* message) {
+void jumpTableEntry::report_verify_error(const char* message) {
   error("jumpTableEntry %#x: %s", this, message);
 }
 

@@ -36,20 +36,20 @@ bool patch_uncommon_call(frame* f) {
   //  from: call _unused_uncommon_trap
   //  to:   call _used_uncommon_trap
 
-  int* next_inst = (int*) f->pc();
-  int* dest_addr = next_inst-1;
-  int  dest      = *dest_addr + (int) next_inst;
+  intptr_t* next_inst = (intptr_t*) f->pc();
+  intptr_t* dest_addr = next_inst-1;
+  intptr_t  dest      = *dest_addr + (intptr_t) next_inst;
 
   // return true if the call has been executed before
-  if (dest == (int)StubRoutines::used_uncommon_trap_entry())
+  if (dest == (intptr_t)StubRoutines::used_uncommon_trap_entry())
     return true;
 
-  assert(dest == (int)StubRoutines::unused_uncommon_trap_entry(), "Make sure we are patching the right call");
+  assert(dest == (intptr_t)StubRoutines::unused_uncommon_trap_entry(), "Make sure we are patching the right call");
 
   // patch with used_uncommon_trap
-  *dest_addr = ((int)StubRoutines::used_uncommon_trap_entry()) - ((int) next_inst);
+  *dest_addr = ((intptr_t)StubRoutines::used_uncommon_trap_entry()) - ((intptr_t) next_inst);
 
-  assert(*dest_addr + (int) next_inst == (int)StubRoutines::used_uncommon_trap_entry(), "Check the patch");
+  assert(*dest_addr + (intptr_t) next_inst == (intptr_t)StubRoutines::used_uncommon_trap_entry(), "Check the patch");
 
   // return false since the call is patched
   return false;

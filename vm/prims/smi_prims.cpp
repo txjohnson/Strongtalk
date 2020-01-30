@@ -34,8 +34,8 @@ int smiOopPrimitives::number_of_calls;
 # define SMI_RELATIONAL_OP(op)                                     \
   if (!argument->is_smi())                                         \
     return markSymbol(vmSymbols::first_argument_has_wrong_type()); \
-  int a = (int) receiver;                                          \
-  int b = (int) argument;                                          \
+  intptr_t a = (intptr_t) receiver;                                          \
+  intptr_t b = (intptr_t) argument;                                          \
   return a op b ? trueObj : falseObj
 
 PRIM_DECL_2(smiOopPrimitives::lessThan, oop receiver, oop argument) {
@@ -79,7 +79,7 @@ PRIM_DECL_2(smiOopPrimitives::bitAnd, oop receiver, oop argument) {
   ASSERT_RECEIVER;
   if (!argument->is_smi())
     return markSymbol(vmSymbols::first_argument_has_wrong_type());
-  return smiOop(int(receiver) & int(argument));  
+  return smiOop(intptr_t(receiver) & intptr_t(argument));
 }
 
 PRIM_DECL_2(smiOopPrimitives::bitOr, oop receiver, oop argument) {
@@ -87,7 +87,7 @@ PRIM_DECL_2(smiOopPrimitives::bitOr, oop receiver, oop argument) {
   ASSERT_RECEIVER;
   if (!argument->is_smi())
     return markSymbol(vmSymbols::first_argument_has_wrong_type());
-  return smiOop(int(receiver) | int(argument));  
+  return smiOop(intptr_t(receiver) | intptr_t(argument));
 }
 
 PRIM_DECL_2(smiOopPrimitives::bitXor, oop receiver, oop argument) {
@@ -95,7 +95,7 @@ PRIM_DECL_2(smiOopPrimitives::bitXor, oop receiver, oop argument) {
   ASSERT_RECEIVER;
   if (!argument->is_smi())
     return markSymbol(vmSymbols::first_argument_has_wrong_type());
-  return smiOop(int(receiver) ^ int(argument));  
+  return smiOop(intptr_t(receiver) ^ intptr_t(argument));
 }
 
 PRIM_DECL_2(smiOopPrimitives::bitShift, oop receiver, oop argument) {
@@ -113,17 +113,17 @@ PRIM_DECL_2(smiOopPrimitives::bitShift, oop receiver, oop argument) {
       // 0 < n < maxShiftCnt < bitsPerWord	// |<- n ->|<- 1 ->|<- 32-(n+1) ->|
       int mask1 =  1 << (bitsPerWord - (n+1));	// |00...00|   1   |00..........00|
       int mask2 = -1 << (bitsPerWord - n);	// |11...11|   0   |00..........00|
-      if (((int(receiver) + mask1) & mask2) == 0) {
+      if (((intptr_t(receiver) + mask1) & mask2) == 0) {
         // i.e., the bit at position (32-(n+1)) is the same as the upper n bits, thus
 	// after shifting out the upper n bits the sign hasn't changed -> no overflow
-        return smiOop(int(receiver) << n);
+        return smiOop(intptr_t(receiver) << n);
       }
     }
     return markSymbol(vmSymbols::smi_overflow());
   } else {
     // arithmetic shift right
     if (n < -maxShiftCnt) n = -maxShiftCnt;
-    return smiOop((int(receiver) >> -n) & (-1 << Tag_Size));
+    return smiOop((intptr_t(receiver) >> -n) & (-1 << Tag_Size));
   }
 }
 
@@ -137,10 +137,10 @@ PRIM_DECL_2(smiOopPrimitives::rawBitShift, oop receiver, oop argument) {
   int n = smiOop(argument)->value();
   if (n >= 0) {
     // logical shift right
-    return smiOop((unsigned int)receiver << (n % bitsPerWord));
+    return smiOop((uintptr_t)receiver << (n % bitsPerWord));
   } else {
     // logical shift left
-    return smiOop(((unsigned int)receiver >> ((-n) % bitsPerWord)) & (-1 << Tag_Size));
+    return smiOop(((uintptr_t)receiver >> ((-n) % bitsPerWord)) & (-1 << Tag_Size));
   }
 }
 

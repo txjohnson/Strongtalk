@@ -601,7 +601,7 @@ void Universe::remove_global_at(int index) {
 }
 
 bool Universe::on_page_boundary(void* addr) {
-  return ((int) addr) % page_size() == 0;
+  return ((intptr_t) addr) % page_size() == 0;
 }
 
 int Universe::page_size() {

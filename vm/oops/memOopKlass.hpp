@@ -56,7 +56,7 @@ class memOopKlass: public Klass {
   oop oop_shallow_copy(oop obj, bool tenured);
 
   // printing support
-  char* name() const { return "memOop"; }
+  const char* name() const { return "memOop"; }
 
   // class creation
   friend void set_memOopKlass_vtbl(Klass* k);

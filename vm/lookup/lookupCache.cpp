@@ -88,8 +88,8 @@ class cacheElement { // : ValueObj {
 
   void verify() {
     assert(sizeof(cacheElement) == 16, 		"checking structure layout");
-    assert((int)&this->key-(int)this == 0,  	"checking structure layout");
-    assert((int)&this->result-(int)this == 8,  	"checking structure layout");
+    assert((intptr_t)&this->key-(intptr_t)this == 0,  	"checking structure layout");
+    assert((intptr_t)&this->result-(intptr_t)this == 8,  	"checking structure layout");
 
     if (key.klass() || key.selector_or_method()) {
       if (result.is_empty()) {
@@ -133,8 +133,8 @@ class cacheElement { // : ValueObj {
 static cacheElement primary[primary_cache_size];
 static cacheElement secondary[secondary_cache_size];
 
-int lookupCache::primary_cache_address()	{ return int(&primary[0]); }
-int lookupCache::secondary_cache_address()	{ return int(&secondary[0]); }
+intptr_t lookupCache::primary_cache_address()	{ return intptr_t(&primary[0]); }
+intptr_t lookupCache::secondary_cache_address()	{ return intptr_t(&secondary[0]); }
 
 void lookupCache::flush() {
   int index;
@@ -179,9 +179,9 @@ void lookupCache::verify() {
     secondary[index].verify();
 }
 
-inline unsigned int lookupCache::hash_value(LookupKey* key) {
+inline uintptr_t lookupCache::hash_value(LookupKey* key) {
   return
-    ((unsigned int) key->klass() ^ (unsigned int) key->selector_or_method())
+    ((uintptr_t) key->klass() ^ (uintptr_t) key->selector_or_method())
     / sizeof(cacheElement);
 }
 

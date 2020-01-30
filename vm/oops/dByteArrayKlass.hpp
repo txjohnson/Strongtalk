@@ -46,7 +46,7 @@ class doubleByteArrayKlass: public memOopKlass {
 
   friend void set_doubleByteArrayKlass_vtbl(Klass* k);
 
-  char* name() const { return "doubleByteArray"; }
+  const char* name() const { return "doubleByteArray"; }
 
  // ALL FUNCTIONS BELOW THIS POINT ARE DISPATCHED FROM AN OOP 
  public:

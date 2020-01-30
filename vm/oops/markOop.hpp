@@ -38,7 +38,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 class markOopDesc: public oopDesc {
  private:
-  unsigned int value()  const { return (unsigned int) this; }
+  uintptr_t value()  const { return (uintptr_t) this; }
   friend   int assign_hash(markOop& m);
 
   enum { no_hash    = 0, 

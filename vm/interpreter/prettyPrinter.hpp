@@ -96,7 +96,7 @@ class defaultPrettyPrintStream : public prettyPrintStream {
 
 class byteArrayPrettyPrintStream: public defaultPrettyPrintStream {
  private:
-  GrowableArray<int>* _buffer;
+  GrowableArray<intptr_t>* _buffer;
 
  public:
   byteArrayPrettyPrintStream();

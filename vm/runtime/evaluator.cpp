@@ -100,7 +100,7 @@ class TokenStream : public StackObj {
   GrowableArray<char*>* tokens;
   int pos;
   void tokenize(char* str);
-  bool match(char* str) { return strcmp(current(), str) == 0; }
+  bool match(const char* str) { return strcmp(current(), str) == 0; }
  public:
   TokenStream(char* line) {
     tokens = new GrowableArray<char*>(10);
@@ -142,7 +142,7 @@ class TokenStream : public StackObj {
 };
 
 
-static char* seps = " \t\n";
+static const char* seps = " \t\n";
 
 void TokenStream::tokenize(char* str) {
   char* token = strtok(str, seps);
@@ -206,7 +206,7 @@ bool TokenStream::is_symbol(oop* addr) {
   char name[200];
   unsigned int length; 
   if (sscanf(current(), "#%[a-zA-Z0-9_]%n", name, &length) == 1 && strlen(current()) == length) {
-    *addr = oopFactory::new_symbol(name);
+    *addr = oopFactory::new_symbol(&name[0]);
     return true;
   }
   return false;

@@ -53,7 +53,7 @@ void IC::replace(nmethod* nm) {
 
 
 void IC::print() {
-  char* s;
+  const char* s;
   switch (shape()) {
     case anamorphic : s = "Anamorphic";  break;
     case monomorphic: s = "Monomorphic"; break;

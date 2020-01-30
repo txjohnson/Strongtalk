@@ -40,7 +40,7 @@ char* PrimitivesGenerator::allocateBlock(int n) {
     case 9	: block_klass = &::nineArgumentBlockKlassObj;  break;
   }
 
-  Address block_klass_addr =  Address((int)block_klass, relocInfo::external_word_type);
+  Address block_klass_addr =  Address((intptr_t)block_klass, relocInfo::external_word_type);
   Label need_scavenge, fill_object;
 
   char* entry_point = masm->pc();
@@ -73,14 +73,14 @@ char* PrimitivesGenerator::allocateContext_var() {
   char* entry_point = masm->pc();
   
   masm->movl(ecx, Address(esp, +oopSize));	// load length  (remember this is a smiOop)
-  masm->movl(eax, Address((int)&eden_top, relocInfo::external_word_type));
+  masm->movl(eax, Address((intptr_t)&eden_top, relocInfo::external_word_type));
   masm->movl(edx, ecx);
   masm->addl(edx, 3*oopSize);
   masm->addl(edx, eax);
 // Equals? ==>  masm->leal(edx, Address(ecx, eax, Address::times_1, 3*oopSize));
-  masm->cmpl(edx, Address((int)&eden_end, relocInfo::external_word_type));
+  masm->cmpl(edx, Address((intptr_t)&eden_end, relocInfo::external_word_type));
   masm->jcc(Assembler::greater, need_scavenge);
-  masm->movl(Address((int)&eden_top, relocInfo::external_word_type), edx);
+  masm->movl(Address((intptr_t)&eden_top, relocInfo::external_word_type), edx);
 
  masm->bind(fill_object);
   masm->movl(ebx, contextKlass_addr());

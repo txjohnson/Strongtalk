@@ -63,13 +63,13 @@ class ObjectLayoutClosure : StackObj {
   // Called for the markOop
   virtual void do_mark(markOop *m) = 0;
   // Called for each oop
-  virtual void do_oop(char* title, oop* o) = 0;
+  virtual void do_oop(const char* title, oop* o) = 0;
   // Called for each byte
-  virtual void do_byte(char* title, u_char* b) = 0;
+  virtual void do_byte(const char* title, u_char* b) = 0;
   // Called for each long
-  virtual void do_long(char* title, void** p) = 0;
+  virtual void do_long(const char* title, void** p) = 0;
   // Called for each double
-  virtual void do_double(char* title, double* d) = 0;
+  virtual void do_double(const char* title, double* d) = 0;
 
   // INDEXABLE PART
   // Called before iterating through the indexable part.

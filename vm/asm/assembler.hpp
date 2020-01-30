@@ -473,7 +473,7 @@ class MacroAssembler: public Assembler {
   void fpop();
 
   // debugging
-  static void print_reg(char* name, oop obj);
+  static void print_reg(const char* name, oop obj);
   static void inspector(oop edi, oop esi, oop ebp, oop esp, oop ebx, oop edx, oop ecx, oop eax, char* eip);
   void inspect(char* title = NULL);
 };

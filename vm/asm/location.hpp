@@ -161,7 +161,7 @@ const Location topOfFloatStack	= Location::specialLocation(5);	// only used if U
 class IntFreeList : public PrintableResourceObj {
  protected:
   int			_first;	// the first available integer
-  GrowableArray<int>*	_list;	// the list
+  GrowableArray<intptr_t>*	_list;	// the list
 
   void grow();
 

@@ -115,7 +115,7 @@ static void printRelocInfo(relocIterator* iter, outputStream* st) {
       
     case relocInfo::prim_type:
       st->print("%p, primitive call, ", addr);
-      target = (char*) (*addr + (int) addr + oopSize);
+      target = (char*) (*addr + (intptr_t) addr + oopSize);
       pd = primitives::lookup((fntype) target);
       if (pd != NULL) {
         st->print("(%s)", pd->name());

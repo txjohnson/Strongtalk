@@ -61,11 +61,11 @@ void PrimitivesGenerator::scavenge(int size) {
 }
 
 void PrimitivesGenerator::test_for_scavenge(Register dst, int size, Label& need_scavenge) {
-  masm->movl(dst, Address((int)&eden_top, relocInfo::external_word_type));
+  masm->movl(dst, Address((intptr_t)&eden_top, relocInfo::external_word_type));
   masm->addl(dst, size);
-  masm->cmpl(dst, Address((int)&eden_end, relocInfo::external_word_type));
+  masm->cmpl(dst, Address((intptr_t)&eden_end, relocInfo::external_word_type));
   masm->jcc(Assembler::greater, need_scavenge);
-  masm->movl(Address((int)&eden_top, relocInfo::external_word_type), dst);
+  masm->movl(Address((intptr_t)&eden_top, relocInfo::external_word_type), dst);
 }
 
 void PrimitivesGenerator::error_jumps() {
@@ -73,12 +73,12 @@ void PrimitivesGenerator::error_jumps() {
 #define VMSYMBOL_POSTFIX  _enum
 #define VMSYMBOL_ENUM_NAME(name) name##VMSYMBOL_POSTFIX
   
-  Address _smi_overflow				= Address((int)&vm_symbols[VMSYMBOL_ENUM_NAME(smi_overflow)],			relocInfo::external_word_type);
-  Address _division_by_zero			= Address((int)&vm_symbols[VMSYMBOL_ENUM_NAME(division_by_zero)],		relocInfo::external_word_type);
-  Address _receiver_has_wrong_type		= Address((int)&vm_symbols[VMSYMBOL_ENUM_NAME(receiver_has_wrong_type)],	relocInfo::external_word_type);
-  Address _division_not_exact			= Address((int)&vm_symbols[VMSYMBOL_ENUM_NAME(division_not_exact)],		relocInfo::external_word_type);
-  Address _first_argument_has_wrong_type	= Address((int)&vm_symbols[VMSYMBOL_ENUM_NAME(first_argument_has_wrong_type)],	relocInfo::external_word_type);
-  Address _allocation_failure           	= Address((int)&vm_symbols[VMSYMBOL_ENUM_NAME(failed_allocation)],  	        relocInfo::external_word_type);
+  Address _smi_overflow				= Address((intptr_t)&vm_symbols[VMSYMBOL_ENUM_NAME(smi_overflow)],			relocInfo::external_word_type);
+  Address _division_by_zero			= Address((intptr_t)&vm_symbols[VMSYMBOL_ENUM_NAME(division_by_zero)],		relocInfo::external_word_type);
+  Address _receiver_has_wrong_type		= Address((intptr_t)&vm_symbols[VMSYMBOL_ENUM_NAME(receiver_has_wrong_type)],	relocInfo::external_word_type);
+  Address _division_not_exact			= Address((intptr_t)&vm_symbols[VMSYMBOL_ENUM_NAME(division_not_exact)],		relocInfo::external_word_type);
+  Address _first_argument_has_wrong_type	= Address((intptr_t)&vm_symbols[VMSYMBOL_ENUM_NAME(first_argument_has_wrong_type)],	relocInfo::external_word_type);
+  Address _allocation_failure           	= Address((intptr_t)&vm_symbols[VMSYMBOL_ENUM_NAME(failed_allocation)],  	        relocInfo::external_word_type);
   
 #undef  VMSYMBOL_POSTFIX
 #undef  VMSYMBOL_ENUM_NAME
@@ -215,12 +215,12 @@ bool GeneratedPrimitives::_is_initialized = false;
 //char GeneratedPrimitives::_code[GeneratedPrimitives::_code_size];
 char* GeneratedPrimitives::_code = NULL;
 
-char* GeneratedPrimitives::patch(char* name, char* entry_point) {
+char* GeneratedPrimitives::patch(const char* name, char* entry_point) {
   primitives::patch(name, entry_point);
   return entry_point;
 }
 
-char* GeneratedPrimitives::patch(char* name, char* entry_point, int argument) {
+char* GeneratedPrimitives::patch(const char* name, char* entry_point, int argument) {
   char formated_name[100];
   assert(strlen(name) < 100, "primitive name longer the 100 characters - buffer overrun");
   sprintf(formated_name, name, argument);

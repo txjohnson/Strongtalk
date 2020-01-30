@@ -105,11 +105,11 @@ class byteArrayOopDesc: public memOopDesc {
     // Identical to copy_null_terminated but allocates the resulting string
     // in the C heap instead of in the resource area.
 
-  bool equals(char* name) {
+  bool equals(const char* name) {
     return equals(name, strlen(name));
   }
 
-  bool equals(char* name, int len) {
+  bool equals(const char* name, int len) {
     return len == length() && strncmp(chars(), name, len) == 0; }
   bool equals(byteArrayOop s) {
     return equals(s->chars(), s->length()); }

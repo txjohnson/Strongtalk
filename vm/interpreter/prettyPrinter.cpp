@@ -1674,7 +1674,7 @@ void prettyPrinter::print_body(deltaVFrame* fr, prettyPrintStream* output) {
 }
 
 byteArrayPrettyPrintStream::byteArrayPrettyPrintStream() : defaultPrettyPrintStream() {
-  _buffer = new GrowableArray<int>(200);
+  _buffer = new GrowableArray<intptr_t>(200);
 }
 
 void byteArrayPrettyPrintStream::print_char(char c)  {

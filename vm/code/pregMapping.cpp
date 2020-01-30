@@ -190,9 +190,9 @@ PRegMapping::PRegMapping(MacroAssembler* assm, int nofArgs, int nofRegs, int nof
   _NLRinProgress = false;
   _locs    = new Locations(nofArgs, nofRegs, nofTemps);
   _pregs   = new GrowableArray<PReg*>(initialSize);
-  _regLocs = new GrowableArray<int>(initialSize);
-  _stkLocs = new GrowableArray<int>(initialSize);
-  _tmpLocs = new GrowableArray<int>(2);
+  _regLocs = new GrowableArray<intptr_t>(initialSize);
+  _stkLocs = new GrowableArray<intptr_t>(initialSize);
+  _tmpLocs = new GrowableArray<intptr_t>(2);
   verify();
 }
 
@@ -584,8 +584,8 @@ void PRegMapping::makeInjective() {
 void PRegMapping::old_makeConformant(PRegMapping* with) {
   // determine which entries have to be adjusted (save values on the stack)
   char* begin_of_code = _assm->pc();
-  GrowableArray<int> src(4);
-  GrowableArray<int> dst(4);
+  GrowableArray<intptr_t> src(4);
+  GrowableArray<intptr_t> dst(4);
   int j = with->size();
   while (j-- > 0) {
     if (with->used(j)) {

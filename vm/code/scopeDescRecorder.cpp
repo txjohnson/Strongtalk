@@ -233,7 +233,7 @@ inline int ScopeDescRecorder::getValueIndex(int v) {
 }
 
 inline int ScopeDescRecorder::getOopIndex(oop o) {
-  return o == 0 ? 0 : oops->insertIfAbsent((int)o) + 1;
+  return o == 0 ? 0 : oops->insertIfAbsent((intptr_t)o) + 1;
 }
 
 void ScopeDescRecorder::emit_illegal_node(bool is_last) {
@@ -695,7 +695,7 @@ void ScopeDescRecorder::generate() {
 void ScopeDescRecorder::generateDependencies() {
   int end_marker = 0;
   for (int index = 0; index < dependants->length(); index++) {
-    int i = oops->insertIfAbsent((int)dependants->at(index));
+    int i = oops->insertIfAbsent((intptr_t)dependants->at(index));
     if (i > end_marker)  end_marker = i;
   }
   dependants_end = end_marker;

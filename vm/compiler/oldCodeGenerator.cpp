@@ -390,7 +390,7 @@ static int result_counter = 0;
 
 static void trace_result(int compilation, methodOop method, oop result) {
   ResourceMark rm;
-  std->print("%6d: 0x%08x (compilation %4d, ", result_counter++, int(result), compilation);
+  std->print("%6d: 0x%08x (compilation %4d, ", result_counter++, intptr_t(result), compilation);
   method->selector()->print_value();
   std->print(")\n", compilation);
 }
@@ -554,7 +554,7 @@ static char* nmethodAddr() {
 static void incCounter() {
   // Generates code to increment the nmethod execution counter
   char* addr = nmethodAddr() + nmethod::invocationCountOffset();
-  theMacroAssm->incl(Address(int(addr), relocInfo::internal_word_type));
+  theMacroAssm->incl(Address(intptr_t(addr), relocInfo::internal_word_type));
 }
 
 
@@ -613,10 +613,10 @@ static void checkRecompilation(Label& recompile_stub_call, Register t) {
   if (RecompilationPolicy::needRecompileCounter(theCompiler)) {
     // increment the nmethod execution counter and check limit
     char* addr = nmethodAddr() + nmethod::invocationCountOffset();
-    theMacroAssm->movl(t, Address(int(addr), relocInfo::internal_word_type));
+    theMacroAssm->movl(t, Address(intptr_t(addr), relocInfo::internal_word_type));
     theMacroAssm->incl(t);
     theMacroAssm->cmpl(t, theCompiler->get_invocation_counter_limit());
-    theMacroAssm->movl(Address(int(addr), relocInfo::internal_word_type), t);
+    theMacroAssm->movl(Address(intptr_t(addr), relocInfo::internal_word_type), t);
     theMacroAssm->jcc(Assembler::greaterEqual, recompile_stub_call);
   }
 }
@@ -764,7 +764,7 @@ void PrologueNode::gen() {
   // check for recompilation (do this last so stack frame is initialized properly)
   checkRecompilation(recompile_stub_call, temp2);
 
-  theMacroAssm->cmpl(esp, Address(int(active_stack_limit()), relocInfo::external_word_type));
+  theMacroAssm->cmpl(esp, Address(intptr_t(active_stack_limit()), relocInfo::external_word_type));
   theMacroAssm->jcc(Assembler::less, handle_stack_overflow);
   theMacroAssm->bind(continue_after_stack_overflow);
 }
@@ -864,7 +864,7 @@ void DLLNode::gen() {
   // CompiledDLL_Cache
   // This code pattern must correspond to the CompiledDLL_Cache layout
   // (make sure assembler is not optimizing mov reg, 0 into xor reg, reg!)
-  theMacroAssm->movl(edx, int(function()));	// part of CompiledDLL_Cache
+  theMacroAssm->movl(edx, intptr_t(function()));	// part of CompiledDLL_Cache
   theMacroAssm->inline_oop(dll_name());		// part of CompiledDLL_Cache
   theMacroAssm->inline_oop(function_name());	// part of CompiledDLL_Cache
   theMacroAssm->call(entry, relocInfo::runtime_call_type);
@@ -1027,7 +1027,7 @@ void TArithRRNode::gen() {
         theMacroAssm->test(x, Mem_Tag);
         theMacroAssm->jcc(Assembler::notZero, next(1)->label);
       }
-      arithRCOp(_op, x, int(y));			// y is smiOop -> needs no relocation info
+      arithRCOp(_op, x, intptr_t(y));			// y is smiOop -> needs no relocation info
       if (result) store(x, _dest, temp2, temp3);
     } else {
       // operation fails always
@@ -1080,7 +1080,7 @@ void ArithRRNode::gen() {
     Register x;
     bool result = setupRegister(_dest, arg1, _op, x, temp1);
     if (y->is_smi()) {
-      arithRCOp(_op, x, int(y));		// y is smiOop -> needs no relocation info
+      arithRCOp(_op, x, intptr_t(y));		// y is smiOop -> needs no relocation info
     } else {
       arithROOp(_op, x, y);
     }
@@ -1150,7 +1150,7 @@ void FloatArithRRNode::gen() {
 
 
 static Address doubleKlass_addr() {
-  return Address((int)&doubleKlassObj, relocInfo::external_word_type);
+  return Address((intptr_t)&doubleKlassObj, relocInfo::external_word_type);
 }
 
 /*
@@ -1261,14 +1261,14 @@ void ContextCreateNode::gen() {
     case 1:  primitiveCall(scope(), primitives::context_allocate1()); break;
     case 2:  primitiveCall(scope(), primitives::context_allocate2()); break;
     default: assert(_pdesc == primitives::context_allocate(), "bad context create prim");
-	     theMacroAssm->pushl((int)as_smiOop(_contextSize));
+	     theMacroAssm->pushl((intptr_t)as_smiOop(_contextSize));
 	     primitiveCall(scope(), _pdesc);
 	     theMacroAssm->addl(esp, oopSize);	// pop argument, this is not a Pascal call - should fix this
   }
   Register context = Mapping::asRegister(resultLoc);
   if (_src == NULL) {
     assert(scope()->isMethodScope() || scope()->method()->block_info() == methodOopDesc::expects_nil, "inconsistency");
-    theMacroAssm->movl(Address(context, contextOopDesc::parent_byte_offset()), NULL);
+    theMacroAssm->movl(Address(context, contextOopDesc::parent_byte_offset()), nullptr);
     // NULL for now; the interpreter uses nil. However, some of the
     // context verification code called from compiled code checks for
     // parents that are either a frame pointer, NULL or a context.
@@ -1735,7 +1735,7 @@ void BlockCreateNode::materialize() {
     case 1:   primitiveCall(scope(), primitives::block_allocate1()); break;
     case 2:   primitiveCall(scope(), primitives::block_allocate2()); break;
     default:  assert(_pdesc == primitives::block_allocate(), "bad block clone prim");
-	      theMacroAssm->pushl((int)as_smiOop(nofArgs));
+	      theMacroAssm->pushl((intptr_t)as_smiOop(nofArgs));
 	      primitiveCall(scope(), _pdesc);
 	      theMacroAssm->addl(esp, oopSize); // pop argument, this is not a Pascal call - should fix this
   }
@@ -1767,7 +1767,7 @@ void BlockCreateNode::materialize() {
   theMacroAssm->Store(contextReg, closureReg, blockClosureOopDesc::context_byte_offset());
   // assert(theCompiler->jumpTableID == closure->parent_id(), "nmethod id must be the same");
   // fix this: RELOCATION INFORMATION IS NEEDED WHEN MOVING THE JUMPTABLE (Snapshot reading etc.)
-  theMacroAssm->movl(Address(closureReg, blockClosureOopDesc::method_or_entry_byte_offset()), int(closure->jump_table_entry()));
+  theMacroAssm->movl(Address(closureReg, blockClosureOopDesc::method_or_entry_byte_offset()), intptr_t(closure->jump_table_entry()));
   if (VerifyCode) verifyBlockCode(closureReg);
   theMacroAssm->store_check(closureReg, temp1);
 }
@@ -1968,7 +1968,7 @@ void ArrayAtNode::gen() {
   Register index = temp2; load(_arg, index);	// index is modified -> load always into register
   Register array = movePRegToReg(_src, temp1);	// array is read_only
   // first element is at index 1 => subtract smi(1) (doesn't change smi/oop property)
-  theMacroAssm->subl(index, int(smiOop_one));
+  theMacroAssm->subl(index, intptr_t(smiOop_one));
   // preload size for bounds check if necessary
   if (_needBoundsCheck) {
     theMacroAssm->movl(size, Address(array, byteOffset(_sizeOffset)));
@@ -2054,7 +2054,7 @@ void ArrayAtPutNode::gen() {
   Register index = temp2; load(_arg, index);	// index is modified -> load always into register
   Register array = temp1; load(_src, array);	// array may be modified -> load always into register
   // first element is at index 1 => subtract smi(1) (doesn't change smi/oop property)
-  theMacroAssm->subl(index, int(smiOop_one));
+  theMacroAssm->subl(index, intptr_t(smiOop_one));
   // preload size for bounds check if necessary
   if (_needBoundsCheck) {
     theMacroAssm->movl(size, Address(array, byteOffset(_sizeOffset)));

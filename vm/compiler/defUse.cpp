@@ -58,7 +58,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 	// the original code broke the MSC++ 3.0 optimizer, so now it looks a bit weird.  -Urs 7/96
 	const char* glob = global ? "global" : "local";
 	const char* prop = ok ? "" : " couldn't propagate";
-	char* name = def->node->src()->name();	    // using fromNode or fromPR here will break
+	const char* name = def->node->src()->name();	    // using fromNode or fromPR here will break
 	void* from = PrintHexAddresses ? fromNode : 0;
 	void* to   = PrintHexAddresses ? toNode : 0;
 	cout(PrintCopyPropagation)->print("*%s cp:%s %s from N%ld (%#lx) to N%ld (%#lx)\n",

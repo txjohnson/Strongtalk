@@ -112,7 +112,7 @@ void weakArrayKlass::oop_follow_contents(oop obj) {
 // - static variables
 bool WeakArrayRegister::during_registration = false;
 GrowableArray<weakArrayOop>* WeakArrayRegister::weakArrays = NULL;
-GrowableArray<int>* WeakArrayRegister::nis                 = NULL;
+GrowableArray<intptr_t>* WeakArrayRegister::nis                 = NULL;
 
 // - Scavenge operations
 void WeakArrayRegister::begin_scavenge() {
@@ -165,7 +165,7 @@ void WeakArrayRegister::scavenge_check_for_dying_objects() {
 void WeakArrayRegister::begin_mark_sweep() {
   during_registration = true;
   weakArrays          = new GrowableArray<weakArrayOop>(100);
-  nis                 = new GrowableArray<int>(100); 
+  nis                 = new GrowableArray<intptr_t>(100); 
 }
 
 bool WeakArrayRegister::mark_sweep_register(weakArrayOop obj, int non_indexable_size) {

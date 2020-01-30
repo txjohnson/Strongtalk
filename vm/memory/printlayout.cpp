@@ -50,7 +50,7 @@ void PrintObjectClosure::do_mark(markOop *m) {
   st->cr(); 
 }
 
-void PrintObjectClosure::do_oop(char* title, oop* o) {
+void PrintObjectClosure::do_oop(const char* title, oop* o) {
   symbolOop name = obj->blueprint()->inst_var_name_at(o-(oop*)obj->addr());
   st->fill_to(indent_col);
   if (name) {
@@ -64,7 +64,7 @@ void PrintObjectClosure::do_oop(char* title, oop* o) {
   st->cr();
 }
 
-void PrintObjectClosure::do_byte(char* title, u_char* b) {
+void PrintObjectClosure::do_byte(const char* title, u_char* b) {
   st->fill_to(indent_col);
   st->print("%s", title);
   st->sp();
@@ -74,7 +74,7 @@ void PrintObjectClosure::do_byte(char* title, u_char* b) {
   else            st->print_cr("\\%o", c);
 }
 
-void PrintObjectClosure::do_long(char* title, void** p) {
+void PrintObjectClosure::do_long(const char* title, void** p) {
   st->fill_to(indent_col);
   st->print("%s", title);
   st->sp();
@@ -82,7 +82,7 @@ void PrintObjectClosure::do_long(char* title, void** p) {
   st->print_cr("%#lx", *p);
 }
 
-void PrintObjectClosure::do_double(char* title, double* d) {
+void PrintObjectClosure::do_double(const char* title, double* d) {
   st->fill_to(indent_col);
   st->print("%s", title);
   st->sp();

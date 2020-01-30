@@ -26,7 +26,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 # include "incls/_symbolKlass.cpp.incl"
 # include <ctype.h>
 
-symbolOop symbolKlass::allocateSymbol(char* value, int len) {
+symbolOop symbolKlass::allocateSymbol(const char* value, int len) {
   symbolOop sym = as_symbolOop(Universe::allocate_tenured(object_size(len)));
   sym->init_untagged_contents_mark();
   sym->set_klass_field(Universe::symbolKlassObj());

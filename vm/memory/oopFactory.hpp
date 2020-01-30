@@ -32,8 +32,8 @@ class oopFactory : AllStatic {
   static smiOop         new_smi(int value)       { return as_smiOop(value); }
   static doubleOop      new_double(double value);
   static doubleOop      clone_double_to_oldspace(doubleOop value);
-  static symbolOop      new_symbol(char* name,int len);
-  static symbolOop      new_symbol(char* name);
+  static symbolOop      new_symbol(const char* name,int len);
+  static symbolOop      new_symbol(const char* name);
   static symbolOop      new_symbol(byteArrayOop b);
   static associationOop new_association(symbolOop key, oop value, bool is_constant);
   static vframeOop      new_vframe(processOop process, int index);

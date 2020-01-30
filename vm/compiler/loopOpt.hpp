@@ -88,7 +88,7 @@ class CompiledLoop : public PrintableResourceObj {
   LoopHeaderNode* loopHeader() const	  { return _loopHeader; }
 
 
-  char* recognize();			  // does integer loop recognition; called after defs/uses built
+  const char* recognize();			  // does integer loop recognition; called after defs/uses built
 					  // returns NULL if successful, reason otherwise
   bool isIntegerLoop() const		  { return _isIntegerLoop; }
   void optimize();			  // perform general loop optimization
@@ -99,10 +99,10 @@ class CompiledLoop : public PrintableResourceObj {
  protected:
    void  discoverLoopNesting();
    int   findStartOfSend(int bci);
-   char* findLowerBound();
-   char* findUpperBound();
-   char* checkLoopVar();
-   char* checkUpperBound();
+   const char* findLowerBound();
+   const char* findUpperBound();
+   const char* checkLoopVar();
+   const char* checkUpperBound();
    NonTrivialNode* findDefInLoop(PReg* r);	  // find single definition of r in loop
    bool  isIncrement(PReg* r, ArithOpCode op);	  // is r a suitable loop variable increment?
    void  removeTagChecks();

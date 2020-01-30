@@ -27,7 +27,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 # include "incls/_opcode.cpp.incl"
 
-char* BranchOpName[] = {
+const char* BranchOpName[] = {
   "B=",    "B#",
   "B<",    "B<=",    "Bu<",    "Bu<=",
   "B>",    "B>=",    "Bu>",    "Bu>=",
@@ -37,7 +37,7 @@ char* BranchOpName[] = {
 };
 
 
-char* ArithOpName[] = {
+const char* ArithOpName[] = {
   "nil (INVALID)",
   "test",
 

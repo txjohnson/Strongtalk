@@ -291,7 +291,7 @@ bool ScopeDesc::verify() {
 
 // verify expression stack at a call or primitive call
 void ScopeDesc::verify_expression_stack(int bci) {
-  GrowableArray<int>* mapping = method()->expression_stack_mapping(bci);
+  GrowableArray<intptr_t>* mapping = method()->expression_stack_mapping(bci);
   for (int index = 0; index < mapping->length(); index++) {
     NameDesc* nd    = exprStackElem(mapping->at(index));
     if (nd == NULL) { warning("expression not found in nmethod"); continue; }

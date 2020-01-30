@@ -61,8 +61,8 @@ enum ArithOpCode {
 };
 
 
-extern char* BranchOpName[];		// indexed by BranchOpCode
-extern char* ArithOpName[];		// indexed by ArithOpCode
+extern const char* BranchOpName[];		// indexed by BranchOpCode
+extern const char* ArithOpName[];		// indexed by ArithOpCode
 extern bool  ArithOpIsCommutative[];	// indexed by ArithOpCode
 
 #endif

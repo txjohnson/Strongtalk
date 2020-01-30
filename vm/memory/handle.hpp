@@ -79,8 +79,8 @@ class PersistentHandle : public CHeapObj {
   static PersistentHandle* first;
 
 public:
-  static int savedOffset() {
-    return (int)&((PersistentHandle*)NULL)->saved;
+  static intptr_t savedOffset() {
+    return (intptr_t)&((PersistentHandle*)NULL)->saved;
   }
   PersistentHandle(oop toSave);
   ~PersistentHandle();

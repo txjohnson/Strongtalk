@@ -75,7 +75,7 @@ class Stub: public ResourceObj {
 class DebugInfoWriter: public PRegClosure {
  private:
   GrowableArray<PReg*>*	_pregs;			// maps index -> preg
-  GrowableArray<int>*	_locations;		// previous preg location or illegalLocation
+  GrowableArray<intptr_t>*	_locations;		// previous preg location or illegalLocation
   GrowableArray<bool>*	_present;		// true if preg is currently present
 
   Location location_at(int i)			{ return Location(_locations->at(i)); }
@@ -84,7 +84,7 @@ class DebugInfoWriter: public PRegClosure {
  public:
   DebugInfoWriter(int number_of_pregs) {
     _pregs     = new GrowableArray<PReg*>(number_of_pregs, number_of_pregs, NULL                );
-    _locations = new GrowableArray<int  >(number_of_pregs, number_of_pregs, illegalLocation._loc);
+    _locations = new GrowableArray<intptr_t>(number_of_pregs, number_of_pregs, illegalLocation._loc);
     _present   = new GrowableArray<bool >(number_of_pregs, number_of_pregs, false               );
   }
 
@@ -329,7 +329,7 @@ char* CodeGenerator::nmethodAddress() const {
 void CodeGenerator::incrementInvocationCounter() {
   // Generates code to increment the nmethod execution counter
   char* addr = nmethodAddress() + nmethod::invocationCountOffset();
-  _masm->incl(Address(int(addr), relocInfo::internal_word_type));
+  _masm->incl(Address(intptr_t(addr), relocInfo::internal_word_type));
 }
 
 
@@ -508,9 +508,9 @@ void CodeGenerator::storeCheck(Register obj) {
   Temporary base(_currentMapping);
   Temporary indx(_currentMapping);
   Label no_store;
-  _masm->cmpl(obj, (int)Universe::new_gen.boundary());                  // assumes boundary between new_gen and old_gen is unchanging
+  _masm->cmpl(obj, (intptr_t)Universe::new_gen.boundary());                  // assumes boundary between new_gen and old_gen is unchanging
   _masm->jcc(Assembler::less, no_store);                                // avoid marking dirty if target is a new object
-  _masm->movl(base.reg(), Address(int(&byte_map_base), relocInfo::external_word_type));
+  _masm->movl(base.reg(), Address(intptr_t(&byte_map_base), relocInfo::external_word_type));
   _masm->movl(indx.reg(), obj);						// do not destroy obj (a preg may be mapped to it)
   _masm->shrl(indx.reg(), card_shift);					// divide obj by card_size
   _masm->movb(Address(base.reg(), indx.reg(), Address::times_1), 0);	// clear entry
@@ -890,10 +890,10 @@ void CodeGenerator::aPrologueNode(PrologueNode* node) {
   Label recompile_stub_call;
   if (RecompilationPolicy::needRecompileCounter(theCompiler)) {
     char* addr = nmethodAddress() + nmethod::invocationCountOffset();
-    _masm->movl(temp1, Address(int(addr), relocInfo::internal_word_type));
+    _masm->movl(temp1, Address(intptr_t(addr), relocInfo::internal_word_type));
     _masm->incl(temp1);
     _masm->cmpl(temp1, theCompiler->get_invocation_counter_limit());
-    _masm->movl(Address(int(addr), relocInfo::internal_word_type), temp1);
+    _masm->movl(Address(intptr_t(addr), relocInfo::internal_word_type), temp1);
     _masm->jcc(Assembler::greaterEqual, recompile_stub_call);
     //
     // need to fix this:
@@ -917,7 +917,7 @@ void CodeGenerator::aPrologueNode(PrologueNode* node) {
   _masm->call(StubRoutines::recompile_stub_entry(), relocInfo::runtime_call_type);
 
   _masm->bind(start);
-  _masm->cmpl(esp, Address(int(active_stack_limit()), relocInfo::external_word_type));
+  _masm->cmpl(esp, Address(intptr_t(active_stack_limit()), relocInfo::external_word_type));
   _masm->jcc(Assembler::less, handle_stack_overflow);
   _masm->bind(continue_after_stack_overflow);
 }
@@ -1106,7 +1106,7 @@ void CodeGenerator::arithROOp(ArithOpCode op, Register x, oop y) { // x := x op 
 
 void CodeGenerator::arithRXOp(ArithOpCode op, Register x, oop y) { // x := x op y
   if (y->is_smi()) {
-    arithRCOp(op, x, int(y));				// y is smiOop -> needs no relocation info
+    arithRCOp(op, x, intptr_t(y));				// y is smiOop -> needs no relocation info
   } else {
     arithROOp(op, x, y);
   }
@@ -1235,7 +1235,7 @@ void CodeGenerator::aContextCreateNode(ContextCreateNode* node) {
     case 1 : // fall through for now - fix this
     case 2 : // fall through for now - fix this
     default:
-      _masm->pushl(int(as_smiOop(node->nofTemps())));
+      _masm->pushl(intptr_t(as_smiOop(node->nofTemps())));
       aPrimNode(node);
       _masm->addl(esp, oopSize);	// pop argument, this is not a Pascal call - change this as some point?
       break;
@@ -1244,7 +1244,7 @@ void CodeGenerator::aContextCreateNode(ContextCreateNode* node) {
   Register context_reg = use(node->dst());
   if (node->src() == NULL) {
     assert(node->scope()->isMethodScope() || node->scope()->method()->block_info() == methodOopDesc::expects_nil, "inconsistency");
-    _masm->movl(Address(context_reg, contextOopDesc::parent_byte_offset()), NULL);
+    _masm->movl(Address(context_reg, contextOopDesc::parent_byte_offset()), nullptr);
     // NULL for now; the interpreter uses nil. However, some of the
     // context verification code called from compiled code checks for
     // parents that are either a frame pointer, NULL or a context.
@@ -1341,7 +1341,7 @@ void CodeGenerator::materializeBlock(BlockCreateNode* node) {
     case 1 : // fall through for now - fix this
     case 2 : // fall through for now - fix this
     default:
-      _masm->pushl(int(as_smiOop(nofArgs)));
+      _masm->pushl(intptr_t(as_smiOop(nofArgs)));
       aPrimNode(node);			// Note: primitive calls are called via call_C - also necessary for primitiveValue calls?
       _masm->addl(esp, oopSize);	// pop argument, this is not a Pascal call - change this at some point?
       break;
@@ -1354,7 +1354,7 @@ void CodeGenerator::materializeBlock(BlockCreateNode* node) {
   // assert(theCompiler->jumpTableID == closure->parent_id(), "nmethod id must be the same");
   // fix this: RELOCATION INFORMATION IS NEEDED WHEN MOVING THE JUMPTABLE (Snapshot reading etc.)
   _masm->movl(Address(closure_reg, blockClosureOopDesc::context_byte_offset()        ),	use(closure->context()));
-  _masm->movl(Address(closure_reg, blockClosureOopDesc::method_or_entry_byte_offset()),	(int)closure->jump_table_entry());
+  _masm->movl(Address(closure_reg, blockClosureOopDesc::method_or_entry_byte_offset()),	(intptr_t)closure->jump_table_entry());
   storeCheck(closure_reg);
 }
 
@@ -1459,7 +1459,7 @@ void CodeGenerator::aDLLNode(DLLNode* node) {
   // CompiledDLL_Cache
   // This code pattern must correspond to the CompiledDLL_Cache layout
   // (make sure assembler is not optimizing mov reg, 0 into xor reg, reg!)
-  _masm->movl(edx, int(node->function()));		// part of CompiledDLL_Cache
+  _masm->movl(edx, intptr_t(node->function()));		// part of CompiledDLL_Cache
   _masm->inline_oop(node->dll_name());			// part of CompiledDLL_Cache
   _masm->inline_oop(node->function_name());		// part of CompiledDLL_Cache
   _masm->call(entry, relocInfo::runtime_call_type);	// call lookup/parameter conversion routine
@@ -2097,7 +2097,7 @@ void CodeGenerator::anArrayAtNode(ArrayAtNode* node) {
   // use temporary register for index - will be modified
   Temporary offset(_currentMapping, index);
   // first element is at index 1 => subtract smi(1) (doesn't change smi/oop property)
-  theMacroAssm->subl(offset.reg(), int(smiOop_one));
+  theMacroAssm->subl(offset.reg(), intptr_t(smiOop_one));
   // do index smi check if necessary (still possible, even after subtracting smi(1))
   Label indexNotSmi;
   if (!node->index_is_smi()) {
@@ -2196,7 +2196,7 @@ void CodeGenerator::anArrayAtPutNode(ArrayAtPutNode* node) {
   // use temporary register for index - will be modified
   Temporary offset(_currentMapping, index);
   // first element is at index 1 => subtract smi(1) (doesn't change smi/oop property)
-  theMacroAssm->subl(offset.reg(), int(smiOop_one));
+  theMacroAssm->subl(offset.reg(), intptr_t(smiOop_one));
   // do index smi check if necessary (still possible, even after subtracting smi(1))
   Label indexNotSmi;
   if (!node->index_is_smi()) {

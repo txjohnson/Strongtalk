@@ -127,7 +127,7 @@ class primitive_desc {
   char* error(int index) const { return _errors[index]; }
 
   // Comparison operation
-  int compare(char* str, int len);
+  int compare(const char* str, int len);
 
   // Miscellaneous operations
   void print();
@@ -150,12 +150,12 @@ class primitives : AllStatic {
   static void print_counters();
 
   static void initialize();
-  static void patch(char* name, char* entry_point);
+  static void patch(const char* name, char* entry_point);
 
  private:
-  static primitive_desc* lookup(char* selector, int len);
-  static primitive_desc* lookup(char* selector)	{ return lookup(selector, strlen(selector)); }
-  static primitive_desc* verified_lookup(char* selector); // Fails if the primitive could not be found
+  static primitive_desc* lookup(const char* selector, int len);
+  static primitive_desc* lookup(const char* selector)	{ return lookup(selector, strlen(selector)); }
+  static primitive_desc* verified_lookup(const char* selector); // Fails if the primitive could not be found
 
   // Primitives used by the compiler are looked up at startup
   static primitive_desc* _new0;

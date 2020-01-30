@@ -27,7 +27,7 @@
 
 # include "incls/_location.cpp.incl"
 
-static char
+static const char
     * specialLocNames[nofSpecialLocations] = { "illegalLocation",
         "unAllocated", "noRegister", "topOfStack", "resultOfNLR",
             "topOfFloatStack" };
@@ -119,7 +119,7 @@ void IntFreeList::grow() {
 
 IntFreeList::IntFreeList(int /*size*/) {
   _first = -1;
-  _list = new GrowableArray<int>(2);
+  _list = new GrowableArray<intptr_t>(2);
   assert(_list->length() == 0, "should be zero");
 }
 

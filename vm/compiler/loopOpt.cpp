@@ -101,14 +101,14 @@ bool CompiledLoop::isInLoopBody(Node* n) const {
 }
 
 
-char* CompiledLoop::recognize() {
+const char* CompiledLoop::recognize() {
   // Recognize integer loop.
   // We're looking for a loop where the loopVariable is initialized just before
   // the loop starts, is defined only once in the loop (increment/decrement),
   // and the loop condition is a comparison against a loop invariant.
   discoverLoopNesting();
   if (!OptimizeIntegerLoops) return "!OptimizeIntegerLoops";
-  char* msg;
+  const char* msg;
   if ((msg = findUpperBound()) != NULL) return msg;
   if ((msg = checkLoopVar()) != NULL) return msg;
   if ((msg = checkUpperBound()) != NULL) return msg;
@@ -134,7 +134,7 @@ void CompiledLoop::discoverLoopNesting() {
 }
 
 
-char* CompiledLoop::findLowerBound() {
+const char* CompiledLoop::findLowerBound() {
   // find lower bound; is assigned to loop var (temp) before loop
   // NB: throughout this code, "lower" and "upper" bound are used to denote the 
   // starting and ending values of the loop; in the case of a downward-counting loop,
@@ -179,7 +179,7 @@ int CompiledLoop::findStartOfSend(int bci) {
 }
 
 
-char* CompiledLoop::findUpperBound() {
+const char* CompiledLoop::findUpperBound() {
   // find upper bound and loop variable
   int condBCI = _endOfCond ? findStartOfSend(_endOfCond->bci() - InterpretedIC::size) : IllegalBCI;
   if (condBCI == IllegalBCI) return "loop condition: no send found";
@@ -283,8 +283,7 @@ NonTrivialNode* CompiledLoop::findDefInLoop(PReg* r) {
   return ldf.defNode;
 }
 
-
-char* CompiledLoop::checkLoopVar() {
+const char* CompiledLoop::checkLoopVar() {
 #ifdef unnecessary
   // first check if loop var is initialized to lower bound
   BB* beforeLoopBB = _beforeLoop->bb();
@@ -359,7 +358,7 @@ bool CompiledLoop::isIncrement(PReg* p, ArithOpCode op) {
 }
 
 
-char* CompiledLoop::checkUpperBound() {
+const char* CompiledLoop::checkUpperBound() {
   // upper bound must not be defined in loop (loop invariant)
   _loopArray = NULL;
   _loopSizeLoad = NULL;

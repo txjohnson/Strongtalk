@@ -107,7 +107,7 @@ class BasicNode: public PrintableResourceObj {
   bool		dontEliminate;	    	// for special cases: must not elim. this node
   bool		deleted;		// node has been deleted
 
-  int		id() const		{ return this == NULL ? -1 : _id; }
+  int		id() const		{ return this == nullptr ? -1 : _id; }
   BB*		bb() const		{ return _bb; }
   int		num() const		{ return _num; }
   InlinedScope*	scope() const		{ return _scope; }
@@ -802,7 +802,7 @@ class ArithNode : public NonTrivialNode {	// abstract
   virtual bool	operIsConst() const = 0;
   virtual int	operConst() const = 0;
   virtual bool	doCopyPropagate(BB* bb, Use* u, PReg* d, bool repl);
-  char*		opName() const;
+  const char*		opName() const;
 
   friend class NodeFactory;
 };

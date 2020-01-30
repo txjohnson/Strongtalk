@@ -82,6 +82,6 @@ PRIM_DECL_1(callBackPrimitives::invokeC, oop proxy) {
   if (!proxy->is_proxy())
     return markSymbol(vmSymbols::first_argument_has_wrong_type());
   fntype f = (fntype) proxyOop(proxy)->get_pointer();
-  return as_smiOop( (int) (*f) (10, 5));
+  return as_smiOop( (intptr_t) (*f) (10, 5));
 }
 

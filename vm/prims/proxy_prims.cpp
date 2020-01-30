@@ -39,8 +39,8 @@ int proxyOopPrimitives::number_of_calls;
 PRIM_DECL_1(proxyOopPrimitives::getSmi, oop receiver) {
   PROLOGUE_1("getSmi", receiver);
   ASSERT_RECEIVER;
-  unsigned int value   = (unsigned int) proxyOop(receiver)->get_pointer();
-  unsigned int topBits = value >> (BitsPerWord - Tag_Size);
+  uintptr_t value   = (uintptr_t) proxyOop(receiver)->get_pointer();
+  uintptr_t topBits = value >> (BitsPerWord - Tag_Size);
   if ((topBits != 0) && (topBits != 3))
     return markSymbol(vmSymbols::smi_conversion_failed());
   return as_smiOop((int) value);
@@ -75,7 +75,7 @@ PRIM_DECL_3(proxyOopPrimitives::setHighLow, oop receiver, oop high, oop low) {
 PRIM_DECL_1(proxyOopPrimitives::getHigh, oop receiver) {
   PROLOGUE_1("getHigh", receiver);
   ASSERT_RECEIVER;
-  unsigned int value = (int) proxyOop(receiver)->get_pointer();
+  unsigned int value = (intptr_t) proxyOop(receiver)->get_pointer();
   value = value >> 16;
   return as_smiOop(value);
 }
@@ -83,7 +83,7 @@ PRIM_DECL_1(proxyOopPrimitives::getHigh, oop receiver) {
 PRIM_DECL_1(proxyOopPrimitives::getLow, oop receiver) {
   PROLOGUE_1("getLow", receiver);
   ASSERT_RECEIVER;
-  unsigned int value = (int) proxyOop(receiver)->get_pointer();
+  unsigned int value = (intptr_t) proxyOop(receiver)->get_pointer();
   value &= 0x0000ffff;
   return as_smiOop(value);
 }
@@ -301,7 +301,7 @@ static bool convert_to_arg(oop arg, int* addr) {
     return true;
   }
   if (arg->is_proxy()) {
-    *addr = (int) proxyOop(arg)->get_pointer();
+    *addr = (intptr_t) proxyOop(arg)->get_pointer();
     return true;
   }
   return false;

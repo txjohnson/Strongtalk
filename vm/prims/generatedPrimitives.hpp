@@ -35,12 +35,12 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 class PrimitivesGenerator: StackObj {
 
   MacroAssembler* masm;			
-  Address nil_addr()		{ return Address(int(&nilObj), relocInfo::external_word_type); }
-  Address true_addr()		{ return Address(int(&trueObj), relocInfo::external_word_type); }
-  Address false_addr()		{ return Address(int(&falseObj), relocInfo::external_word_type); }
-  Address smiKlass_addr()	{ return Address(int(&smiKlassObj), relocInfo::external_word_type); }
-  Address doubleKlass_addr()	{ return Address(int(&doubleKlassObj), relocInfo::external_word_type); }
-  Address contextKlass_addr()	{ return Address(int(&contextKlassObj), relocInfo::external_word_type); }
+  Address nil_addr()		{ return Address(intptr_t(&nilObj), relocInfo::external_word_type); }
+  Address true_addr()		{ return Address(intptr_t(&trueObj), relocInfo::external_word_type); }
+  Address false_addr()		{ return Address(intptr_t(&falseObj), relocInfo::external_word_type); }
+  Address smiKlass_addr()	{ return Address(intptr_t(&smiKlassObj), relocInfo::external_word_type); }
+  Address doubleKlass_addr()	{ return Address(intptr_t(&doubleKlassObj), relocInfo::external_word_type); }
+  Address contextKlass_addr()	{ return Address(intptr_t(&contextKlassObj), relocInfo::external_word_type); }
 
   Label error_receiver_has_wrong_type;
   Label error_first_argument_has_wrong_type;
@@ -116,8 +116,8 @@ class GeneratedPrimitives: AllStatic {
   static char* _primitiveInlineAllocations;
 
   // helpers for generation and patch
-  static char* patch(char* name, char* entry_point);
-  static char* patch(char* name, char* entry_point, int argument);
+  static char* patch(const char* name, char* entry_point);
+  static char* patch(const char* name, char* entry_point, int argument);
   static oop   invoke(char* op, oop receiver, oop argument);
   friend class PrimitivesGenerator;
 

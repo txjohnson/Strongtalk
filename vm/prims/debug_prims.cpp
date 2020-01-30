@@ -391,10 +391,10 @@ PRIM_DECL_0(debugPrimitives::printPrimitiveCounters){
 
 class Counter : public ResourceObj {
  public:
-   char* title;
+   const char* title;
    int total_size;
    int number;
-   Counter(char* t) {
+   Counter(const char* t) {
      title = t;
      total_size = 0;
      number = 0;
@@ -403,7 +403,7 @@ class Counter : public ResourceObj {
      total_size += obj->size();
      number++;
    }
-   void print(char* prefix) {
+   void print(const char* prefix) {
      std->print("%s%s", prefix, title);
      std->fill_to(22);
      std->print_cr("%6d %8d", number, total_size * oopSize);

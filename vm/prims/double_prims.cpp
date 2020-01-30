@@ -21,10 +21,10 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 */
 
-# include "incls/_precompiled.incl"
-# include "incls/_double_prims.cpp.incl"
 # include <math.h>
 # include <float.h>
+# include "incls/_precompiled.incl"
+# include "incls/_double_prims.cpp.incl"
 
 TRACE_FUNC(TraceDoublePrims, "double")
 

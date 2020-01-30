@@ -44,7 +44,7 @@ bool OopNCode::switch_pointers(oop from, oop to,
 }
 
 void NCodeBase::verify2(const char* name) {
-  if ((int)this & (oopSize - 1))
+  if ((intptr_t)this & (oopSize - 1))
     error("alignment error in %s at %#lx", name, this);
   if (instsLen() > 256 * K)
     error("instr length of %s at %#lx seems too big (%ld)", name, this, instsLen());

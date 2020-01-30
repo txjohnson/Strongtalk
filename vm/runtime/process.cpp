@@ -763,7 +763,7 @@ inline void trace_deoptimization_start() {
   if (TraceDeoptimization) {
     std->print("[Unpacking]");
     if (nlr_through_unpacking) {
-      std->print(" NLR %s", (nlr_home == (int) cur_fp) ? "inside" : "outside");
+      std->print(" NLR %s", (nlr_home == (intptr_t) cur_fp) ? "inside" : "outside");
     }
     std->cr();
     std->print(" - array ");
@@ -824,7 +824,7 @@ extern "C" void unpack_frame_array() {
 
   trace_deoptimization_start();
 
-  bool must_find_nlr_target = nlr_through_unpacking && nlr_home == (int) cur_fp;
+  bool must_find_nlr_target = nlr_through_unpacking && nlr_home == (intptr_t) cur_fp;
   bool nlr_target_found     = false; // For verification
 
   // link for the current frame
@@ -878,11 +878,11 @@ extern "C" void unpack_frame_array() {
       oop frame_oop = oop(current.fp());
       con->set_parent(frame_oop);
 
-      if (nlr_through_unpacking && nlr_home == (int) cur_fp) {
+      if (nlr_through_unpacking && nlr_home == (intptr_t) cur_fp) {
         if (nlr_home_context == con) {
 	  // This frame is the target of the NLR
 	  // set nlr_home to frame pointer of current frame
-	  nlr_home = (int) current.fp();
+	  nlr_home = (intptr_t) current.fp();
 	  // compute number of arguments to pop
           nlr_home_id = ~method->number_of_arguments();
           nlr_target_found = true;

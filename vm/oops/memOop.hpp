@@ -47,7 +47,7 @@ class memOopDesc: public oopDesc {
   friend memOop as_memOop(void* p);
 
   // conversion from memOop to memOopDesc*
-  memOopDesc* addr() const		{ return (memOopDesc*) (int(this) - Mem_Tag); }
+  memOopDesc* addr() const		{ return (memOopDesc*) (intptr_t (this) - Mem_Tag); }
 
   // space operations, is_old/new work w/o conversion to memOopDesc*
   // since oop > pointer (Mem_Tag >= 0)!
@@ -188,6 +188,6 @@ class memOopDesc: public oopDesc {
 
 inline memOop as_memOop(void* p)
 {
-    assert((int(p) & Tag_Mask) == 0, "not an aligned C pointer");
-    return memOop(int(p) + Mem_Tag);
+    assert((intptr_t (p) & Tag_Mask) == 0, "not an aligned C pointer");
+    return memOop(intptr_t (p) + Mem_Tag);
 }

@@ -83,10 +83,10 @@ extern LookupResult interpreter_super_lookup(symbolOop selector);
 
 class lookupCache : AllStatic {
  private:
-  static int primary_cache_address();
-  static int secondary_cache_address();
+  static intptr_t primary_cache_address();
+  static intptr_t secondary_cache_address();
 
-  static unsigned int hash_value(LookupKey* key);
+  static uintptr_t hash_value(LookupKey* key);
   static int number_of_primary_hits;
   static int number_of_secondary_hits;
   static int number_of_misses;

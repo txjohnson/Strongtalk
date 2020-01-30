@@ -38,7 +38,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
       }                                                                 \
     }
 
-int hash(char* name, int len) {
+int hash(const char* name, int len) {
   // hash on at most 32 characters, evenly spaced
   int increment;
  
@@ -53,8 +53,8 @@ int hash(char* name, int len) {
   assert(BitsPerByte * BytesPerWord == 32, "assumes 32-bit words");
   long unsigned h = 0;
   long unsigned g;
-  char* s = name;
-  char* end = s + len;
+  const char* s = name;
+  const char* end = s + len;
   for (; s < end; s = s + increment) {
     h = (h << 4) + (long unsigned) *s;
     if ((g = h & 0xf0000000)) h ^= g | (g >> 24);
@@ -67,7 +67,7 @@ symbolTable::symbolTable() {
   free_list = first_free_link = end_block = NULL;
 }
 
-symbolOop symbolTable::basic_add(char *name, int len, int hashValue) {
+symbolOop symbolTable::basic_add(const char *name, int len, int hashValue) {
   symbolKlass* sk = (symbolKlass*) Universe::symbolKlassObj()->klass_part();
   symbolOop str =   sk->allocateSymbol(name, len);
   basic_add(str, hashValue);
@@ -87,7 +87,7 @@ bool symbolTable::is_present(symbolOop sym) {
   return false;
 }
 
-symbolOop symbolTable::lookup(char* name, int len) {
+symbolOop symbolTable::lookup(const char* name, int len) {
   int hashValue = hash(name, len);
   symbolTableEntry* bucket = bucketFor(hashValue);
   if (!bucket->is_empty()) {

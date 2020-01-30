@@ -46,15 +46,15 @@ struct codeTableEntry : ValueObj {
   // methods are tagged, links are not.
   void* nmethod_or_link;
   bool  is_empty()   { return nmethod_or_link == NULL; }
-  bool  is_nmethod() { return (int) nmethod_or_link & 1; }
+  bool  is_nmethod() { return (intptr_t) nmethod_or_link & 1; }
   void  clear()      { nmethod_or_link = NULL; }
 
   nmethod* get_nmethod() { 
-    return (nmethod*) ((int) nmethod_or_link - 1);
+    return (nmethod*) ((intptr_t) nmethod_or_link - 1);
   }
   void set_nmethod(nmethod* nm) {
     assert_oop_aligned(nm);
-    nmethod_or_link = (void*) ((int) nm + 1); }
+    nmethod_or_link = (void*) ((intptr_t) nm + 1); }
 
   codeTableLink* get_link() { return (codeTableLink*) nmethod_or_link; }
   void set_link(codeTableLink* l) {

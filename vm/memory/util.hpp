@@ -51,7 +51,7 @@ inline void copy_oops_overlapping(oop* from, oop* to, int count) {
 inline void copy_words(int* from, int* to, int count) {
   copy_oops((oop*) from, (oop*) to, count);
 }
-inline void set_words(int* from, int count, int value = 0) {
+inline void set_words(int* from, int count, intptr_t value = 0) {
   set_oops((oop*) from, count, (oop) value);
 }
 
@@ -63,7 +63,7 @@ inline int max(int a, int b, int c)	{ return a > b ? max(a, c) : max(b, c); }
 #define between(p, low, high) ((void*)(p) >= (void*)(low) && (void*)(p) < (void*)(high))
 
 inline void *align(void* p, int alignment) {
-  int number = (int) p;
+  auto number = (intptr_t) p;
   int adjust = alignment - (number%alignment) % alignment;
   return (void*) (number + adjust);
 }

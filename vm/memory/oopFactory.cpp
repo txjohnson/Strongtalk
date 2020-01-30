@@ -77,11 +77,11 @@ doubleOop oopFactory::clone_double_to_oldspace(doubleOop value) {
   return d;
 }
 
-symbolOop oopFactory::new_symbol(char* name,int len) {
+symbolOop oopFactory::new_symbol(const char* name,int len) {
   return Universe::symbol_table->lookup(name, len);
 }
 
-symbolOop oopFactory::new_symbol(char* name) {
+symbolOop oopFactory::new_symbol(const char* name) {
   return new_symbol(name, strlen(name));
 }
 

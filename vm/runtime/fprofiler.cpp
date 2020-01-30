@@ -134,7 +134,7 @@ class pnode : public CHeapObj {
     st->print_cr("Leaf ticks");
   }
 
-  static void print_total(outputStream* st, tick_counter* t, int total, char* msg) {
+  static void print_total(outputStream* st, tick_counter* t, int total, const char* msg) {
     t->print_code(st, total);
     st->print(msg);
     st->fill_to(col4);
@@ -432,7 +432,7 @@ static int compare_nodes(const void* p1,  const void* p2) {
 }
 
 
-void print_ticks(char* title, int ticks, int total) {
+void print_ticks(const char* title, int ticks, int total) {
  if (ticks>0)
     std->print_cr("%5.1f%%  %3d %s", ticks * 100.0 / total, ticks, title);
 }

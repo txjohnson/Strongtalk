@@ -2021,7 +2021,7 @@ bool ArithNode::copyPropagate(BB* bb, Use* u, PReg* d, bool replace) {
   if (_src->isConstPReg() && operIsConst()) {
     assert(success, "CP must have worked");
     // can constant-fold this operation
-    int c1 = (int)((ConstPReg*)_src)->constant;
+    intptr_t c1 = (intptr_t)((ConstPReg*)_src)->constant;
     int c2 = (int)operConst();
     int res;
     switch (_op) {
@@ -2819,7 +2819,7 @@ char* NLRTestNode::print_string(char* buf, bool printAddr) const {
   return b;
 }
 
-char* ArithNode::opName() const { return ArithOpName[_op]; }
+const char* ArithNode::opName() const { return ArithOpName[_op]; }
 
 char* ArithRRNode::print_string(char* buf, bool printAddr) const {
   DISABLED_IN_PRODUCT

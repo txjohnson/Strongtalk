@@ -30,10 +30,10 @@ class PrintObjectClosure : public ObjectLayoutClosure {
 
   void do_object(memOop obj);
   void do_mark(markOop *m);
-  void do_oop(char* title, oop* o);
-  void do_byte(char* title, u_char* b);
-  void do_long(char* title, void** p);
-  void do_double(char* title, double* d);
+  void do_oop(const char* title, oop* o);
+  void do_byte(const char* title, u_char* b);
+  void do_long(const char* title, void** p);
+  void do_double(const char* title, double* d);
   void begin_indexables();
   void end_indexables();
   void do_indexable_oop(int index, oop* o);

@@ -69,7 +69,7 @@ class blockClosureOopDesc: public memOopDesc {
   // deoptimization
   void deoptimize();
 
-  char* name() const 			{ return "blockClosure"; }
+  const char* name() const 			{ return "blockClosure"; }
   void verify();
 
   friend class blockClosureKlass;

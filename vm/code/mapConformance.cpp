@@ -96,7 +96,7 @@ class MappingTask : public ResourceObj {
   MappingTask* _next;         // next task with same source
   MappingTask* _parent;       // parent chain for recursion
   bool         _is_processed; 
-  char*        _what_happend; // what happend to this task
+  const char*        _what_happend; // what happend to this task
   bool         _uses_top_of_stack;
   Variable     _variable_to_free;
  public:
@@ -111,7 +111,7 @@ class MappingTask : public ResourceObj {
   }
 
   bool is_processed() const { return _is_processed; }
-  void set_processed(char* reason) {
+  void set_processed(const char* reason) {
     _is_processed = true;
     _what_happend = reason;
   }

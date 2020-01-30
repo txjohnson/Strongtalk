@@ -86,7 +86,7 @@ class WeakArrayRegister : AllStatic {
   // Variables
   static bool                         during_registration;
   static GrowableArray<weakArrayOop>* weakArrays;
-  static GrowableArray<int>*          nis;
+  static GrowableArray<intptr_t>*          nis;
 
   // Scavenge operations
   static void scavenge_contents();

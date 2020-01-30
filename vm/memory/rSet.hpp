@@ -45,7 +45,7 @@ class rSet: public CHeapObj {
 //  char* byte_for(void *p) const { return (char*)&byte_map[int((char*)p - low_boundary) >> card_shift]; }
   oop*  oop_for(char* p) const 	{ return (oop*)(low_boundary  +  ((p - byte_map) <<  card_shift)); }
 
-  friend oop*  card_for(oop* p) { return (oop*)(int(p) & ~(card_size - 1)); }
+  friend oop*  card_for(oop* p) { return (oop*)(intptr_t(p) & ~(card_size - 1)); }
   
   inline char* byte_map_end() const;
  

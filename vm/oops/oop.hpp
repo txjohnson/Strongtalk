@@ -48,7 +48,7 @@ class oopDesc {
   oopDesc();
 
   // tag checks
-  int tag() const 		{ return maskBits(int(this), Tag_Mask); }
+  intptr_t tag() const 		{ return maskBits(intptr_t (this), Tag_Mask); }
   bool is_smi() const   { return tag() == Int_Tag; }
   bool is_mem() const   { return tag() == Mem_Tag; }
   bool is_mark() const  { return tag() == Mark_Tag; }

@@ -30,7 +30,7 @@ class NativeInstruction: ValueObj {
   char*	addr_at(int offset) const		{ return (char*)this + offset; }
 
   char  char_at(int offset) const		{ return *addr_at(offset); }
-  int   long_at(int offset) const		{ return *(int*)addr_at(offset); }
+  intptr_t   long_at(int offset) const		{ return *(intptr_t*)addr_at(offset); }
   oop   oop_at (int offset) const		{ return *(oop*)addr_at(offset); }
 
   void  set_char_at(int offset, char c)		{ *addr_at(offset) = c; }
@@ -114,7 +114,7 @@ class NativeMov: public NativeInstruction {
 
   char* instruction_address() const		{ return addr_at(instruction_offset); }
   char* next_instruction_address() const	{ return addr_at(next_instruction_offset); }
-  int   data() const				{ return long_at(data_offset); }
+  intptr_t   data() const				{ return long_at(data_offset); }
   void  set_data(int x)				{ set_long_at(data_offset, x); }
 
   void  verify();
@@ -150,7 +150,7 @@ class NativeTest: public NativeInstruction {
 
   char* instruction_address() const		{ return addr_at(instruction_offset); }
   char* next_instruction_address() const	{ return addr_at(next_instruction_offset); }
-  int   data() const				{ return long_at(data_offset); }
+  intptr_t   data() const				{ return long_at(data_offset); }
   void  set_data(int x)				{ set_long_at(data_offset, x); }
 
   void  verify();

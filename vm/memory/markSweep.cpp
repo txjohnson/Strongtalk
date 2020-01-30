@@ -93,7 +93,7 @@ public:
 };
 
 GrowableArray<memOop>* MarkSweep::stack;
-GrowableArray<int>*    MarkSweep::hcode_offsets;
+GrowableArray<intptr_t>*    MarkSweep::hcode_offsets;
 int                    MarkSweep::hcode_pos;
 OopRelocations*        MarkSweep::oopRelocations;
 
@@ -147,7 +147,7 @@ oop MarkSweep::collect(oop p) {
 
 void MarkSweep::allocate() {
   stack         = new GrowableArray<memOop>(200);
-  hcode_offsets = new GrowableArray<int>(100);
+  hcode_offsets = new GrowableArray<intptr_t>(100);
   hcode_pos     = 0;
   oopRelocations = new OopRelocations();
 }

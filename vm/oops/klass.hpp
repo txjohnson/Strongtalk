@@ -178,7 +178,7 @@ class Klass : ValueObj {
 
  public:
 
-  virtual char* name() const { return ""; }
+  virtual const char* name() const { return ""; }
   void  print_klass();
   char* delta_name(); // the Smalltalk name of the class or NULL
   void print_name_on(outputStream* st);

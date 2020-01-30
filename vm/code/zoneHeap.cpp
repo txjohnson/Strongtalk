@@ -269,8 +269,8 @@ Heap::Heap(int s, int bs) {
   nfree = 30;
 //  _base = AllocateHeap(size + blockSize, "zone");
   _base = os::exec_memory(size + blockSize); //, "zone");
-  base = (char*)((int(_base) + blockSize - 1) / blockSize * blockSize);
-  assert(int(base) % blockSize == 0, "base not aligned to blockSize");
+  base = (char*)((intptr_t(_base) + blockSize - 1) / blockSize * blockSize);
+  assert(intptr_t(base) % blockSize == 0, "base not aligned to blockSize");
   heapKlass = (ChunkKlass*)(AllocateHeap(mapSize() + 2, "zone free map") + 1);
   // + 2 for sentinels
   freeList = NEW_C_HEAP_ARRAY( FreeList, nfree);
@@ -560,7 +560,7 @@ void* Heap::nextUsed(void* p) const {
   } else {
     void* next = blockAddr(m);
     assert(next > p, "must be monotonic");
-    assert(!(int(next) & 1), "must be even");
+    assert(!(intptr_t(next) & 1), "must be even");
     return next;
   }
 }
@@ -571,7 +571,7 @@ void* Heap::findStartOfBlock(void* start) const {
     return newHeap->findStartOfBlock(start);
   
   const int  blockSz = blockSize;	
-  start = (void*)(int(start) & ~(blockSz-1));
+  start = (void*)(intptr_t(start) & ~(blockSz-1));
   assert(contains(start), "start not in this zone");
   ChunkKlass* m = mapAddr(start)->findStart(heapKlass, heapEnd());
   return blockAddr(m);

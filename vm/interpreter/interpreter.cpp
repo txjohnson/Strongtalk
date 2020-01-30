@@ -421,12 +421,12 @@ class InterpreterGenerator: StackObj {
   void restore_ebx()		{ masm->xorl(ebx, ebx); }
 
   // Constant addresses
-  Address nil_addr()		{ return Address(int(&nilObj), relocInfo::external_word_type); }
-  Address true_addr()		{ return Address(int(&trueObj), relocInfo::external_word_type); }
-  Address false_addr()		{ return Address(int(&falseObj), relocInfo::external_word_type); }
-  Address smiKlass_addr()	{ return Address(int(&smiKlassObj), relocInfo::external_word_type); }
-  Address doubleKlass_addr()	{ return Address(int(&doubleKlassObj), relocInfo::external_word_type); }
-  Address contextKlass_addr()	{ return Address(int(&contextKlassObj), relocInfo::external_word_type); }
+  Address nil_addr()		{ return Address(intptr_t(&nilObj), relocInfo::external_word_type); }
+  Address true_addr()		{ return Address(intptr_t(&trueObj), relocInfo::external_word_type); }
+  Address false_addr()		{ return Address(intptr_t(&falseObj), relocInfo::external_word_type); }
+  Address smiKlass_addr()	{ return Address(intptr_t(&smiKlassObj), relocInfo::external_word_type); }
+  Address doubleKlass_addr()	{ return Address(intptr_t(&doubleKlassObj), relocInfo::external_word_type); }
+  Address contextKlass_addr()	{ return Address(intptr_t(&contextKlassObj), relocInfo::external_word_type); }
 
   // C calls
   void call_C(Label& L);
@@ -672,8 +672,8 @@ void InterpreterGenerator::generateStopInterpreterAt() {
     if (StopInterpreterAt > 0) {
       Label cont;
 	  masm->pushl(edx);
-	  masm->movl(edx, Address(int(&StopInterpreterAt), relocInfo::external_word_type));
-      masm->cmpl(edx, Address(int(&NumberOfBytecodesExecuted), relocInfo::external_word_type));
+	  masm->movl(edx, Address(intptr_t(&StopInterpreterAt), relocInfo::external_word_type));
+      masm->cmpl(edx, Address(intptr_t(&NumberOfBytecodesExecuted), relocInfo::external_word_type));
 	  masm->popl(edx);
 	  masm->jcc(Assembler::above, cont);
       masm->int3();
@@ -682,7 +682,7 @@ void InterpreterGenerator::generateStopInterpreterAt() {
 }
 void InterpreterGenerator::jump_ebx() {
   if (TraceBytecodes || CountBytecodes || StopInterpreterAt > 0) {
-    masm->incl(Address(int(&NumberOfBytecodesExecuted), relocInfo::external_word_type));
+    masm->incl(Address(intptr_t(&NumberOfBytecodesExecuted), relocInfo::external_word_type));
 	generateStopInterpreterAt();
     /*if (StopInterpreterAt > 0) {
       Label cont;
@@ -699,18 +699,18 @@ void InterpreterGenerator::jump_ebx() {
     load_ebx();
   }
   check_oop(eax);
-  masm->jmp(Address(noreg, ebx, Address::times_4, (int)dispatchTable::table()));
+  masm->jmp(Address(noreg, ebx, Address::times_4, (intptr_t)dispatchTable::table()));
 }
 
 
 void InterpreterGenerator::load_edi() {
-  masm->movl(edi, Address(noreg, ebx, Address::times_4, (int)dispatchTable::table()));
+  masm->movl(edi, Address(noreg, ebx, Address::times_4, (intptr_t)dispatchTable::table()));
 }
 
 
 void InterpreterGenerator::jump_edi() {
   if (TraceBytecodes || CountBytecodes || StopInterpreterAt > 0) {
-    masm->incl(Address(int(&NumberOfBytecodesExecuted), relocInfo::external_word_type));
+    masm->incl(Address(intptr_t(&NumberOfBytecodesExecuted), relocInfo::external_word_type));
 	generateStopInterpreterAt();
 	/*    if (StopInterpreterAt > 0) {
       Label cont;
@@ -1408,12 +1408,12 @@ char* InterpreterGenerator::control_while(Bytecodes::Code code) {
     masm->subl(esi, Address(edx, -oopSize));
   }
 
-  masm->movl(edx, Address((int)&interpreter_loop_counter, relocInfo::external_word_type));
+  masm->movl(edx, Address((intptr_t)&interpreter_loop_counter, relocInfo::external_word_type));
   load_ebx();
   masm->popl(eax);						// discard loop condition
   masm->incl(edx);
-  masm->movl(Address((int)&interpreter_loop_counter, relocInfo::external_word_type), edx);
-  masm->cmpl(edx, Address((int)&interpreter_loop_counter_limit, relocInfo::external_word_type));
+  masm->movl(Address((intptr_t)&interpreter_loop_counter, relocInfo::external_word_type), edx);
+  masm->cmpl(edx, Address((intptr_t)&interpreter_loop_counter_limit, relocInfo::external_word_type));
   masm->jcc(Assembler::greater, _overflow);
   jump_ebx();
 
@@ -1683,7 +1683,7 @@ char* InterpreterGenerator::float_op(int nof_args, bool returns_float) {
   masm->movb(ebx, Address(esi, -2));		// get float number
   masm->leal(edx, float_addr(ebx));		// get float address
   masm->movb(ebx, Address(esi, -1));		// get function number
-  masm->movl(ecx, Address(noreg, ebx, Address::times_4, int(Floats::_function_table), relocInfo::external_word_type));
+  masm->movl(ecx, Address(noreg, ebx, Address::times_4, intptr_t(Floats::_function_table), relocInfo::external_word_type));
   for (int i = 0; i < nof_args; i++) masm->fld_d(Address(edx, -i*floatSize));
   masm->call(ecx);				// invoke operation
   load_ebx();					// get next byte code
@@ -1874,10 +1874,10 @@ extern "C" int	 number_of_arguments_through_unpacking;
 extern "C" oop   result_through_unpacking;
 
 void InterpreterGenerator::generate_deoptimized_return_restore() {
-  masm->movl(eax, Address((int)&number_of_arguments_through_unpacking,   relocInfo::external_word_type));
+  masm->movl(eax, Address((intptr_t)&number_of_arguments_through_unpacking,   relocInfo::external_word_type));
   masm->shll(eax, 2);
   masm->addl(esp, eax);
-  masm->movl(eax, Address((int)&result_through_unpacking,   relocInfo::external_word_type));
+  masm->movl(eax, Address((intptr_t)&result_through_unpacking,   relocInfo::external_word_type));
 }
 
 void InterpreterGenerator::generate_deoptimized_return_code() {
@@ -1991,7 +1991,7 @@ void InterpreterGenerator::generate_deoptimized_return_code() {
 						// into a temp in the failure block
 
  Interpreter::_dr_from_dll_call_restore = masm->pc();
- masm->movl(eax, Address((int)&result_through_unpacking,   relocInfo::external_word_type));
+ masm->movl(eax, Address((intptr_t)&result_through_unpacking,   relocInfo::external_word_type));
   // fall through
 
  Interpreter::_dr_from_dll_call = masm->pc();
@@ -2055,7 +2055,7 @@ void InterpreterGenerator::generate_forStubRountines() {
   // Redo the send
   restore_esi();
   restore_ebx();
-  masm->movl(eax, Address((int)&redo_send_offset,   relocInfo::external_word_type));
+  masm->movl(eax, Address((intptr_t)&redo_send_offset,   relocInfo::external_word_type));
   masm->subl(esi, eax);
   load_ebx();
   masm->popl(eax);		  // get top of stack
@@ -2111,7 +2111,7 @@ void InterpreterGenerator::call_native(Register entry) {
   }
 
   save_esi();
-  masm->movl(Address(int(&Interpreter::_last_native_called), relocInfo::external_word_type), entry);
+  masm->movl(Address(intptr_t(&Interpreter::_last_native_called), relocInfo::external_word_type), entry);
   masm->call(entry);
   masm->ic_info(_nlr_testpoint, 0);			// ordinary inline cache info
   restore_esi();
@@ -2164,7 +2164,7 @@ void InterpreterGenerator::generate_method_entry_code() {
   masm->jcc(Assembler::aboveEqual, counter_overflow);			// treat invocation counter overflow
   masm->bind(start_execution);						// continuation point after overflow
   masm->movl(eax, edi);						// initialize temp0
-  masm->cmpl(esp, Address(int(active_stack_limit()), relocInfo::external_word_type));
+  masm->cmpl(esp, Address(intptr_t(active_stack_limit()), relocInfo::external_word_type));
   masm->jcc(Assembler::belowEqual, handle_stack_overflow); // not lessEqual, this must be unsigned comparison
   masm->bind(continue_from_stack_overflow);
   jump_ebx();								// start execution
@@ -2651,7 +2651,7 @@ void InterpreterGenerator::generate_nonlocal_return_code() {
   masm->jcc(Assembler::notZero, loop);		// until is_smi(edi)
   masm->testl(edi, edi);			// if edi = 0 then
   masm->jcc(Assembler::zero, zapped_context);	//   context has been zapped
-  masm->movl(Address(int(&nlr_home_context), relocInfo::external_word_type), eax);
+  masm->movl(Address(intptr_t(&nlr_home_context), relocInfo::external_word_type), eax);
                                                 // else save the context containing the home (edi points to home stack frame)
   masm->movb(ebx, Address(esi, 1));		// get no. of arguments to pop
   masm->popl(eax);				// get NLR result back

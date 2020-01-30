@@ -34,7 +34,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 const int symbol_table_size = 20011;
 
-int hash(char* name, int len);
+int hash(const char* name, int len);
 
 struct symbolTableLink {
   // instance variable
@@ -80,14 +80,14 @@ class symbolTable: public CHeapObj {
   symbolTable();
 
   // operations
-  symbolOop lookup(char* name, int len);
+  symbolOop lookup(const char* name, int len);
 
   // Used in bootstrap for checking
   bool is_present(symbolOop sym);
  protected:
   void add_symbol(symbolOop s); // Only used by bootstrap
 
-  symbolOop basic_add(char *name, int len, int hashValue);
+  symbolOop basic_add(const char *name, int len, int hashValue);
   symbolOop basic_add(symbolOop s, int hashValue);
   symbolTableEntry* bucketFor(int hashValue) {
     assert(hashValue % symbol_table_size >= 0, "must be positive");

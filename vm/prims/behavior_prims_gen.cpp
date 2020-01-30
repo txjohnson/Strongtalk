@@ -33,7 +33,7 @@ char* PrimitivesGenerator::primitiveNew(int n) {
   char* entry_point = masm->pc();
   
   test_for_scavenge(eax, size * oopSize, allocation_failure);
-  Address _stop = Address((int)&stop, relocInfo::external_word_type);
+  Address _stop = Address((intptr_t)&stop, relocInfo::external_word_type);
   Label _break, no_break;
  masm->bind(fill_object);
   masm->movl(ebx, _stop);

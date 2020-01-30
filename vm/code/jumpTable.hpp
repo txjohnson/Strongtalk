@@ -112,7 +112,7 @@ class jumpTableEntry : public ValueObj {
   inline jumpTableEntry* previous_stub() const;
   inline jumpTableEntry* next_stub() const;
   jumpTableEntry* parent_entry(int& index) const;
-  void report_verify_error(char* message);
+  void report_verify_error(const char* message);
  public:
    // testing operations	    LARS: please add comments explaining what the 4 cases are  -Urs 4/96
   bool is_nmethod_stub() const;
@@ -149,8 +149,9 @@ class jumpTableEntry : public ValueObj {
   void print();
   void verify();
 
+  // TODO: Verify jump table entries properly aligned after mods for C++17
   // size of jump table entry
-  static int size()                     { return (int)align((void*)(sizeof(char) + jump_inst_size()), sizeof(oop)); }
+  static int size()                     { return (intptr_t) align((void*)(sizeof(char) + jump_inst_size()), sizeof(oop)); }
 
   friend class jumpTable;
 };

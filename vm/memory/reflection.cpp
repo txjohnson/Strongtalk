@@ -40,10 +40,10 @@ class memConverter: public ResourceObj {
  protected:
   klassOop old_klass;
   klassOop new_klass;
-  GrowableArray<int>* mapping;
+  GrowableArray<intptr_t>* mapping;
 
   void compute_mapping() {
-    mapping = new GrowableArray<int>(20);
+    mapping = new GrowableArray<intptr_t>(20);
     int old_header_size = old_klass->klass_part()->oop_header_size();
     int new_header_size = new_klass->klass_part()->oop_header_size();
     int n               = old_klass->klass_part()->number_of_instance_variables();

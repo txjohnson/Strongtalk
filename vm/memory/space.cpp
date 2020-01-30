@@ -379,7 +379,7 @@ void oldSpace::verify() {
 oop* oldSpace::object_start(oop* p) {
   // Find the page start
   oop* q = p;
-  int b = (int) q;
+  intptr_t b = (intptr_t) q;
   clearBits(b, nthMask(card_shift));
   q = (oop*) b;
   assert(contains(q), "q must be in this space");

@@ -165,7 +165,7 @@ class relocIterator : StackObj {
 
   char* callDestination() const {
     assert(type() != relocInfo::oop_type, "must be call");
-    return *(char**)addr + int(addr) + 4;	// INTEL-SPECIFIC
+    return *(char**)addr + intptr_t (addr) + 4;	// TODO: INTEL-SPECIFIC
   }
 
   // for uncommon traps only: was it ever executed?

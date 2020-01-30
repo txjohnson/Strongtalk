@@ -49,7 +49,7 @@ class objArrayKlass: public memOopKlass {
 
   friend void set_objArrayKlass_vtbl(Klass* k);
 
-  char* name() const { return "objArray"; }
+  const char* name() const { return "objArray"; }
 
   // ALL FUNCTIONS BELOW THIS POINT ARE DISPATCHED FROM AN OOP 
   

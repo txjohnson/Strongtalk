@@ -34,7 +34,7 @@ class Locations: public PrintableResourceObj {
  private:
   int			_nofArguments;		// the number of arguments
   int			_nofRegisters;		// the maximum number of available registers
-  GrowableArray<int>*	_freeList;		// the list of free locations
+  GrowableArray<intptr_t>*	_freeList;		// the list of free locations
   int			_firstFreeRegister;	// the index of the first free register in _freeList
   int			_firstFreeStackTmp;	// the index of the first free stack temporary in _freeList
 

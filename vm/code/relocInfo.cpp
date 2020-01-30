@@ -44,7 +44,7 @@ int relocInfo::print(nmethod* m, int last_offset) {
     oop(*addr)->print_value();
   } else {
     assert(isCall(), "must be a call");
-    char* target = (char*) (*addr + (int) addr + oopSize);
+    char* target = (char*) (*addr + (intptr_t) addr + oopSize);
     if (isIC()) {
       std->print("inline cache   @0x%lx", addr);
     } else if (isPrimitive()) {

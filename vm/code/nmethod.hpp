@@ -300,7 +300,7 @@ class nmethod : public OopNCode {
   inline void decay_invocation_count(double decay_factor);
 
  public: 
-  static int invocationCountOffset()	{ return (int)&((nmethod*)0)->_invocation_count; }
+  static intptr_t invocationCountOffset()	{ return (intptr_t) &((nmethod*)0)->_invocation_count; }
 
    // Support for preemption:
 

@@ -276,7 +276,7 @@ NoGCVerifier::~NoGCVerifier() {
   }
 }
 
-char* AllocatePageAligned(int size, char* name) {
+char* AllocatePageAligned(int size, const char* name) {
   int page_size = Universe::page_size();
   char* block = (char*)align(os::malloc(size + page_size), page_size);
   if (PrintHeapAllocation)
@@ -284,7 +284,7 @@ char* AllocatePageAligned(int size, char* name) {
   return block;
 }
 
-char* AllocateHeap(int size, char* name) {
+char* AllocateHeap(int size, const char* name) {
   if (PrintHeapAllocation)
     lprintf("Heap %7d %s\n", size, name);
   return (char*) os::malloc(size);

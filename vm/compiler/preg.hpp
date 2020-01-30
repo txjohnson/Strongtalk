@@ -171,9 +171,9 @@ class PReg: public PrintableResourceObj {
  public:
   virtual void print();
   virtual void print_short()			{ lprintf("%s\n", name()); }
-  virtual char* name() const;			// string representing the preg name
-  char* safeName() const;			// same as name() but handles NULL receiver
-  virtual char* prefix() const 			{ return "P"; }
+  virtual const char* name() const;			// string representing the preg name
+  const char* safeName() const;			// same as name() but handles NULL receiver
+  virtual const char* prefix() const 			{ return "P"; }
   virtual bool verify() const;
   virtual NameNode* nameNode(bool mustBeLegal = true) const; // for debugging info
   LogicalAddress* createLogicalAddress();
@@ -198,7 +198,7 @@ class TempPReg : public PReg {
   bool isTempPReg() const 	    	{ return true; }
   bool isLiveAt(Node* /*n*/) const 		{ return false; }
   bool canCopyPropagate() const 	{ return false; }
-  char* prefix() const			{ return "TempP"; }
+  const char* prefix() const			{ return "TempP"; }
 };
   
 // singly-assigned PReg (in source-level terms, e.g. expr. stack entry, arg;
@@ -228,7 +228,7 @@ class SAPReg : public PReg {
   bool extendLiveRange(InlinedScope* s, int bci);
   bool isLiveAt(Node* n) const;
   bool isSAPReg() const 	    	{ return true; }
-  char* prefix() const			{ return "SAP"; }
+  const char* prefix() const			{ return "SAP"; }
   bool verify() const;
  protected:
   bool basic_isLiveAt(InlinedScope* s, int bci) const;
@@ -269,7 +269,7 @@ class BlockPReg : public SAPReg {
   GrowableArray<PReg*>* uplevelWritten() const		{ return _uplevelWritten; }
   GrowableArray<Location*>* contextCopies() const	{ return _contextCopies; }
   void		        addContextCopy(Location* l);
-  char*			prefix() const			{ return "BlkP"; }
+  const char*			prefix() const			{ return "BlkP"; }
   char*			name() const;
   bool			verify() const;
   void			print();
@@ -285,7 +285,7 @@ class NoPReg : public PReg {	// "no result" register (should have no uses)
   virtual bool isNoPReg() const 		{ return true; }
   bool canCopyPropagate() const 		{ return false; }
   NameNode* nameNode(bool mustBeLegal) const;
-  char* name() const 				{ return "nil"; }
+  const char* name() const 				{ return "nil"; }
   bool verify() const;
 };
 
@@ -313,7 +313,7 @@ class ConstPReg : public PReg {
   bool covers(Node* n) const;
   bool needsRegister() const;
   NameNode* nameNode(bool mustBeLegal = true) const;
-  char* prefix() const				{ return "ConstP"; }
+  const char* prefix() const				{ return "ConstP"; }
   char* name() const;
   bool verify() const;
 };

@@ -614,7 +614,7 @@ CompiledLoop* InlinedScope::addLoop() {
 void InlinedScope::optimizeLoops() {
   for (int i = _loops->length() - 1; i >= 0; i--) {
     CompiledLoop* loop = _loops->at(i);
-    char* msg = loop->recognize();
+    const char* msg = loop->recognize();
     if (msg) {
       cout(PrintLoopOpts)->print("*loop %d in scope %s not an integer loop: %s\n", i, key()->print_string(), msg);
     } else {
@@ -1043,14 +1043,14 @@ void BlockScope::print_short() {
 }
 
 
-void OutlinedScope::print_short(char* name) {
+void OutlinedScope::print_short(const char* name) {
   lprintf("(%s*)%#lx (", name, this); 
   _scope->selector()->print_symbol_on();
   lprintf(")");
 }
 
 
-void OutlinedScope::print(char* name) {
+void OutlinedScope::print(const char* name) {
   print_short(name);
   lprintf("  _nm = %#lx, _scope = %#lx", _nm, _scope);
 }

@@ -978,7 +978,7 @@ PRIM_DECL_1(systemPrimitives::alienMalloc, oop size) {
   if (theSize <= 0)
     return markSymbol(vmSymbols::argument_is_invalid());
 
-  return as_smiOop((int) malloc(theSize));
+  return as_smiOop((intptr_t) malloc(theSize));
 }
 
 PRIM_DECL_1(systemPrimitives::alienCalloc, oop size) {
@@ -989,7 +989,7 @@ PRIM_DECL_1(systemPrimitives::alienCalloc, oop size) {
   if (theSize <= 0)
     return markSymbol(vmSymbols::argument_is_invalid());
 
-  return as_smiOop((int) calloc(smiOop(size)->value(), 1));
+  return as_smiOop((intptr_t) calloc(smiOop(size)->value(), 1));
 }
 
 PRIM_DECL_1(systemPrimitives::alienFree, oop address) {

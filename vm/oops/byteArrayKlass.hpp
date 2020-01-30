@@ -49,11 +49,11 @@ class byteArrayKlass: public memOopKlass {
   Format format() { return byteArray_klass; }
 
   // Initialize the object
-  void initialize_object(byteArrayOop obj, char* value, int len);
+  void initialize_object(byteArrayOop obj, const char* value, int len);
 
   friend void set_byteArrayKlass_vtbl(Klass* k);
 
-  char* name() const { return "byteArray"; }
+  const char* name() const { return "byteArray"; }
 
  // ALL FUNCTIONS BELOW THIS POINT ARE DISPATCHED FROM AN OOP 
  public:

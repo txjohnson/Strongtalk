@@ -82,7 +82,7 @@ class Floats: AllStatic {
  private:
   private:
   static bool  _is_initialized;	// true if Floats has been initialized
-  static char* _function_names[];
+  static const char* _function_names[];
 
   static void  generate_tst(MacroAssembler* masm, Assembler::Condition cc);
   static void  generate_cmp(MacroAssembler* masm, Assembler::Condition cc);
@@ -94,7 +94,7 @@ class Floats: AllStatic {
   static char* _function_table[max_number_of_functions];
 
   // Debugging/Printing
-  static char* function_name_for(Function f);
+  static const char* function_name_for(Function f);
 
   // Tells if there is a selector for the float operation
   static bool  has_selector_for(Function f);

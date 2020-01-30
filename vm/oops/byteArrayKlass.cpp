@@ -74,7 +74,7 @@ klassOop byteArrayKlass::create_class(klassOop super_class, mixinOop mixin) {
   return create_generic_class(super_class, mixin, o.vtbl_value());
 }
 
-void byteArrayKlass::initialize_object(byteArrayOop obj, char* value, int len){
+void byteArrayKlass::initialize_object(byteArrayOop obj, const char* value, int len){
   for (int index = 1; index <= len; index++) {
     obj->byte_at_put(index, value[index-1]);
   }

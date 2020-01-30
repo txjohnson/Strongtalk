@@ -225,7 +225,7 @@ class methodStream {
   }
 
   void align(u_char* hp) {
-    u_char* end = (u_char*) (((int) hp + 3) & (~3));
+    u_char* end = (u_char*) (((intptr_t) hp + 3) & (~3));
     while (hp < end) {
       put_byte(255);
       hp++;
@@ -552,7 +552,7 @@ int methodOopDesc::next_bci(int bci) const {
 
 class ExpressionStackMapper : public MethodClosure {
  private:
-   GrowableArray<int>* mapping;
+   GrowableArray<intptr_t>* mapping;
    int target_bci;
 
    void map_push() { map_push(bci()); }
@@ -582,7 +582,7 @@ class ExpressionStackMapper : public MethodClosure {
    }
 
  public:
-  ExpressionStackMapper(GrowableArray<int>* mapping, int target_bci) {
+  ExpressionStackMapper(GrowableArray<intptr_t>* mapping, int target_bci) {
     this->mapping    = mapping;
     this->target_bci = target_bci;
   }
@@ -713,8 +713,8 @@ void ExpressionStackMapper::dll_call_node(DLLCallNode* node) {
 }
 
 
-GrowableArray<int>* methodOopDesc::expression_stack_mapping(int bci) {
-  GrowableArray<int>* mapping = new GrowableArray<int>(10);
+GrowableArray<intptr_t>* methodOopDesc::expression_stack_mapping(int bci) {
+  GrowableArray<intptr_t>* mapping = new GrowableArray<intptr_t>(10);
   ExpressionStackMapper blk(mapping, bci);
   MethodIterator i(this, &blk);
 
@@ -722,7 +722,7 @@ GrowableArray<int>* methodOopDesc::expression_stack_mapping(int bci) {
   // %todo:
   //    move reverse to GrowableArray
 
-  GrowableArray<int>* result = new GrowableArray<int>(mapping->length());
+  GrowableArray<intptr_t>* result = new GrowableArray<intptr_t>(mapping->length());
   for (int index = mapping->length() - 1; index >= 0; index--) {
     result->push(mapping->at(index));
   }
@@ -731,11 +731,11 @@ GrowableArray<int>* methodOopDesc::expression_stack_mapping(int bci) {
 
 
 static void lookup_primitive_and_patch(u_char* p, u_char byte) {
-  assert((int)p % 4 == 0, "first instruction supposed to be aligned");
+  assert((intptr_t)p % 4 == 0, "first instruction supposed to be aligned");
   *p = byte;	// patch byte
   p += 4;	// advance to primitive name
   //(*(symbolOop*)p)->print_symbol_on();
-  *(int*)p = (int)primitives::lookup(*(symbolOop*)p)->fn();
+  *(int*)p = (intptr_t)primitives::lookup(*(symbolOop*)p)->fn();
 }
 
 bool methodOopDesc::is_primitiveMethod() const {

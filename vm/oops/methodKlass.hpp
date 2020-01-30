@@ -60,7 +60,7 @@ class methodKlass : public memOopKlass {
   // printing support
   void oop_print_on(oop obj, outputStream* st);
   void oop_print_value_on(oop obj, outputStream* st);
-  char* name() const { return "method"; }
+  const char* name() const { return "method"; }
 
   // Construction (called from primitive)
   methodOop constructMethod(oop name, int flags, int nofArgs, objArrayOop debugInfo,

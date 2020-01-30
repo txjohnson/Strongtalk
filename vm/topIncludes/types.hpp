@@ -33,22 +33,30 @@ class bootstrap;
 
 // most portable way of dealing with bools is to treat them as ints;
 // the new basic bool type isn't goodness.
-typedef int _bool_type_;
-#ifdef bool
-#undef bool
-#endif
-#define bool _bool_type_
+// typedef int _bool_type_;
+// #ifdef bool
+// #undef bool
+// #endif
+// #define bool _bool_type_
 
-typedef int smi;
+using smi = intptr_t;
 
 #include <inttypes.h> // this requires Visual Studio 2010 and up; should be OK
 
-typedef unsigned char  u_char;
-typedef unsigned short doubleByte;
-typedef unsigned short uint16;
-typedef unsigned short u_short;
-typedef          short int16;
-typedef unsigned long  uint32;
+//typedef unsigned char  u_char;
+//typedef unsigned short doubleByte;
+//typedef unsigned short uint16;
+//typedef unsigned short u_short;
+//typedef          short int16;
+//typedef unsigned long  uint32;
+
+using u_char     = unsigned char;
+using doubleByte = uint16_t;
+using uint16     = uint16_t;
+using u_short    = uint16_t;
+using int16      = int16_t;
+using uint32     = uint32_t;
+using uint64     = uint64_t;
 
 class  universe;
 class  space;

@@ -48,17 +48,17 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 #ifdef ASSERT
 #define TRACE_FUNC(flag,label) \
-  static void Trace(char* name, \
-                    char* s1 = NULL, oop a1 = NULL, \
-                    char* s2 = NULL, oop a2 = NULL, \
-                    char* s3 = NULL, oop a3 = NULL, \
-                    char* s4 = NULL, oop a4 = NULL, \
-                    char* s5 = NULL, oop a5 = NULL, \
-                    char* s6 = NULL, oop a6 = NULL, \
-                    char* s7 = NULL, oop a7 = NULL, \
-                    char* s8 = NULL, oop a8 = NULL, \
-                    char* s9 = NULL, oop a9 = NULL, \
-                    char* s10 = NULL, oop a10 = NULL) { \
+  static void Trace(const char* name, \
+                    const char* s1 = nullptr, oop a1 = nullptr, \
+                    const char* s2 = nullptr, oop a2 = nullptr, \
+                    const char* s3 = nullptr, oop a3 = nullptr, \
+                    const char* s4 = nullptr, oop a4 = nullptr, \
+                    const char* s5 = nullptr, oop a5 = nullptr, \
+                    const char* s6 = nullptr, oop a6 = nullptr, \
+                    const char* s7 = nullptr, oop a7 = nullptr, \
+                    const char* s8 = nullptr, oop a8 = nullptr, \
+                    const char* s9 = nullptr, oop a9 = nullptr, \
+                    const char* s10 = nullptr, oop a10 = nullptr) { \
   if (!flag) return; \
   lprintf("{%s::%s", label, name); \
   if (s1) { lprintf(" %s=", s1); a1->print_value(); } \

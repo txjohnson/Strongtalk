@@ -953,15 +953,15 @@ void BlockPReg::computeUplevelAccesses() {
 }
 
 
-char* PReg::safeName() const {
-  if (this == NULL) {
+const char* PReg::safeName() const {
+  if (this == nullptr) {
     return "(null)";     // for safer debugging
   } else {
     return name();
   }
 }
 
-char* PReg::name() const {
+const char* PReg::name() const {
   char* n = NEW_RESOURCE_ARRAY(char, 25);
   if (loc.equals(unAllocated)) {
     sprintf(n, "%s%d%s%s%s", prefix(), id(),

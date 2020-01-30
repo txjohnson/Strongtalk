@@ -173,7 +173,7 @@ PRIM_DECL_5(objArrayPrimitives::replace_from_to, oop receiver, oop from, oop to,
     return markSymbol(vmSymbols::third_argument_has_wrong_type());
 
   // check from > 0
-  if (smiOop(from) <= 0)
+  if (intptr_t (smiOop(from)) <= 0)
     return markSymbol(vmSymbols::out_of_bounds());
 
   // check to < self size
@@ -211,11 +211,11 @@ PRIM_DECL_4(objArrayPrimitives::copy_size, oop receiver, oop from, oop start, oo
     return markSymbol(vmSymbols::third_argument_has_wrong_type());
 
   // check from > 0
-  if (smiOop(from) <= 0)
+  if (intptr_t (smiOop(from)) <= 0)
     return markSymbol(vmSymbols::out_of_bounds());
 
   // check start > 0
-  if (smiOop(start) <= 0)
+  if (intptr_t (smiOop(start)) <= 0)
     return markSymbol(vmSymbols::out_of_bounds());
   
   // Check size is positive

@@ -26,7 +26,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 
 char* Floats::_function_table[max_number_of_functions];
-char* Floats::_function_names[] = {
+const char* Floats::_function_names[] = {
   "zero", "one",
   "abs", "negated", "squared", "sqrt", "sin", "cos", "tan", "exp", "ln",
   "add", "subtract", "multiply", "divide", "modulo",
@@ -35,7 +35,7 @@ char* Floats::_function_names[] = {
 };
 
 
-char* Floats::function_name_for(Function f) {
+const char* Floats::function_name_for(Function f) {
   assert(0 <= f && f < number_of_functions, "illegal function");
   return _function_names[f];
 }
@@ -93,9 +93,9 @@ void Floats::generate_tst(MacroAssembler* masm, Assembler::Condition cc) {
   masm->fnstsw_ax();
   masm->fpop();		// explicitly pop argument
   masm->testl(eax, mask);
-  masm->movl(eax, Address((int)&trueObj, relocInfo::external_word_type));
+  masm->movl(eax, Address((intptr_t)&trueObj, relocInfo::external_word_type));
   masm->jcc(cond, L);
-  masm->movl(eax, Address((int)&falseObj, relocInfo::external_word_type));
+  masm->movl(eax, Address((intptr_t)&falseObj, relocInfo::external_word_type));
   masm->bind(L);
 }
 
@@ -109,9 +109,9 @@ void Floats::generate_cmp(MacroAssembler* masm, Assembler::Condition cc) {
   masm->fwait();
   masm->fnstsw_ax();
   masm->testl(eax, mask);
-  masm->movl(eax, Address((int)&trueObj, relocInfo::external_word_type));
+  masm->movl(eax, Address((intptr_t)&trueObj, relocInfo::external_word_type));
   masm->jcc(cond, L);
-  masm->movl(eax, Address((int)&falseObj, relocInfo::external_word_type));
+  masm->movl(eax, Address((intptr_t)&falseObj, relocInfo::external_word_type));
   masm->bind(L);
 }
 
@@ -164,7 +164,7 @@ void Floats::generate(MacroAssembler* masm, Function f) {
 
   if (!Disclaimer::is_product() && PrintInterpreter) {
     int length = masm->pc() - entry_point;
-    char* name = function_name_for(f);
+    const char* name = function_name_for(f);
     std->print("Float function %d: %s (%d bytes), entry point = 0x%x\n", f, name, length, entry_point);
     masm->code()->decode();
     std->cr();

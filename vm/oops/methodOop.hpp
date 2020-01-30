@@ -47,26 +47,26 @@ class methodOopDesc : public memOopDesc {
 
  public:
   // offsets for code generation
-  static int selector_or_method_byte_offset()	{ return int(&(((methodOopDesc*)NULL)->_selector_or_method)) - Mem_Tag; }
-  static int counters_byte_offset()		{ return int(&(((methodOopDesc*)NULL)->_counters)) - Mem_Tag; }
+  static intptr_t selector_or_method_byte_offset()	{ return intptr_t (&(((methodOopDesc*)NULL)->_selector_or_method)) - Mem_Tag; }
+  static intptr_t counters_byte_offset()		{ return intptr_t (&(((methodOopDesc*)NULL)->_counters)) - Mem_Tag; }
   static int codes_byte_offset()		{ return sizeof(methodOopDesc) - Mem_Tag; }
 
   smiOop size_and_flags() const { return addr()->_size_and_flags; }
-  void set_size_and_flags(int size, int nofArgs, int flags) {
+  void set_size_and_flags(int size, int nofArgs, intptr_t flags) {
     addr()->_size_and_flags = (smiOop)
       ((flags << method_flags_mask_bitno) + (nofArgs << method_args_mask_bitno) + (size << method_size_mask_bitno));
   }
 
-  int flags() const {
-    return get_unsigned_bitfield((int)size_and_flags(), method_flags_mask_bitno, method_flags_mask_size);
+  intptr_t flags() const {
+    return get_unsigned_bitfield((intptr_t)size_and_flags(), method_flags_mask_bitno, method_flags_mask_size);
   }
 
   void set_flags(int flags) {
     set_size_and_flags(size_of_codes(), nofArgs(), flags);
   }
 
-  int nofArgs() const {			 // number of arguments (excluding receiver)
-    return get_unsigned_bitfield((int)size_and_flags(), method_args_mask_bitno, method_args_mask_size); }
+  intptr_t nofArgs() const {			 // number of arguments (excluding receiver)
+    return get_unsigned_bitfield((intptr_t)size_and_flags(), method_args_mask_bitno, method_args_mask_size); }
 
  public:
 	friend methodOop as_methodOop(void* p);
@@ -133,8 +133,8 @@ class methodOopDesc : public memOopDesc {
 
   bool was_never_executed();		// was method never executed? (count = 0, empty inline caches)
 
-  int size_of_codes() const {		// size of byte codes in words
-    return get_unsigned_bitfield((int) size_and_flags(), method_size_mask_bitno, method_size_mask_size);
+  intptr_t size_of_codes() const {		// size of byte codes in words
+    return get_unsigned_bitfield((intptr_t) size_and_flags(), method_size_mask_bitno, method_size_mask_size);
   }
 
   void set_size_of_code(int size) {
@@ -303,7 +303,7 @@ class methodOopDesc : public memOopDesc {
   InterpretedIC* ic_at(int bci) const;
 
   // Returns an array of byte code indecies contributing to the expression stack
-  GrowableArray<int>* expression_stack_mapping(int bci);
+  GrowableArray<intptr_t>* expression_stack_mapping(int bci);
 
   // For debugging only
   void print_codes();

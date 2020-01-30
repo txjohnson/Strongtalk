@@ -58,8 +58,8 @@ void printIndent() {
 # define DO_DOWN(from) LOOP_UNROLL(count, *--to = from)
 
 void copy_oops_up(oop* from, oop* to, int count) {
-  assert(maskBits(int(from), Tag_Size) == 0, "not word aligned");
-  assert(maskBits(int(to), Tag_Size) == 0, "not word aligned");
+  assert(maskBits(intptr_t(from), Tag_Size) == 0, "not word aligned");
+  assert(maskBits(intptr_t(to), Tag_Size) == 0, "not word aligned");
   assert(count >= 0, "negative count");
 
   // block_step was determined by profiling the scavenger.
@@ -88,15 +88,15 @@ void copy_oops_up(oop* from, oop* to, int count) {
 }
 
 void copy_oops_down(oop* from, oop* to, int count) {
-  assert(maskBits(int(from), Tag_Size) == 0, "not word aligned");
-  assert(maskBits(int(to), Tag_Size) == 0, "not word aligned");
+  assert(maskBits(intptr_t(from), Tag_Size) == 0, "not word aligned");
+  assert(maskBits(intptr_t(to), Tag_Size) == 0, "not word aligned");
   assert(count >= 0, "negative count");
   DO_DOWN(*--from)
   }
 
 
 void set_oops(oop* to, int count, oop value) {
-  assert(maskBits(int(to), Tag_Size) == 0, "not word aligned");
+  assert(maskBits(intptr_t(to), Tag_Size) == 0, "not word aligned");
   assert(count >= 0, "negative count");
 
   const int block_step = 4;

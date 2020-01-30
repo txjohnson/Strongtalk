@@ -43,7 +43,7 @@ Locations::Locations(int nofArgs, int nofRegs, int nofInitialStackTmps) {
   assert(0 <= nofRegs && nofRegs <= maxNofUsableRegisters, "too many registers required");
   _nofArguments = nofArgs;
   _nofRegisters = nofRegs;
-  _freeList     = new GrowableArray<int>(nofArgs + nofRegs + nofInitialStackTmps);
+  _freeList     = new GrowableArray<intptr_t>(nofArgs + nofRegs + nofInitialStackTmps);
   int i = 0;
   // initialize argument reference counts
   while (i < nofArgs) {

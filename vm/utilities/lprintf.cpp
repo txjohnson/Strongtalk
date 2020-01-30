@@ -85,7 +85,7 @@ extern "C" void lputc(char c) {
   }
 }
 
-extern "C" void lputs(char* str) {
+extern "C" void lputs(const char* str) {
   check_log_file();
   if (LogVMMessages) {
     fputs(str, logFile);
@@ -97,21 +97,21 @@ extern "C" void lputs(char* str) {
   }
 }
 
-extern "C" void error(char* format, ...) {
+extern "C" void error(const char* format, ...) {
   va_list ap;
   va_start(ap, format);
   Notifier::current->error(format, ap);
   va_end(ap);
 }
 
-extern "C" void warning(char* format, ...) {
+extern "C" void warning(const char* format, ...) {
   va_list ap;
   va_start(ap, format);
   Notifier::current->warning(format, ap);
   va_end(ap);
 }
 
-extern "C" void compiler_warning(char* format, ...) {
+extern "C" void compiler_warning(const char* format, ...) {
   if (PrintCompilerWarnings) {
     va_list ap;
     va_start(ap, format);
@@ -147,26 +147,26 @@ extern "C" void my_sprintf_len(char*& buf, const int len, const char* format, ..
 class DebugNotifier: public Notifier, public CHeapObj {
 public:
   DebugNotifier() {}
-  void error(char* m, va_list ap);
-  void warning(char* m, va_list ap);
-  void compiler_warning(char* m, va_list ap);
+  void error(const char* m, va_list ap);
+  void warning(const char* m, va_list ap);
+  void compiler_warning(const char* m, va_list ap);
 };
 
 Notifier* Notifier::current = new DebugNotifier();
 
-void DebugNotifier::error(char* m, va_list ap) {
+void DebugNotifier::error(const char* m, va_list ap) {
   std->print_cr("VM Error:");
   std->vprint_cr(m, ap);
   DEBUG_EXCEPTION;
 }
 
-void DebugNotifier::warning(char* m, va_list ap) {
+void DebugNotifier::warning(const char* m, va_list ap) {
   std->print_cr("VM Warning:");
   std->vprint_cr(m, ap);
   if (BreakAtWarning) DEBUG_EXCEPTION;
 }
 
-void DebugNotifier::compiler_warning(char* m, va_list ap) {
+void DebugNotifier::compiler_warning(const char* m, va_list ap) {
   std->print_cr("Compiler Warning:");
   std->vprint_cr(m, ap);
   if (BreakAtWarning) DEBUG_EXCEPTION;}

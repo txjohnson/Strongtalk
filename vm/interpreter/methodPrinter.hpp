@@ -32,7 +32,7 @@ class MethodPrinterClosure: public MethodClosure {
  private:
    outputStream*  st;
    void print_sendtype(Bytecodes::SendType type);
-   void show(char* str);
+   void show(const char* str);
    void indent();
  public:
   MethodPrinterClosure(outputStream* stream = NULL);

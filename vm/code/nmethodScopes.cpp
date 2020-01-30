@@ -286,7 +286,7 @@ void nmethodScopes::print() {
 void nmethodScopes::print_partition() {
   int d_size = dependent_length() * sizeof(oop);
   int o_size = oops_size() * sizeof(oop) - d_size;
-  int p_size = (int) pcsEnd() - (int) pcs();
+  intptr_t p_size = (intptr_t) pcsEnd() - (intptr_t) pcs();
   int v_size = value_size() * sizeof(int);
   int total  = v_size + p_size + o_size + d_size;
  

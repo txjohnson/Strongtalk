@@ -236,7 +236,8 @@ static Event* threadCreated = NULL;
 
 char* calcStackLimit() {
   char* stackptr;
-  asm("movl %%esp, %0;" : "=a"(stackptr));
+  // TODO: this is a GCC extension. We want to get rid of the assembler. Progrm will not work until fixed.
+  // asm("movl %%esp, %0;" : "=a"(stackptr));
   stackptr = (char*) align(stackptr, os::vm_page_size());
   
   int stackHeadroom = 2 * os::vm_page_size();
@@ -640,7 +641,7 @@ void trace_stack(int thread_id);
 static void handler(int signum, siginfo_t* info, void* context) {
 	//	install_dummy_handler();
 	//	trace_stack(os::current_thread_id());
-    printf("\nsignal: %d\ninfo: %x\ncontext: %x", signum, (int) info, (int) context);
+    printf("\nsignal: %d\ninfo: %x\ncontext: %x", signum, (intptr_t) info, (intptr_t) context);
 	os_dump_context2((ucontext_t*) context);
     exit(-1);
 }

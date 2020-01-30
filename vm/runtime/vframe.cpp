@@ -386,7 +386,7 @@ contextOop compiledVFrame::compiled_context() const {
 }
 
 GrowableArray<DeferredExpression*>* compiledVFrame::deferred_expression_stack() const {
-  GrowableArray<int>* mapping = method()->expression_stack_mapping(bci());
+  GrowableArray<intptr_t>* mapping = method()->expression_stack_mapping(bci());
   GrowableArray<DeferredExpression*>* result = new GrowableArray<DeferredExpression*>(mapping->length());
   for (int index = 0; index < mapping->length(); index++) {
     NameDesc* nd    = sd->exprStackElem(mapping->at(index));
@@ -396,7 +396,7 @@ GrowableArray<DeferredExpression*>* compiledVFrame::deferred_expression_stack() 
 }
 
 GrowableArray<oop>* compiledVFrame::expression_stack() const {
-  GrowableArray<int>* mapping = method()->expression_stack_mapping(bci());
+  GrowableArray<intptr_t>* mapping = method()->expression_stack_mapping(bci());
   GrowableArray<oop>* result = new GrowableArray<oop>(mapping->length());
   for (int index = 0; index < mapping->length(); index++) {
     NameDesc* nd    = sd->exprStackElem(mapping->at(index));

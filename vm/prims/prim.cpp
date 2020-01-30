@@ -49,16 +49,17 @@ oop primitive_desc::eval(oop* a) {
   oop res;
   int ebx_on_stack;
 
+// TODO: Fix GNUC assembly (ie get rid of it)
   // %hack: see below
-#ifndef __GNUC__
+//#ifndef __GNUC__
   __asm mov ebx_on_stack, ebx
-#else
-  __asm__("pushl %%eax;"
-          "movl %%ebx, %%eax;"
-          "movl %%eax, %0;"
-          "popl %%eax;"
-          : "=a"(ebx_on_stack));
-#endif
+//#else
+//  __asm__("push %%rax;"
+//          "movl %%rbx, %%rax;"
+//          "movl %%rax, %0;"
+//          "pop %%rax;"
+//          : "=a"(ebx_on_stack));
+//#endif
   if (reverseArgs) {
     switch (number_of_parameters()) {
     case  0: res = ((prim_fntype0)_fn)(); break;
@@ -91,17 +92,17 @@ oop primitive_desc::eval(oop* a) {
 
   // %hack: some primitives alter EBX and crash the compiler's constant propagation
   int ebx_now;
-#ifndef __GNUC__
+// #ifndef __GNUC__
   __asm mov ebx_now, ebx
   __asm mov ebx, ebx_on_stack
-#else
-  __asm__("pushl %%eax;"
-          "movl %%ebx, %%eax;"
-          "movl %%eax, %0;"
-          "movl %1, %%eax;"
-          "movl %%eax, %%ebx;"
-          "popl %%eax;" : "=a"(ebx_now) : "a"(ebx_on_stack));
-#endif
+//#else
+//  __asm__("pushl %%eax;"
+//          "movl %%ebx, %%eax;"
+//          "movl %%eax, %0;"
+//          "movl %1, %%eax;"
+//          "movl %%eax, %%ebx;"
+//          "popl %%eax;" : "=a"(ebx_now) : "a"(ebx_on_stack));
+//#endif
 
   if (ebx_now != ebx_on_stack)
   {
@@ -229,7 +230,7 @@ void primitive_desc::verify() {
   }
 }
 
-int primitive_desc::compare(char* str, int len) {
+int primitive_desc::compare(const char* str, int len) {
   int src_len = strlen(name());
   int sign = strncmp(name(), str, min(src_len, len));
   // if (sign != 0 || src_len == len) return sign;
@@ -238,7 +239,7 @@ int primitive_desc::compare(char* str, int len) {
   return src_len < len ? -1 : 1;
 }
 
-primitive_desc* primitives::lookup(char* s, int len) {
+primitive_desc* primitives::lookup(const char* s, int len) {
   int first = 0;
   int last  = size_of_primitive_table;
 
@@ -342,7 +343,7 @@ void primitives::clear_counters() {
 }
 
 
-static void print_calls(char* name, int inc, int* total) {
+static void print_calls(const char* name, int inc, int* total) {
   if (inc > 0) {
     lprintf(" %s:\t%6d\n", name, inc);
     *total = *total + inc;
@@ -480,7 +481,7 @@ primitive_desc* primitives::_context_allocate0;
 primitive_desc* primitives::_context_allocate1;
 primitive_desc* primitives::_context_allocate2;
 
-primitive_desc* primitives::verified_lookup(char* selector) {
+primitive_desc* primitives::verified_lookup(const char* selector) {
   primitive_desc* result = lookup(selector);
   if (result == NULL) {
     getErr()->print_cr("Verified primitive lookup failed");
@@ -516,7 +517,7 @@ void primitives::initialize() {
 
 }
 
-void primitives::patch(char* name, char* entry_point) {
+void primitives::patch(const char* name, char* entry_point) {
   assert(entry_point, "just checking");
   primitive_desc* pdesc = verified_lookup(name);
   pdesc->_fn = (fntype)entry_point;

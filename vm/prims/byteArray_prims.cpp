@@ -802,7 +802,7 @@ PRIM_DECL_1(byteArrayPrimitives::alienGetAddress, oop receiver) {
 //  if (alienSize(receiver) > 0)
 //    return markSymbol(vmSymbols::illegal_state());
 
-  unsigned int address = (unsigned int)alienAddress(receiver);
+  uintptr_t address = (uintptr_t)alienAddress(receiver);
   int size = IntegerOps::unsigned_int_to_Integer_result_size_in_bytes(address);
 
   oop largeInteger = Universe::find_global("LargeInteger");
