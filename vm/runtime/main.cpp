@@ -1,5 +1,8 @@
-# include "incls/_precompiled.incl"
-# include "incls/_main.cpp.incl"
+// # include "incls/_precompiled.incl"
+// # include "incls/_main.cpp.incl"
+
+#include "os.hpp"
+#include "shell.hpp"
 
 #ifdef _WIN32
 #include <windows.h>

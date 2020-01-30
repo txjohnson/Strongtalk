@@ -54,8 +54,8 @@ void elapsedTimer::stop() {
 }
 
 double elapsedTimer::seconds() {
-  double count = counter.as_double();
-  double freq  = os::elapsed_frequency().as_double();
+  double count = double (counter);
+  double freq  = double (os::elapsed_frequency());
   return count/freq;
 }
 
@@ -63,7 +63,7 @@ void elapsedTimer::print() {
   std->print_cr("%3.3f", seconds());
 }
 
-TimeStamp::TimeStamp() : counter(0,0) {
+TimeStamp::TimeStamp() : counter(0) {
 }
 
 void TimeStamp::update() {
@@ -72,8 +72,8 @@ void TimeStamp::update() {
 
 double TimeStamp::seconds() {
   long_int new_count = os::elapsed_counter();
-  double count = (new_count - counter).as_double();
-  double freq  = os::elapsed_frequency().as_double();
+  double count = double(new_count - counter);
+  double freq  = double(os::elapsed_frequency());
   return count/freq;
 }
 

@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, LongView Technologies L.L.C. $Revision: 1.20 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -22,6 +23,10 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 #ifdef DELTA_COMPILER
+
+#include "../lookup/key.hpp"
+#include "codeTable.hpp"
+#include "zoneHeap.hpp"
 
 // The zone implements the code cache for optimized methods and contains:
 //   1) a lookup table:      "Lookup key -> nmethod"

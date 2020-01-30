@@ -40,7 +40,7 @@ class elapsedTimer {
  private:
   long_int counter;
  public:
-  elapsedTimer() : counter(0,0) {}
+  elapsedTimer() : counter(0) {}
   void start();
   void stop();
   void print();

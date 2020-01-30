@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.32 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.

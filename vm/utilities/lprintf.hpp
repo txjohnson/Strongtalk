@@ -1,3 +1,5 @@
+#pragma once
+
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.9 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -24,6 +26,8 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 // lprintf replaces printf -- never use printf in the VM!
 // output written by lprintf can easily be redirected, duplicated into a
 // log file, etc.
+#include <cstdarg>
+
 
 extern "C" void lprintf(const char* m, ...);
 extern "C" void lputc(char c);

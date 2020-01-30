@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994 - 1996 LongView Technologies L.L.C. $Revision: 1.38 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -20,6 +21,9 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 
 */
+
+#include "universe.hpp"
+#include "markOop.hpp"
 
 // memOops are all oops that actually take up space in the heap (i.e.,
 // aren't immediates like smis)

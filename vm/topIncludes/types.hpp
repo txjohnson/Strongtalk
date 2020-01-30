@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.68 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -26,6 +27,9 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 // This file contains some global types, plus many partial definitions
 // to reduce include file dependencies.  (If foo.h contains a bar* and
 // struct bar is defined here, foo.h need not depend on bar.h.)
+# include <cstdint>
+# include "../oops/oop.hpp"
+# include "../oops/oopsHierarchy.hpp"
 
 #define SYSTEM_NAME "strongtalk"
 
@@ -57,6 +61,7 @@ using u_short    = uint16_t;
 using int16      = int16_t;
 using uint32     = uint32_t;
 using uint64     = uint64_t;
+using long_int   = intptr_t;
 
 class  universe;
 class  space;

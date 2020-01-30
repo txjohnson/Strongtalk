@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, LongView Technologies L.L.C. $Revision: 1.13 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -22,6 +23,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 #ifdef DELTA_COMPILER
+#include "../topIncludes/asserts.hpp"
 
 // The code table is used to find nmethods in the zone.
 // It is a hash table, where each bucket contains a list of nmethods.

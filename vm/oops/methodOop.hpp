@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994 - 1996 LongView Technologies L.L.C. $Revision: 1.89 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -22,6 +23,12 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 // A methodOop is a method with byte codes.
+
+#include "../interpreter/bytecodes.hpp"
+#include "../utilities/growableArray.hpp"
+#include "../oops/memOop.hpp"
+#include "../runtime/frame.hpp"
+#include "../runtime/debug.hpp"
 
 const int method_size_mask_bitno  =  2;
 const int method_size_mask_size   = 18;

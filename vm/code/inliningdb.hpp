@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1996, LongView Technologies L.L.C. $Revision: 1.8 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -22,6 +23,10 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 // Interface to the inlining database
+
+#include "allocation.hpp"
+#include "oopsHierarchy.hpp"
+#include <stdio.h>
 
 class InliningDatabaseKey;
 

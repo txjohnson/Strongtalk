@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.65 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -23,6 +24,9 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 // unwindInfo is a wrapper calls allowing a primitive like unwindprotect
 // to call delta even though a non local return is in progress.
+
+#include "../memory/handle.hpp"
+#include "../utilities/growablearray.hpp"
 
 class unwindInfo : public StackObj {
  private:

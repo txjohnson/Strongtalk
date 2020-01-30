@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.24 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -22,6 +23,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 // os defines the interface to operating system
+#include "types.hpp"
 
 typedef void (*dll_func)(...);
 

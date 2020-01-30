@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994 - 1996 LongView Technologies L.L.C. $Revision: 1.76 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -22,6 +23,15 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 #ifdef DELTA_COMPILER
+
+#include "ncode.hpp"
+#include "jumpTable.hpp"
+#include "nmethodScopes.hpp"
+#include "zone.hpp"
+#include "../utilities/growableArray.hpp"
+#include "../memory/universe.hpp"
+#include "../lookup/key.hpp"
+
 
 // nmethods (native methods) are the compiled code versions of Delta
 // methods.

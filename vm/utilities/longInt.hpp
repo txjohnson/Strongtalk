@@ -26,20 +26,20 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 // typedef int _bool_type_;
 // #define bool _bool_type_
 // #endif
-
-class long_int {
- private:
-  unsigned int low;
-  unsigned int high;
-  inline long_int();
- public:
-  long_int(unsigned int low, unsigned int high);
-  long_int(double value);
-
-  long_int operator -(long_int arg);
-  long_int operator +(long_int arg);
-  bool operator ==(long_int arg);
-  bool operator !=(long_int arg);
-
-  double as_double();
-};
+//
+//class long_int {
+// private:
+//  unsigned int low;
+//  unsigned int high;
+//  inline long_int();
+// public:
+//  long_int(unsigned int low, unsigned int high);
+//  long_int(double value);
+//
+//  long_int operator -(long_int arg);
+//  long_int operator +(long_int arg);
+//  bool operator ==(long_int arg);
+//  bool operator !=(long_int arg);
+//
+//  double as_double();
+//};

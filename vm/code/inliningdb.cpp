@@ -21,9 +21,20 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 */
 
-# include "incls/_precompiled.incl"
+//# include "incls/_precompiled.incl"
+//# include "incls/_inliningdb.cpp.incl"
 
-# include "incls/_inliningdb.cpp.incl"
+# include "inliningdb.hpp"
+# include "nmethod.hpp"
+# include "../runtime/os.hpp"
+# include "../runtime/timer.hpp"
+# include "../utilities/ostream.hpp"
+# include "../oops/symbolOop.hpp"
+# include "../oops/methodOop.hpp"
+# include "../oops/klassOop.hpp"
+# include "../lookup/key.hpp"
+# include "../compiler/rscope.hpp"
+# include "../memory/oopFactory.hpp"
 
 char* InliningDatabase::_directory = NULL;
 

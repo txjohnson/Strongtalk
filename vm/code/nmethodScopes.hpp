@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994 - 1996, LongView Technologies L.L.C. $Revision: 1.22 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -22,6 +23,11 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 #ifdef DELTA_COMPILER
+
+#include "../utilities/growableArray.hpp"
+#include "../topIncludes/config.hpp"
+#include "scopeDesc.hpp"
+
 
 // UnpackClosure is used for iteration over a string of nameDescs with different pc values.
 

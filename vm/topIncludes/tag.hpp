@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.4 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -21,15 +22,17 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 */
 
+#include "bits.hpp"
+#include "oopsHierarchy.hpp"
 
-const int Int_Tag      = 0;
-const int Mem_Tag      = 1;
-const int Mark_Tag     = 3;
-const int Mark_Tag_Bit = 2;	// (oop & Mark_Tag_Bit) != 0  --> oop is a markOop
+const intptr_t Int_Tag      = 0;
+const intptr_t Mem_Tag      = 1;
+const intptr_t Mark_Tag     = 3;
+const intptr_t Mark_Tag_Bit = 2;	// (oop & Mark_Tag_Bit) != 0  --> oop is a markOop
 
-const int Tag_Size     = 2;
-const int Tag_Mask     = nthMask(Tag_Size);
-const int Num_Tags     = nthBit(Tag_Size);
+const intptr_t Tag_Size     = 2;
+const intptr_t Tag_Mask     = nthMask(Tag_Size);
+const intptr_t Num_Tags     = nthBit(Tag_Size);
 
 # define clearTag(oop)  (int(oop) & ~Tag_Mask)
 

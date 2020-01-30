@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright (c) 2010, Stephen Rees 
 All rights reserved.
 

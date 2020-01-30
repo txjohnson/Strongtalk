@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.26 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -64,4 +65,5 @@ class klassKlass: public memOopKlass {
   // Sizing
   int oop_header_size() const { return klassOopDesc::header_size(); }
 };
+
 void set_klassKlass_vtbl(Klass* k);

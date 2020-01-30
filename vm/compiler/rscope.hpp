@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994 - 1996, LongView Technologies L.L.C. $Revision: 1.32 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -21,6 +22,8 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 */
 
+#include "../code/scopeDesc.hpp"
+#include "../code/pcDesc.hpp"
 
 // RScopes represent the inlined scopes of a nmethod during recompilation.
 // Essentially, they are another view of the ScopeDesc information, in a

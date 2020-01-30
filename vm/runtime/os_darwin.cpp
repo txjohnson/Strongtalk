@@ -330,8 +330,8 @@ double os::system_time_for(Thread* thread) {
 }
 
 static int      has_performance_count = 0;
-static long_int initial_performance_count(0,0);
-static long_int performance_frequency(0,0);
+static long_int initial_performance_count(0);
+static long_int performance_frequency(0);
 
 // 2 references - memory/error.cpp, evaluator.cpp
 void os::fatalExit(int num) {
@@ -535,13 +535,13 @@ long_int os::elapsed_counter() {
 //	uint low  = current64 & 0xffffffff;
 //	long_int current(low, high);
 //	return current;
-	long_int current(0, 0);
+	long_int current(0);
 	return current;
 }
 
 // 1 reference - timer.cpp
 long_int os::elapsed_frequency() {
-	return long_int(1000000000, 0);
+	return long_int(1000000000);
 }
 
 static struct timeval initial_time;

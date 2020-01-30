@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.37 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -30,7 +31,15 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 // So, xxxOop pointers are tagged, but xxxDesc* pointers aren't.
 // NB: the above is true only for memOops
 
+#include "tag.hpp"
+#include "types.hpp"
+#include "oopsHierarchy.hpp"
+
 extern "C" oop nilObj;
+
+using smi = intptr_t;
+class generation;
+class outputStream;
 
 class oopDesc {
 // protected:

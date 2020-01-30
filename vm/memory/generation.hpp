@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.20 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -22,6 +23,9 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 // A generation is a bunch of spaces of similarly-aged objects
+
+#include "../runtime/virtualspace.hpp"
+#include "space.hpp"
 
 class generation: ValueObj {
   friend class rSet;

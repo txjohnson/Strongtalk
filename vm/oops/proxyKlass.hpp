@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.13 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -59,4 +60,5 @@ class proxyKlass: public memOopKlass {
   // class creation
   friend void set_proxyKlass_vtbl(Klass* k);
 };
+
 void set_proxyKlass_vtbl(Klass* k);

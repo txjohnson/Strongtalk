@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, LongView Technologies L.L.C. $Revision: 1.13 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -22,6 +23,8 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 #ifdef DELTA_COMPILER
+#include "../utilities/growableArray.hpp"
+#include "../memory/universe.hpp"
 
 # define OOPNCODE_FROM(fieldName, p)					      \
     ((OopNCode*)((char*)p - (char*)&((OopNCode*)NULL)->fieldName))

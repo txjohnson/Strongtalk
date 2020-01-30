@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994, 1995 LongView Technologies L.L.C. $Revision: 1.2 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -21,8 +22,9 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 
 */
 
+#include <stdint.h>
 const int BitsPerByte = 8;
-const int BytesPerWord = 4;
+const int BytesPerWord = sizeof(intptr_t);
 const int BitsPerWord = BitsPerByte * BytesPerWord;
 
 const int LogBitsPerByte = 3;

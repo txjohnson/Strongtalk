@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright 1994 - 1996 LongView Technologies L.L.C. $Revision: 1.24 $ */
 /* Copyright (c) 2006, Sun Microsystems, Inc.
 All rights reserved.
@@ -35,6 +36,8 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 //    PLEASE DO NOT CHANGE THE AGE FIELD since the garbage collector relies on the size.
 //  - hash contains the identity hash value.
 //  - tag contains the special mark tag
+
+#include "config.hpp"
 
 class markOopDesc: public oopDesc {
  private:
@@ -103,7 +106,7 @@ class markOopDesc: public oopDesc {
 
   // age operations
   int        age()            const { return maskBits(value(), age_mask_in_place)  >> age_shift; }
-  markOop    set_age(int v)   const {
+  markOop    set_age(intptr_t v)   const {
     assert((v & ~age_mask) == 0, "shouldn't overflow field");
     return markOop((value() & ~age_mask_in_place) | ((v & age_mask) << age_shift));
   }

@@ -1,3 +1,4 @@
+#pragma once
 class ProcessPreemptionTask : public PeriodicTask {
 public:
   ProcessPreemptionTask() : PeriodicTask(1) {};

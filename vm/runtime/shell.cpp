@@ -22,8 +22,22 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 */
 
 
-# include "incls/_precompiled.incl"
-# include "incls/_shell.cpp.incl"
+//# include "incls/_precompiled.incl"
+//# include "incls/_shell.cpp.incl"
+
+# include "arguments.hpp"
+# include "init.hpp"
+# include "inliningdb.hpp"
+# include "ostream.hpp"
+# include "timer.hpp"
+# include "bootstrap.hpp"
+# include "process.hpp"
+# include "debug.hpp"
+# include "os.hpp"
+# include "../memory/vmSymbols.hpp"
+# include "shell.hpp"
+
+extern bool bootstrapping;
 
 extern "C" void load_image()   {
     ResourceMark rm;
