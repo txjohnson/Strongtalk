@@ -37,7 +37,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 # define clearNth(x, n)	clearBits((x), nthBit(n))
 # define subNth(x, n)	subBits((x), nthBit(n))
 # define isSet(x, n)	anySet((x), nthBit(n))
-# define nthMask(n)	(n == 32 ? AllBits : (nthBit(n) - OneBit))
+# define nthMask(n)	(n == sizeof(intptr_t) ? AllBits : (nthBit(n) - OneBit))
 # define lowerBits(x, n) maskBits((x), nthMask(n))
 
 # define roundMask(x, m) (((x) + (m)) & ~(m))
